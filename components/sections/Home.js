@@ -16,7 +16,8 @@ const HomeSection = () => {
         <div
           style={{
             backgroundImage: `url('/background.jpg')`,
-            height: '100vh',
+            height: '50vh',
+            width: '100vh',
             backgroundSize: 'cover',
             display: 'flex',
             justifyContent: 'center',
@@ -35,7 +36,8 @@ const HomeSection = () => {
         <div
           style={{
             backgroundImage: `url('/background.jpg')`,
-            height: '100vh',
+            height: '50vh',
+            width: '100vh',
             backgroundSize: 'cover',
             display: 'flex',
             justifyContent: 'center',

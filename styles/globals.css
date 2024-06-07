@@ -1,5 +1,38 @@
 /* styles/globals.css */
 html,
+.header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 10px 20px;
+  background-color: #fff; /* Adjust the background color as needed */
+}
+
+.nav {
+  display: flex;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  margin-left: 20px; /* Adjust the spacing between links as needed */
+}
+
+.nav-links li a {
+  text-decoration: none;
+  color: #000; /* Adjust the link color as needed */
+  font-weight: bold; /* Adjust the font weight as needed */
+}
+
+.nav-links li a:hover {
+  color: #007BFF; /* Adjust the hover color as needed */
+}
+
+
 body {
   padding: 0;
   margin: 0;
