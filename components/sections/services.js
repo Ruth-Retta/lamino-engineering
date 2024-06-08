@@ -5,7 +5,7 @@ export default function ServicesSection() {
   return (
     <section id="services" className="py-20">
       <div className="container mx-auto">
-        <h2 className="text-4xl font-bold mb-6">Our Programs</h2>
+        <h2 className="text-4xl font-bold mb-6">Our Services</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="text-center">
             <Image src={background} alt="Anti Poverty Programs" className="w-full h-48 object-cover rounded-md" />
