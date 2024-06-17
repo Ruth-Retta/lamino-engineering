@@ -18,8 +18,6 @@ margin: 10;
 
 .header {
   display: flex;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   background-color: #70BA02; /* Adjust the background color as needed */
   padding: 10px;
   margin-bottom: 20px;
@@ -31,13 +29,9 @@ margin: 10;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-right: 80px;
-  padding-left: 80px;
+  padding-right: 50px;
+  padding-left: 50px;
   width: 100%;
-}
-
-.logo {
-  flex-shrink: 0;
 }
 
 .logo-image {
@@ -55,14 +49,15 @@ margin: 10;
 }
 
 .nav-links li {
-  margin-left: 20px; /* Adjust the spacing between links as needed */
+  margin-left: 20px;
 }
 
 .nav-links li a {
   text-decoration: none;
-  color: #000; /* Adjust the link color as needed */
-  font-weight: bold; /* Adjust the font weight as needed */
+  color: #fff; 
+  font-weight: bold; 
   font-size: 1.2vw;
+  white-space: nowrap;
 }
 
 .nav-links li a:hover {
@@ -123,4 +118,71 @@ body {
 .swiper-button-next {
   color: white;
   /* Additional styles for the navigation buttons */
+}
+
+.footer {
+  background-color: #70BA02;
+  color: white;
+  padding: 20px;
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.footer h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+}
+
+.contact-info {
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  margin-bottom: 20px;
+}
+
+.email-info, .phone-info, .location {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.social-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+.social-icons a, .social-icons button {
+  color: white;
+  font-size: 24px;
+  text-decoration: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.social-icons a:hover, .social-icons button:hover {
+  color: #ddd;
+}
+
+.location a {
+  color: white;
+  text-decoration: none;
+}
+
+.location a:hover {
+  text-decoration: underline;
+}
+
+.footer p {
+  margin: 5px 0;
+}
+
+.footer p:last-child {
+  margin-top: 20px;
+  font-size: 14px;
+  opacity: 0.8;
 }
