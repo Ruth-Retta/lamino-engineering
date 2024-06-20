@@ -1,16 +1,29 @@
-import Header from '../components/Header';
-import Footer from '../components/Footer';
+// pages/careers.js
+import CareerSection from '../components/CareerSection';
 
-export default function Career() {
+const jobListing = {
+  position: 'Software Engineer',
+  startDate: 'June 1, 2024',
+  dueDate: 'July 1, 2024',
+  description: 'We are looking for a skilled software engineer to join our team.',
+  requirements: [
+    'Bachelor’s degree in Computer Science or related field',
+    '3+ years of experience in software development',
+    'Proficiency in JavaScript, HTML, and CSS',
+    'Experience with React and Node.js',
+  ],
+};
+
+export default function Careers() {
   return (
     <div>
-      <Header />
-      <main className="container mx-auto p-4">
-        <h1 className="text-4xl font-bold mb-6">Career Opportunities</h1>
-        <p>Detail the career opportunities available at your company.</p>
-        {/* Add more content as needed */}
-      </main>
-      <Footer />
+      <CareerSection
+        position={jobListing.position}
+        startDate={jobListing.startDate}
+        dueDate={jobListing.dueDate}
+        description={jobListing.description}
+        requirements={jobListing.requirements}
+      />
     </div>
   );
 }

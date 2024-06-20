@@ -120,6 +120,105 @@ body {
   /* Additional styles for the navigation buttons */
 }
 
+
+
+.career-container {
+  @apply p-6 mb-8 border border-gray-200 rounded-lg shadow-lg bg-white;
+}
+
+.job-header {
+  @apply flex items-center mb-4;
+}
+
+.job-image {
+  @apply w-1/4 mr-4;
+}
+
+.job-info {
+  @apply w-3/4;
+}
+
+.job-description, .job-requirements {
+  @apply mb-4;
+}
+
+.job-description h4, .job-requirements h4 {
+  @apply text-xl font-semibold;
+}
+
+
+#about {
+  padding-top: 6rem; /* Adjust as needed */
+  padding-bottom: 6rem; /* Adjust as needed */
+}
+
+#about .container {
+  max-width: 1140px; /* Adjust the maximum width as needed */
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+#about h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+#about p {
+  line-height: 1.8;
+}
+
+#about .grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  #about .grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+#about img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Responsive design for grid layout */
+@media (min-width: 768px) {
+  #about img {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+#about .rounded-lg {
+  border-radius: 0.5rem;
+}
+
+#about .shadow-md {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+
+
+input[type='text'],
+input[type='email'],
+textarea {
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+
+input[type='text']:focus,
+input[type='email']:focus,
+textarea:focus {
+  border-color: #70BA02;
+  outline: 0;
+  box-shadow: 0 0 0 2px rgba(77, 192, 181, 0.2);
+}
+
+
+
 .footer {
   background-color: #70BA02;
   color: white;
