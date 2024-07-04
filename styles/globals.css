@@ -61,13 +61,19 @@ margin: 10;
 }
 
 .nav-links li a:hover {
-  color: #fff; /* Adjust the hover color as needed */
+  color: #fff; 
 }
 
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+}
+
+.container {
+  @apply mx-auto px-4;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 
 * {
@@ -117,10 +123,13 @@ body {
 .swiper-button-prev,
 .swiper-button-next {
   color: white;
+  
   /* Additional styles for the navigation buttons */
 }
 
 
+
+/* Career */
 
 .career-container {
   @apply p-6 mb-8 border border-gray-200 rounded-lg shadow-lg bg-white;
@@ -147,13 +156,15 @@ body {
 }
 
 
+/* About */
+
 #about {
-  padding-top: 6rem; /* Adjust as needed */
-  padding-bottom: 6rem; /* Adjust as needed */
+  padding-top: 6rem; 
+  padding-bottom: 6rem; 
 }
 
 #about .container {
-  max-width: 1140px; /* Adjust the maximum width as needed */
+  max-width: 1140px; 
   padding-left: 1rem;
   padding-right: 1rem;
 }
@@ -185,7 +196,9 @@ body {
   display: block;
 }
 
-/* Responsive design for grid layout */
+
+/* Contact us */
+
 @media (min-width: 768px) {
   #about img {
     max-width: 100%;
@@ -218,6 +231,7 @@ textarea:focus {
 }
 
 
+/* Footer */ 
 
 .footer {
   background-color: #70BA02;

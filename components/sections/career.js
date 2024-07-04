@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import Image from 'next/image';
-import background from '../../public/background.jpg'; // Adjust the path if necessary
+import Link from 'next/link';
+import background from '../../public/background.jpg';
 
 const CareerSection = () => {
   const jobListing = {
@@ -23,23 +24,26 @@ const CareerSection = () => {
         <div className="career-container p-6 mb-8 border border-gray-200 rounded-lg shadow-lg bg-white">
           <div className="job-header flex items-center mb-4">
             <div className="job-image w-1/4 mr-4">
-              <Image src={background} alt="Job Image" className="rounded-lg" />
+              <Image src={background} alt="Job Image" className="rounded-lg" fetchpriority="high" />
             </div>
             <div className="job-info w-3/4">
               <h3 className="text-2xl font-bold">{jobListing.position}</h3>
               <p className="text-gray-600">Start Date: {jobListing.startDate} | Due Date: {jobListing.dueDate}</p>
               <div className="job-description mb-4">
-            <h4 className="text-xl font-semibold">Job Description</h4>
-            <p>{jobListing.description}</p>
-          </div>
-          <div className="job-requirements">
-            <h4 className="text-xl font-semibold">Requirements</h4>
-            <ul className="list-disc list-inside">
-              {jobListing.requirements.map((requirement, index) => (
-                <li key={index}>{requirement}</li>
-              ))}
-            </ul>
-          </div>
+                <h4 className="text-xl font-semibold">Job Description</h4>
+                <p>{jobListing.description}</p>
+              </div>
+              <div className="job-requirements">
+                <h4 className="text-xl font-semibold">Requirements</h4>
+                <ul className="list-disc list-inside">
+                  {jobListing.requirements.map((requirement, index) => (
+                    <li key={index}>{requirement}</li>
+                  ))}
+                </ul>
+              </div>
+              <Link href="/career" className="mt-4 bg-custom-green-1 text-white py-2 px-4 rounded">
+                Learn More
+              </Link>
             </div>
           </div>
         </div>

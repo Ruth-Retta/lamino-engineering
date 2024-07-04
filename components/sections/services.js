@@ -1,5 +1,6 @@
 import Image from 'next/image';
 import background from '../../public/background.jpg';
+import Link from 'next/link';
 
 export default function ServicesSection() {
   return (
@@ -26,6 +27,9 @@ export default function ServicesSection() {
             <button className="mt-4 bg-custom-green-1 text-white py-2 px-4 rounded">Learn More</button>
           </div>
         </div>
+        <Link href="/services" className="mt-4 bg-custom-green-1 text-white py-2 px-4 rounded">
+        Learn More
+        </Link>
       </div>
     </section>
   );

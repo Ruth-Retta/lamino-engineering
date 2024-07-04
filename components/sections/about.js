@@ -1,12 +1,12 @@
 import Image from "next/image";
+import Link from 'next/link';
 import background from "../../public/background.jpg"
-
 
 export default function AboutSection() {
   return (
     <section id="about" className="py-20 bg-gray-100">
       <div className="container mx-auto">
-        <h2 className="text-4xl font-bold mb-6">About Us</h2>
+        <h1 className="text-4xl font-bold mb-6">About Us</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <h3 className="text-2xl font-bold mb-4">Lamino Engineering</h3>
@@ -22,12 +22,16 @@ export default function AboutSection() {
               At Lamino Engineering, we prioritize customer satisfaction and strive to exceed
               expectations through our expertise, innovation, and commitment to excellence.
             </p>
+            <Link href="/about" className="mt-4 bg-custom-green-1 text-white py-2 px-4 rounded">
+              Learn More
+            </Link>
           </div>
           <div>
             <Image
               src={background}
               alt="About Us Image"
               className="rounded-lg shadow-md"
+              fetchpriority="high"
             />
           </div>
         </div>
