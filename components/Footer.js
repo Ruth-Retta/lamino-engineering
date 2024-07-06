@@ -6,15 +6,19 @@ const Footer = () => {
     <footer className="footer">
       <h2>Get in touch</h2>
         <div className="email-info">
-          <FaEnvelope /> info@laminoengineering.com / contact@laminoengineering.com
+        <FaEnvelope className="inline mr-2" /> 
+          <a href="mailto:info@laminoengineering.com" className="hover:underline">info@laminoengineering.com</a> / 
+          <a href="mailto:contact@laminoengineering.com" className="hover:underline">contact@laminoengineering.com</a>
         </div>
         <div className="phone-info">
-          <FaPhone /> +251 944 000033 / +251 988 000033
+        <FaPhone className="inline mr-2" /> 
+          <a href="tel:+251944000033" className="hover:underline">+251 944 000033</a> / 
+          <a href="tel:+251988000033" className="hover:underline">+251 988 000033</a>
         </div>
         <div className="location">
         <FaMapMarkerAlt />
-        <Link href="https://www.google.com/maps/place/Location" passHref>
-          Addis Ababa, Bole, Winta Building
+        <Link href="https://maps.app.goo.gl/ZkPPzZnBNyVp6pUv5" passHref>
+          Addis Ababa, Bole, Winta Building, 4th floor
         </Link>
       </div> 
       <div className="social-icons">

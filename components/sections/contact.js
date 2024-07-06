@@ -1,6 +1,6 @@
 export default function ContactSection() {
     return (
-      <section id="contact" className="py-20">
+      <section id="contact" className="py-20 bg-gray-100" >
         <div className="container mx-auto">
           <h2 className="text-4xl font-bold mb-6">Contact Us</h2>
           <form className="space-y-4">
@@ -25,7 +25,7 @@ export default function ContactSection() {
               <textarea className="mt-1 block w-full p-2 border border-gray-300 rounded-md"></textarea>
             </div>
             <div>
-              <button type="submit" className="bg-blue-500 text-white py-2 px-4 rounded">Send</button>
+              <button type="submit" className="bg-custom-green-1 text-white py-2 px-4 rounded">Send</button>
             </div>
           </form>
         </div>

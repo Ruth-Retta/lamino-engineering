@@ -41,12 +41,12 @@ const CareerSection = () => {
                   ))}
                 </ul>
               </div>
-              <Link href="/career" className="mt-4 bg-custom-green-1 text-white py-2 px-4 rounded">
-                Learn More
-              </Link>
             </div>
           </div>
         </div>
+        <Link href="/career" className="mt-4 bg-custom-green-1 text-white py-2 px-4 rounded">
+          Learn More
+        </Link>
       </div>
     </section>
   );

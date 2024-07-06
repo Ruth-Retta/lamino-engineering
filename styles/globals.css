@@ -124,7 +124,76 @@ body {
 .swiper-button-next {
   color: white;
   
-  /* Additional styles for the navigation buttons */
+}
+
+
+
+/* portfolio */
+
+.card {
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card img {
+  width: 100%;
+  height: auto;
+}
+
+.card-content {
+  padding: 16px;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.card-description {
+  font-size: 1rem;
+  color: #4a5568;
+}
+
+
+/* Testimonial */
+
+
+
+
+#testimonials h2 {
+  margin-bottom: 2rem;
+}
+
+#testimonials .swiper-container {
+  padding-bottom: 1rem; /* Adjust as needed */
+}
+
+#testimonials .swiper-slide {
+  width: auto; /* Adjust slide width as needed */
+}
+
+#testimonials .swiper-slide img {
+  height: 100%; /* Ensure image fills its container */
+}
+
+#testimonials .bg-white {
+  background-color: #ffffff;
+}
+
+#testimonials .rounded-lg {
+  border-radius: 0.5rem;
+}
+
+#testimonials .shadow-md {
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 
@@ -163,11 +232,6 @@ body {
   padding-bottom: 6rem; 
 }
 
-#about .container {
-  max-width: 1140px; 
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
 
 #about h2 {
   text-align: center;
