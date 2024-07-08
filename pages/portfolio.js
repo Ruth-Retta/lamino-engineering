@@ -1,4 +1,4 @@
-import Header from '../components/Header';
+import HeaderP from '../components/HeaderP';
 import Footer from '../components/Footer';
 import Image from 'next/image';
 import background from '../public/background.jpg';
@@ -35,8 +35,9 @@ const Portfolio = () => {
   ];
 
   return (
-    <section id="portfolio" className=" bg-gray-100">
-      <Header />
+    <div>
+      <HeaderP />
+    <main className="mx-auto pl-20 pr-20 mt-40">
       <div className="container mx-auto">
         <h2 className="text-4xl font-bold mb-6">Our Portfolio</h2>
         <div className="space-y-12">
@@ -55,8 +56,9 @@ const Portfolio = () => {
           ))}
         </div>
       </div>
+      </main>
       <Footer />
-    </section>
+      </div>
   );
 };
 

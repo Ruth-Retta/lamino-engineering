@@ -22,9 +22,9 @@ const PortfolioSection = () => {
   ];
 
   return (
-    <section id="previous-works" className="py-20 bg-gray-100">
+    <section id="portfolio" className="py-20 bg-gray-50">
       <div className="container mx-auto">
-        <h2 className="text-4xl font-bold mb-6">Previous Works</h2>
+        <h2 className="text-4xl font-bold mb-6">Portfolio</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
           {projects.map((project, index) => (
             <div key={index} className="card">

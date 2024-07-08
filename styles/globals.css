@@ -22,6 +22,10 @@ margin: 10;
   padding: 10px;
   margin-bottom: 20px;
   width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
   
 }
 
@@ -35,8 +39,8 @@ margin: 10;
 }
 
 .logo-image {
-  height: 30%;
-  width: 30%;
+  height: 25%;
+  width: 25%;
 }
 
 .nav {
@@ -63,6 +67,7 @@ margin: 10;
 .nav-links li a:hover {
   color: #fff; 
 }
+
 
 
 body {

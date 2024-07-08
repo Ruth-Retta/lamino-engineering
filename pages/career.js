@@ -1,4 +1,4 @@
-import Header from '../components/Header';
+import HeaderP from '../components/HeaderP';
 import Footer from '../components/Footer';
 import Image from 'next/image';
 import background from '../public/background.jpg';
@@ -22,9 +22,9 @@ const careers = [
 export default function Career() {
   return (
     <div>
-      <Header />
-      <main className="container mx-auto p-6 bg-gray-50 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-bold mb-6 text-center">Career Opportunities</h1>
+      <HeaderP />
+      <main className="mx-auto ml-20 mr-20 p-10 mt-40 mb-10 rounded-lg shadow-lg">
+        <h1 className="text-4xl font-bold mb-6 ">Career Opportunities</h1>
         {careers.map((job, index) => (
           <div key={index} className="career-container p-6 mb-8 border border-gray-200 rounded-lg shadow-lg bg-white flex items-center">
             <div className="job-image w-1/4 mr-4">

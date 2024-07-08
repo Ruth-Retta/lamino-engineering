@@ -1,4 +1,4 @@
-import Header from '../components/Header';
+import HeaderP from '../components/HeaderP';
 import Footer from '../components/Footer';
 import Image from 'next/image';
 import background from '../public/background.jpg'; 
@@ -25,9 +25,9 @@ const services = [
 export default function Services() {
   return (
     <div>
-      <Header />
-      <main className="container mx-auto p-6 bg-gray-50 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-bold mb-6 text-center">Our Services</h1>
+      <HeaderP />
+      <main className="mx-auto pl-20 pr-20 mt-40">
+        <h1 className="text-4xl font-bold mb-6">Our Services</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {services.map((service, index) => (
             <div key={index} className="service-container p-6 mb-8 border border-gray-200 rounded-lg shadow-lg bg-white">

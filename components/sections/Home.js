@@ -6,6 +6,7 @@ SwiperCore.use([Navigation, Pagination]);
 
 const HomeSection = () => {
   return (
+    <section id="home" >
     <Swiper
       spaceBetween={10} // Adjust the space between slides
       slidesPerView={1} // Ensure only one slide is fully visible at a time
@@ -36,6 +37,7 @@ const HomeSection = () => {
       <div className="swiper-button-prev"></div>
       <div className="swiper-button-next"></div>
     </Swiper>
+    </section>
   );
 };
 
