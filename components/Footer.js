@@ -7,8 +7,7 @@ const Footer = () => {
       <h2>Get in touch</h2>
         <div className="email-info">
         <FaEnvelope className="inline mr-2" /> 
-          <a href="mailto:info@laminoengineering.com" className="hover:underline">info@laminoengineering.com</a> / 
-          <a href="mailto:contact@laminoengineering.com" className="hover:underline">contact@laminoengineering.com</a>
+          <a href="mailto:info@laminoengineering.com" className="hover:underline">info@laminoengineering.com</a> 
         </div>
         <div className="phone-info">
         <FaPhone className="inline mr-2" /> 
@@ -33,7 +32,7 @@ const Footer = () => {
         </button>
       </div>
       <p>&copy; 2024 Lamino Engineering. All rights reserved.</p>
-      <p>Powered by Ruth Retta</p>
+      <p>Powered by Lamino Engineering</p>
     </footer>
   );
 };

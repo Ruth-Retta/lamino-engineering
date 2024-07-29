@@ -1,4 +1,4 @@
-import HeaderP from '../components/HeaderP';
+import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Image from 'next/image';
 import background from '../public/background.jpg';
@@ -22,7 +22,7 @@ const careers = [
 export default function Career() {
   return (
     <div>
-      <HeaderP />
+      <Header />
       <main className="mx-auto ml-20 mr-20 p-10 mt-40 mb-10 rounded-lg shadow-lg">
         <h1 className="text-4xl font-bold mb-6 ">Career Opportunities</h1>
         {careers.map((job, index) => (

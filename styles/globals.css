@@ -18,7 +18,7 @@ margin: 10;
 
 .header {
   display: flex;
-  background-color: #70BA02; /* Adjust the background color as needed */
+  background-color: #70BA02;
   padding: 10px;
   margin-bottom: 20px;
   width: 100%;
@@ -75,11 +75,7 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
-.container {
-  @apply mx-auto px-4;
-  margin-top: 30px;
-  margin-bottom: 30px;
-}
+
 
 * {
   box-sizing: border-box;
@@ -122,13 +118,6 @@ body {
 
 .slide-text p {
   font-size: 1.2rem;
-  opacity: 0.8;
-}
-
-.swiper-button-prev,
-.swiper-button-next {
-  color: white;
-  
 }
 
 
@@ -170,28 +159,29 @@ body {
 
 /* Testimonial */
 
-
-
-
 #testimonials h2 {
   margin-bottom: 2rem;
 }
 
 #testimonials .swiper-container {
-  padding-bottom: 1rem; /* Adjust as needed */
+  padding: auto;
+  margin: auto;
 }
 
 #testimonials .swiper-slide {
-  width: auto; /* Adjust slide width as needed */
+  width: auto;
+  margin: 1rem;
 }
+
+#testimonials .swiper-slide:hover{
+  transform: translateY(-5px);
+}
+
 
 #testimonials .swiper-slide img {
-  height: 100%; /* Ensure image fills its container */
+  height: 100%;
 }
 
-#testimonials .bg-white {
-  background-color: #ffffff;
-}
 
 #testimonials .rounded-lg {
   border-radius: 0.5rem;
@@ -206,7 +196,7 @@ body {
 /* Career */
 
 .career-container {
-  @apply p-6 mb-8 border border-gray-200 rounded-lg shadow-lg bg-white;
+  @apply p-6 mb-8 border rounded-lg shadow-lg;
 }
 
 .job-header {
@@ -232,12 +222,6 @@ body {
 
 /* About */
 
-#about {
-  padding-top: 6rem; 
-  padding-bottom: 6rem; 
-}
-
-
 #about h2 {
   text-align: center;
   margin-bottom: 2rem;
@@ -253,17 +237,7 @@ body {
   gap: 2rem;
 }
 
-@media (min-width: 768px) {
-  #about .grid {
-    grid-template-columns: 1fr 1fr;
-  }
-}
 
-#about img {
-  width: 100%;
-  height: auto;
-  display: block;
-}
 
 
 /* Contact us */

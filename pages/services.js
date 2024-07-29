@@ -1,4 +1,4 @@
-import HeaderP from '../components/HeaderP';
+import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Image from 'next/image';
 import background from '../public/background.jpg'; 
@@ -25,7 +25,7 @@ const services = [
 export default function Services() {
   return (
     <div>
-      <HeaderP />
+      <Header />
       <main className="mx-auto pl-20 pr-20 mt-40">
         <h1 className="text-4xl font-bold mb-6">Our Services</h1>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

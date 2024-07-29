@@ -1,9 +1,9 @@
 import React from 'react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css'; // Import Swiper core styles
-import 'swiper/css/navigation'; // Import Swiper navigation styles
-import 'swiper/css/pagination'; // Import Swiper pagination styles
+import 'swiper/css'; 
+import 'swiper/css/navigation'; 
+import 'swiper/css/pagination';
 
 SwiperCore.use([Navigation, Pagination]);
 
@@ -69,20 +69,19 @@ const testimonialsData = [
 
 const Testimonials = () => {
   return (
-    <section id="testimonials" className="py-20 bg-gray-50">
+    <section id="testimonials" className="py-5 bg-gray-0">
       <div className="container mx-auto">
-        <h2 className="text-4xl font-bold mb-6">Testimonials</h2>
+        <h2 className="text-4xl font-bold">Testimonials</h2>
         <Swiper
-          spaceBetween={30}
-          slidesPerView={4} // Display 4 testimonials per screen
-          navigation
+          spaceBetween={10}
+          slidesPerView={4}
           pagination={{ clickable: true }}
           className="mySwiper"
         >
           {testimonialsData.map((testimonial) => (
             <SwiperSlide key={testimonial.id}>
               <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                <div className="relative h-56">
+                <div className="relative h-50">
                   <img
                     src={testimonial.image}
                     alt={testimonial.author}
