@@ -1,16 +1,25 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import HomeSection from '../components/sections/Home';
+import HomeSection from '../components/sections/home';
 import ServicesSection from '@/components/sections/services';
 import PortfolioSection from '@/components/sections/portfolio';
-import CareerSection from '@/components/sections/career';
-import AboutSection from '@/components/sections/about';
 import Testimonials from '@/components/sections/testimonial';
+import { useMediaQuery } from 'react-responsive';
+import ResponsiveComponent from '../components/ResponsiveComponent';
+
+  
+
 
 const Index = () => {
+  const isDesktopOrLaptop = useMediaQuery({ minDeviceWidth: 1224 });
+  const isTabletOrMobile = useMediaQuery({ maxDeviceWidth: 1224 });
+  const isMobile = useMediaQuery({ maxDeviceWidth: 768 });
+  const isTablet = useMediaQuery({ minDeviceWidth: 768, maxDeviceWidth: 1224 });
+
   return (
     <div>
+      <ResponsiveComponent />
       <Header />
       <main className="mt-36">
         <HomeSection />

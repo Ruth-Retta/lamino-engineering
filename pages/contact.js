@@ -2,6 +2,8 @@ import { useState } from 'react';
 import axios from 'axios';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
 
 export default function Contact() {
     const [formData, setFormData] = useState({
@@ -32,7 +34,13 @@ export default function Contact() {
       <Header />
       <main className="mx-auto ml-20 mr-20 mt-40 mb-10">
       <div className="container mx-auto">
-        <h2 className="text-4xl font-bold mb-6">Contact Us</h2>
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-4xl font-bold">Contact Us</h2>
+          <button className="bg-custom-green-1 text-white py-2 px-4 rounded flex items-center">
+            <FontAwesomeIcon icon={faEnvelope} className="mr-2" />
+            make a request
+          </button>
+        </div>
         <form onSubmit={onSubmit} className="space-y-4">
         <div>
             <label className="block text-sm font-medium text-gray-700">Name</label>

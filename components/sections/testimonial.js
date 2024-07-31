@@ -73,15 +73,15 @@ const Testimonials = () => {
       <div className="container mx-auto">
         <h2 className="text-4xl font-bold">Testimonials</h2>
         <Swiper
-          spaceBetween={10}
-          slidesPerView={4}
+          spaceBetween={5}
+          slidesPerView="auto"
           pagination={{ clickable: true }}
           className="mySwiper"
         >
           {testimonialsData.map((testimonial) => (
             <SwiperSlide key={testimonial.id}>
-              <div className="bg-white rounded-lg shadow-md overflow-hidden">
-                <div className="relative h-50">
+              <div className="testimonial-box bg-white rounded-lg shadow-md overflow-hidden">
+                <div className="testimonial-image relative h-50">
                   <img
                     src={testimonial.image}
                     alt={testimonial.author}
