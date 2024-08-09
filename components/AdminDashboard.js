@@ -13,7 +13,7 @@ const AdminDashboard = () => {
         <li><Link href="/admin/news">Manage Customers</Link></li>
         <li><Link href="/admin/news">Manage Partners</Link></li>
         <li><Link href="/admin/news">Manage Testimonials</Link></li>
-        <li><Link href="/admin/news">Manage Career</Link></li>
+        <li><Link href="/admin/career">Manage Career</Link></li>
       </ul>
     </div>
   );

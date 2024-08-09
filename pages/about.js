@@ -2,6 +2,8 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Image from 'next/image';
 import background from '../public/background.jpg';
+import PartnersSection from '@/components/sections/partners';
+import CustomersSection from '@/components/sections/customers';
 
 export default function About() {
   return (
@@ -32,6 +34,8 @@ export default function About() {
           </div>
         </div>
       </main>
+      <PartnersSection />
+      <CustomersSection />
       <Footer />
     </div>
   );

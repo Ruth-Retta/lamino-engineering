@@ -5,6 +5,8 @@ import HomeSection from '../components/sections/home';
 import ServicesSection from '@/components/sections/services';
 import PortfolioSection from '@/components/sections/portfolio';
 import Testimonials from '@/components/sections/testimonial';
+import PartnersSection from '@/components/sections/partners';
+import CustomersSection from '@/components/sections/customers';
 import { useMediaQuery } from 'react-responsive';
 import ResponsiveComponent from '../components/ResponsiveComponent';
 
@@ -25,6 +27,8 @@ const Index = () => {
         <HomeSection />
         <ServicesSection />
         <PortfolioSection />
+        <PartnersSection />
+        <CustomersSection />
         <Testimonials />
       </main>
       <Footer />

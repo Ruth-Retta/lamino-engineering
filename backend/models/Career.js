@@ -1,30 +1,26 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const CareerSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  requirements: {
-    type: String,
-    required: true,
-  },
-  startDate: {
-    type: Date,
-    required: true,
-  },
-  endDate: {
-    type: Date,
-    required: true,
-  },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
+    position: {
+        type: String,
+        required: true,
+    },
+    startDate: {
+        type: Date,
+        required: true,
+    },
+    endDate: {
+        type: Date,
+        required: true,
+    },
+    description: {
+        type: String,
+        required: true,
+    },
+    requirements: {
+        type: [String],
+        required: true,
+    },
 });
 
-module.exports = mongoose.model('Career', CareerSchema);
+export default mongoose.models.Career || mongoose.model('Career', CareerSchema);
