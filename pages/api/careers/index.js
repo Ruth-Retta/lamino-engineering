@@ -1,5 +1,5 @@
 import dbConnect from '../../../lib/dbConnect';
-import Career from '../../../models/Career';
+import Career from '../../../backend/models/Career';
 
 export default async function handler(req, res) {
     await dbConnect();

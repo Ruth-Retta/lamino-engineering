@@ -1,4 +1,3 @@
-// models/Partner.js
 const mongoose = require('mongoose');
 
 const PartnerSchema = new mongoose.Schema({
