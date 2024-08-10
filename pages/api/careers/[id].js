@@ -2,14 +2,46 @@ import dbConnect from '../../../lib/dbConnect';
 import Career from '../../../backend/models/Career';
 
 export default async function handler(req, res) {
-    await dbConnect();
+  const { method, query: { id } } = req;
 
-    const { id } = req.query;
+  await dbConnect();
 
-    if (req.method === 'DELETE') {
-        await Career.findByIdAndDelete(id);
-        res.status(204).end(); // No Content
-    } else {
-        res.status(405).end(); // Method Not Allowed
-    }
+  switch (method) {
+    case 'GET':
+      try {
+        const career = await Career.findById(id);
+        if (!career) {
+          return res.status(404).json({ success: false, message: 'Career not found' });
+        }
+        res.status(200).json({ success: true, data: career });
+      } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+      }
+      break;
+    case 'PUT':
+      try {
+        const career = await Career.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
+        if (!career) {
+          return res.status(404).json({ success: false, message: 'Career not found' });
+        }
+        res.status(200).json({ success: true, data: career });
+      } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+      }
+      break;
+    case 'DELETE':
+      try {
+        const deletedCareer = await Career.deleteOne({ _id: id });
+        if (!deletedCareer) {
+          return res.status(404).json({ success: false, message: 'Career not found' });
+        }
+        res.status(200).json({ success: true, data: {} });
+      } catch (error) {
+        res.status(400).json({ success: false, message: error.message });
+      }
+      break;
+    default:
+      res.status(405).json({ success: false, message: 'Method not allowed' });
+      break;
+  }
 }

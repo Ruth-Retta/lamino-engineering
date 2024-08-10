@@ -1,18 +1,22 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const PartnerSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: [true, 'Please add a name'],
   },
-  logo: {
+  contactInfo: {
     type: String,
-    required: true // This will store the path to the image
+    required: [true, 'Please add contact information'],
   },
-  website: {
+  partnershipDate: {
+    type: Date,
+    default: Date.now,
+  },
+  details: {
     type: String,
-    required: true
-  }
+    required: false,
+  },
 });
 
-module.exports = mongoose.model('Partner', PartnerSchema);
+export default mongoose.models.Partner || mongoose.model('Partner', PartnerSchema);

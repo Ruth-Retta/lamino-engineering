@@ -1,27 +1,30 @@
-const mongoose = require('mongoose');
-const { Schema } = mongoose;
+import mongoose from 'mongoose';
 
-const CertificationSchema = new Schema({
-  date: {
+const CertificationSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    required: [true, 'Please add a name'],
+  },
+  institution: {
+    type: String,
+    required: [true, 'Please add the institution'],
+  },
+  issueDate: {
     type: Date,
-    required: true
+    required: true,
   },
-  title: {
-    type: String,
-    required: true
+  expiryDate: {
+    type: Date,
+    required: false,
   },
-  description: {
+  credentialID: {
     type: String,
-    required: true
+    required: false,
   },
-  imageUrl: {
+  credentialURL: {
     type: String,
-    required: true
+    required: false,
   },
-  certifyingOrganization: {
-    type: String,
-    required: true
-  }
 });
 
-module.exports = mongoose.model('Certification', CertificationSchema);
+export default mongoose.models.Certification || mongoose.model('Certification', CertificationSchema);
