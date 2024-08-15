@@ -1,30 +1,34 @@
+// pages/api/partners/index.js
 import dbConnect from '../../../lib/dbConnect';
 import Partner from '../../../backend/models/Partners';
 
 export default async function handler(req, res) {
-  const { method } = req;
+    await dbConnect();
 
-  await dbConnect();
+    try {
+        if (req.method === 'GET') {
+            const partners = await Partner.find({});
+            return res.status(200).json(partners);
+        } else if (req.method === 'POST') {
+            const { name, logo, website } = req.body;
 
-  switch (method) {
-    case 'GET':
-      try {
-        const partners = await Partner.find({});
-        res.status(200).json({ success: true, data: partners });
-      } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
-      }
-      break;
-    case 'POST':
-      try {
-        const partner = await Partner.create(req.body);
-        res.status(201).json({ success: true, data: partner });
-      } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
-      }
-      break;
-    default:
-      res.status(405).json({ success: false, message: 'Method not allowed' });
-      break;
-  }
+            if (!name || !logo || !website) {
+                return res.status(400).json({ message: 'All fields are required' });
+            }
+
+            const newPartner = new Partner({
+                name,
+                logo,
+                website,
+            });
+
+            await newPartner.save();
+            return res.status(201).json({ message: 'Partner created successfully' });
+        } else {
+            return res.status(405).json({ message: 'Method Not Allowed' });
+        }
+    } catch (error) {
+        console.error('Error in /api/partners:', error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
 }

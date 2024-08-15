@@ -1,47 +1,51 @@
+// pages/api/partners/[id].js
 import dbConnect from '../../../lib/dbConnect';
 import Partner from '../../../backend/models/Partners';
 
 export default async function handler(req, res) {
-  const { method, query: { id } } = req;
+    const { id } = req.query;
+    await dbConnect();
 
-  await dbConnect();
+    try {
+        if (req.method === 'GET') {
+            const partner = await Partner.findById(id);
 
-  switch (method) {
-    case 'GET':
-      try {
-        const partner = await Partner.findById(id);
-        if (!partner) {
-          return res.status(404).json({ success: false, message: 'Partner not found' });
+            if (!partner) {
+                return res.status(404).json({ message: 'Partner not found' });
+            }
+
+            return res.status(200).json(partner);
+        } else if (req.method === 'PUT') {
+            const { name, logo, website } = req.body;
+
+            if (!name || !logo || !website) {
+                return res.status(400).json({ message: 'All fields are required' });
+            }
+
+            const updatedPartner = await Partner.findByIdAndUpdate(
+                id,
+                { name, logo, website },
+                { new: true, runValidators: true }
+            );
+
+            if (!updatedPartner) {
+                return res.status(404).json({ message: 'Partner not found' });
+            }
+
+            return res.status(200).json(updatedPartner);
+        } else if (req.method === 'DELETE') {
+            const deletedPartner = await Partner.findByIdAndDelete(id);
+
+            if (!deletedPartner) {
+                return res.status(404).json({ message: 'Partner not found' });
+            }
+
+            return res.status(200).json({ message: 'Partner deleted successfully' });
+        } else {
+            return res.status(405).json({ message: 'Method Not Allowed' });
         }
-        res.status(200).json({ success: true, data: partner });
-      } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
-      }
-      break;
-    case 'PUT':
-      try {
-        const partner = await Partner.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
-        if (!partner) {
-          return res.status(404).json({ success: false, message: 'Partner not found' });
-        }
-        res.status(200).json({ success: true, data: partner });
-      } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
-      }
-      break;
-    case 'DELETE':
-      try {
-        const deletedPartner = await Partner.deleteOne({ _id: id });
-        if (!deletedPartner) {
-          return res.status(404).json({ success: false, message: 'Partner not found' });
-        }
-        res.status(200).json({ success: true, data: {} });
-      } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
-      }
-      break;
-    default:
-      res.status(405).json({ success: false, message: 'Method not allowed' });
-      break;
-  }
+    } catch (error) {
+        console.error('Error in /api/partners/[id]:', error);
+        return res.status(500).json({ message: 'Internal Server Error' });
+    }
 }
