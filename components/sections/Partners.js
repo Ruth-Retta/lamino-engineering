@@ -25,7 +25,7 @@ const PartnersSection = () => {
             </div>
             {/* Partners logos */}
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
-              {partners.map(partner => (
+              {partners?.map(partner => (
                 <div key={partner._id} className="text-center transform transition duration-500 hover:scale-110">
                   <a href={partner.website} target="_blank" rel="noopener noreferrer">
                     <img src={partner.logo} alt={partner.name} className="mx-auto mb-2 h-16 w-auto rounded-md" />
