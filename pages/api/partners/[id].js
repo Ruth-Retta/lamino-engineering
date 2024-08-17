@@ -45,7 +45,7 @@ export default async function handler(req, res) {
             return res.status(405).json({ message: 'Method Not Allowed' });
         }
     } catch (error) {
-        console.error('Error in /api/partners/[id]:', error);
+        console.error('Error in /api/partners/[id]:', error.message);
         return res.status(500).json({ message: 'Internal Server Error' });
     }
 }
