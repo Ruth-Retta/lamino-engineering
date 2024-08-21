@@ -4,20 +4,20 @@ const path = require('path');
 // Configure multer storage
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'uploads/'); // directory to store images
+    cb(null, 'uploads/');
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // add timestamp to the file name
+    cb(null, Date.now() + path.extname(file.originalname)); 
   }
 });
 
 const upload = multer({ storage: storage });
 
-// Use multer in your POST route
+
 router.post('/', upload.single('logo'), async (req, res) => {
   const partner = new Partner({
     name: req.body.name,
-    logo: req.file.path, // Save the file path
+    logo: req.file.path,
     website: req.body.website
   });
   try {

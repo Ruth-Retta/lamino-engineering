@@ -1,4 +1,3 @@
-// pages/api/contact.js
 import nodemailer from 'nodemailer';
 
 export default async (req, res) => {

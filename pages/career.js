@@ -1,24 +1,24 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Image from 'next/image';
-import background from '../public/background.jpg'; // Adjust this if you have specific images for each job
+import background from '../public/background.jpg'; 
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export default function Career() {
     const [careers, setCareers] = useState([]);
-    const [loading, setLoading] = useState(true);  // Added loading state
-    const [error, setError] = useState(null);      // Added error state
+    const [loading, setLoading] = useState(true);  
+    const [error, setError] = useState(null);      
 
     useEffect(() => {
         const fetchCareers = async () => {
             try {
                 const response = await axios.get('/api/careers');
-                setCareers(response.data.data);  // Assuming your response data structure
+                setCareers(response.data.data);  
             } catch (err) {
                 setError('Failed to load career opportunities.');
             } finally {
-                setLoading(false);  // Set loading to false after the request is done
+                setLoading(false);  
             }
         };
 
@@ -31,9 +31,9 @@ export default function Career() {
             <main className="mx-auto ml-20 mr-20 p-10 mt-40 mb-10 rounded-lg shadow-lg">
                 <h1 className="text-4xl font-bold mb-6">Career Opportunities</h1>
 
-                {loading && <p>Loading career opportunities...</p>}  {/* Display while loading */}
-                {error && <p className="text-red-500">{error}</p>}  {/* Display error message */}
-                {!loading && !error && careers.length === 0 && <p>No career opportunities available at the moment.</p>}  {/* Display if no careers */}
+                {loading && <p>Loading career opportunities...</p>}  
+                {error && <p className="text-red-500">{error}</p>}  
+                {!loading && !error && careers.length === 0 && <p>No career opportunities available at the moment.</p>} 
 
                 {careers.map((job, index) => (
                     <div key={index} className="career-container p-6 mb-8 border border-gray-200 rounded-lg shadow-lg bg-white flex items-center">

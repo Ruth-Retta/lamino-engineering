@@ -18,7 +18,7 @@ export default async function handler(req, res) {
             try {
                 const { position, startDate, endDate, description, requirements } = req.body;
                 
-                // Basic validation
+                
                 if (!position || !startDate || !endDate || !description || !requirements) {
                     return res.status(400).json({ message: 'Missing required fields' });
                 }

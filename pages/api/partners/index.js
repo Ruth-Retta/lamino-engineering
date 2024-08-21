@@ -1,4 +1,3 @@
-// pages/api/partners/index.js
 import dbConnect from '../../../lib/dbConnect';
 import Partner from '../../../backend/models/Partners';
 
