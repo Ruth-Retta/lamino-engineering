@@ -1,22 +1,29 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const TestimonialSchema = new mongoose.Schema({
-  name: {
-    type: String,
-    required: [true, 'Please add a name'],
-  },
-  content: {
-    type: String,
-    required: [true, 'Please add testimonial content'],
-  },
-  date: {
-    type: Date,
-    default: Date.now,
-  },
-  designation: {
-    type: String,
-    required: [true, 'Please add a designation'],
-  },
+    author: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    position: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    content: {
+        type: String,
+        required: true,
+        trim: true,
+    },
+    image: {
+        type: String,
+        required: true,
+    },
+    createdAt: {
+        type: Date,
+        default: Date.now,
+    },
 });
 
-export default mongoose.models.Testimonial || mongoose.model('Testimonial', TestimonialSchema);
+module.exports = mongoose.models.Testimonial || mongoose.model('Testimonial', TestimonialSchema);
