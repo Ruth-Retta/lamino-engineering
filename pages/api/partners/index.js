@@ -1,5 +1,5 @@
 import dbConnect from '../../../lib/dbConnect';
-import Partner from '../../../backend/models/Partners';
+import Partner from '../../../models/Partners';
 
 export default async function handler(req, res) {
     await dbConnect();

@@ -1,5 +1,5 @@
 import dbConnect from '../../../lib/dbConnect';
-import News from '../../../backend/models/News';
+import News from '../../../models/News';
 
 export default async function handler(req, res) {
   const { method, query: { id } } = req;

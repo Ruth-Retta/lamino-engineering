@@ -1,5 +1,5 @@
 import dbConnect from '../../../lib/dbConnect';
-import Testimonial from '../../../backend/models/Testimonials';
+import Testimonial from '../../../models/Testimonials';
 
 export default async function handler(req, res) {
   const { method } = req;

@@ -1,5 +1,5 @@
 import dbConnect from '../../../lib/dbConnect';
-import Portfolio from '../../../backend/models/Portfolio';
+import Portfolio from '../../../models/Portfolio';
 
 export default async function handler(req, res) {
   const { method } = req;

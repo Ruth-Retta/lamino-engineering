@@ -36,7 +36,7 @@ client.connect().then(() => {
 app.get('/api/careers', async (req, res) => {
   try {
     const careers = await careersCollection.find().toArray();
-    res.json(careers);
+    res.json([]);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Failed to fetch careers' });
