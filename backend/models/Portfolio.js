@@ -1,26 +1,23 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
 const PortfolioSchema = new mongoose.Schema({
-  projectName: {
+  title: {
     type: String,
-    required: [true, 'Please add a project name'],
+    required: true,
+    trim: true,
   },
   description: {
     type: String,
-    required: [true, 'Please add a description'],
-  },
-  completionDate: {
-    type: Date,
-    required: [true, 'Please add a completion date'],
-  },
-  clientName: {
-    type: String,
-    required: [true, 'Please add a client name'],
+    required: true,
   },
   imageUrl: {
     type: String,
-    required: false,
+    required: true,
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now,
   },
 });
 
-export default mongoose.models.Portfolio || mongoose.model('Portfolio', PortfolioSchema);
+module.exports = mongoose.models.Portfolio || mongoose.model('Portfolio', PortfolioSchema);

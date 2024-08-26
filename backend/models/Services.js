@@ -1,18 +1,18 @@
-import mongoose from 'mongoose';
+const mongoose = require('mongoose');
 
-const ServiceSchema = new mongoose.Schema({
-  name: {
+const serviceSchema = new mongoose.Schema({
+  title: {
     type: String,
-    required: [true, 'Please add a service name'],
+    required: true,
   },
   description: {
     type: String,
-    required: [true, 'Please add a description'],
+    required: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
+  image: {
+    type: String,
+    required: true,
   },
 });
 
-export default mongoose.models.Service || mongoose.model('Service', ServiceSchema);
+module.exports = mongoose.model('Service', serviceSchema);
