@@ -1,30 +1,32 @@
 import dbConnect from '../../../lib/dbConnect';
-import Service from '../../../models/Services';
+import Service from '../../../models/Service';
 
 export default async function handler(req, res) {
-  const { method } = req;
-
   await dbConnect();
 
-  switch (method) {
-    case 'GET':
-      try {
-        const services = await Service.find({});
-        res.status(200).json({ success: true, data: services });
-      } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
-      }
-      break;
-    case 'POST':
-      try {
-        const service = await Service.create(req.body);
-        res.status(201).json({ success: true, data: service });
-      } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
-      }
-      break;
-    default:
-      res.status(405).json({ success: false, message: 'Method not allowed' });
-      break;
+  if (req.method === 'GET') {
+    // Get all services
+    try {
+      const services = await Service.find();
+      res.status(200).json(services);
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to fetch services' });
+    }
+  } else if (req.method === 'POST') {
+    // Create a new service
+    const { title, description, image } = req.body;
+    try {
+      const newService = new Service({
+        title, 
+        description, 
+        image,
+      });
+      await newService.save();
+      res.status(201).json(newService);
+    } catch (error) {
+      res.status(400).json({ message: 'Failed to create service', error });
+    }
+  } else {
+    res.status(405).json({ message: 'Method Not Allowed' });
   }
 }

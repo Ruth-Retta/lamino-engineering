@@ -2,46 +2,49 @@ import dbConnect from '../../../lib/dbConnect';
 import Certification from '../../../models/Certifications';
 
 export default async function handler(req, res) {
-  const { method, query: { id } } = req;
+  const { id } = req.query;
 
   await dbConnect();
 
-  switch (method) {
-    case 'GET':
-      try {
-        const certification = await Certification.findById(id);
-        if (!certification) {
-          return res.status(404).json({ success: false, message: 'Certification not found' });
-        }
-        res.status(200).json({ success: true, data: certification });
-      } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+  if (req.method === 'GET') {
+    // Get a single certification by ID
+    try {
+      const certification = await Certification.findById(id);
+      if (!certification) {
+        return res.status(404).json({ message: 'certification not found' });
       }
-      break;
-    case 'PUT':
-      try {
-        const certification = await Certification.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
-        if (!certification) {
-          return res.status(404).json({ success: false, message: 'Certification not found' });
-        }
-        res.status(200).json({ success: true, data: certification });
-      } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+      res.status(200).json(certification);
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to fetch certification' });
+    }
+  } else if (req.method === 'PUT') {
+    // Update a certification by ID
+    const { name, institution, issueDate, expiryDate, credentialID, credentialURL  } = req.body;
+    try {
+      const updatedCertification = await Certification.findByIdAndUpdate(
+        id,
+        { name, institution, issueDate, expiryDate, credentialID, credentialURL  },
+        { new: true, runValidators: true }
+      );
+      if (!updatedCertification) {
+        return res.status(404).json({ message: 'Certification not found' });
       }
-      break;
-    case 'DELETE':
-      try {
-        const deletedCertification = await Certification.deleteOne({ _id: id });
-        if (!deletedCertification) {
-          return res.status(404).json({ success: false, message: 'Certification not found' });
-        }
-        res.status(200).json({ success: true, data: {} });
-      } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+      res.status(200).json(updatedCertification);
+    } catch (error) {
+      res.status(400).json({ message: 'Failed to update Certification', error });
+    }
+  } else if (req.method === 'DELETE') {
+    // Delete a certification by ID
+    try {
+      const deletedCertification = await Certification.findByIdAndDelete(id);
+      if (!deletedCertification) {
+        return res.status(404).json({ message: 'Certification not found' });
       }
-      break;
-    default:
-      res.status(405).json({ success: false, message: 'Method not allowed' });
-      break;
+      res.status(200).json({ message: 'Certification deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to delete certification', error });
+    }
+  } else {
+    res.status(405).json({ message: 'Method Not Allowed' });
   }
 }

@@ -1,47 +1,50 @@
 import dbConnect from '../../../lib/dbConnect';
-import Testimonial from '../../../models/Testimonials';
+import Testimonial from '../../../models/Testimonial';
 
 export default async function handler(req, res) {
-  const { method, query: { id } } = req;
+  const { id } = req.query;
 
   await dbConnect();
 
-  switch (method) {
-    case 'GET':
-      try {
-        const testimonial = await Testimonial.findById(id);
-        if (!testimonial) {
-          return res.status(404).json({ success: false, message: 'Testimonial not found' });
-        }
-        res.status(200).json({ success: true, data: testimonial });
-      } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+  if (req.method === 'GET') {
+    // Get a single testimonial by ID
+    try {
+      const testimonial = await Testimonial.findById(id);
+      if (!testimonial) {
+        return res.status(404).json({ message: 'Testimonial not found' });
       }
-      break;
-    case 'PUT':
-      try {
-        const testimonial = await Testimonial.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
-        if (!testimonial) {
-          return res.status(404).json({ success: false, message: 'Testimonial not found' });
-        }
-        res.status(200).json({ success: true, data: testimonial });
-      } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+      res.status(200).json(testimonial);
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to fetch testimonial' });
+    }
+  } else if (req.method === 'PUT') {
+    // Update a testimonial by ID
+    const { author, position, content, image, createdAt } = req.body;
+    try {
+      const updatedTestimonial = await Testimonial.findByIdAndUpdate(
+        id,
+        { author, position, content, image, createdAt },
+        { new: true, runValidators: true }
+      );
+      if (!updatedTestimonial) {
+        return res.status(404).json({ message: 'Testimonial not found' });
       }
-      break;
-    case 'DELETE':
-      try {
-        const deletedTestimonial = await Testimonial.deleteOne({ _id: id });
-        if (!deletedTestimonial) {
-          return res.status(404).json({ success: false, message: 'Testimonial not found' });
-        }
-        res.status(200).json({ success: true, data: {} });
-      } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+      res.status(200).json(updatedTestimonial);
+    } catch (error) {
+      res.status(400).json({ message: 'Failed to update testimonial', error });
+    }
+  } else if (req.method === 'DELETE') {
+    // Delete a testimonial by ID
+    try {
+      const deletedTestimonial = await Testimonial.findByIdAndDelete(id);
+      if (!deletedTestimonial) {
+        return res.status(404).json({ message: 'Testimonial not found' });
       }
-      break;
-    default:
-      res.status(405).json({ success: false, message: 'Method not allowed' });
-      break;
+      res.status(200).json({ message: 'Testimonial deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to delete testimonial', error });
+    }
+  } else {
+    res.status(405).json({ message: 'Method Not Allowed' });
   }
 }

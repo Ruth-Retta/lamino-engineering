@@ -2,46 +2,49 @@ import dbConnect from '../../../lib/dbConnect';
 import Portfolio from '../../../models/Portfolio';
 
 export default async function handler(req, res) {
-  const { method, query: { id } } = req;
+  const { id } = req.query;
 
   await dbConnect();
 
-  switch (method) {
-    case 'GET':
-      try {
-        const portfolioItem = await Portfolio.findById(id);
-        if (!portfolioItem) {
-          return res.status(404).json({ success: false, message: 'Portfolio item not found' });
-        }
-        res.status(200).json({ success: true, data: portfolioItem });
-      } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+  if (req.method === 'GET') {
+    // Get a single portfolio by ID
+    try {
+      const portfolio = await Portfolio.findById(id);
+      if (!portfolio) {
+        return res.status(404).json({ message: 'Portfolio not found' });
       }
-      break;
-    case 'PUT':
-      try {
-        const portfolioItem = await Portfolio.findByIdAndUpdate(id, req.body, { new: true, runValidators: true });
-        if (!portfolioItem) {
-          return res.status(404).json({ success: false, message: 'Portfolio item not found' });
-        }
-        res.status(200).json({ success: true, data: portfolioItem });
-      } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+      res.status(200).json(portfolio);
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to fetch portfolio' });
+    }
+  } else if (req.method === 'PUT') {
+    // Update a portfolio by ID
+    const { title, description, imageUrl, createdAt } = req.body;
+    try {
+      const updatedPortfolio = await Portfolio.findByIdAndUpdate(
+        id,
+        { title, description, imageUrl, createdAt },
+        { new: true, runValidators: true }
+      );
+      if (!updatedPortfolio) {
+        return res.status(404).json({ message: 'Portfolio not found' });
       }
-      break;
-    case 'DELETE':
-      try {
-        const deletedPortfolioItem = await Portfolio.deleteOne({ _id: id });
-        if (!deletedPortfolioItem) {
-          return res.status(404).json({ success: false, message: 'Portfolio item not found' });
-        }
-        res.status(200).json({ success: true, data: {} });
-      } catch (error) {
-        res.status(400).json({ success: false, message: error.message });
+      res.status(200).json(updatedPortfolio);
+    } catch (error) {
+      res.status(400).json({ message: 'Failed to update portfolio', error });
+    }
+  } else if (req.method === 'DELETE') {
+    // Delete a portfolio by ID
+    try {
+      const deletedPortfolio = await Portfolio.findByIdAndDelete(id);
+      if (!deletedPortfolio) {
+        return res.status(404).json({ message: 'Portfolio not found' });
       }
-      break;
-    default:
-      res.status(405).json({ success: false, message: 'Method not allowed' });
-      break;
+      res.status(200).json({ message: 'Portfolio deleted successfully' });
+    } catch (error) {
+      res.status(500).json({ message: 'Failed to delete portfolio', error });
+    }
+  } else {
+    res.status(405).json({ message: 'Method Not Allowed' });
   }
 }
