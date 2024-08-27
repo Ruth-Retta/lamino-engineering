@@ -1,5 +1,5 @@
 import dbConnect from '../../../lib/dbConnect';
-import Services from '../../../models/Services';
+import Service from '../../../models/Service';
 
 export default async function handler(req, res) {
   const { id } = req.query;
@@ -7,42 +7,42 @@ export default async function handler(req, res) {
   await dbConnect();
 
   if (req.method === 'GET') {
-    // Get a single services by ID
+    // Get a single service by ID
     try {
-      const services = await Services.findById(id);
-      if (!services) {
-        return res.status(404).json({ message: 'Services not found' });
+      const service = await Service.findById(id);
+      if (!service) {
+        return res.status(404).json({ message: 'Service not found' });
       }
-      res.status(200).json(services);
+      res.status(200).json(service);
     } catch (error) {
-      res.status(500).json({ message: 'Failed to fetch services' });
+      res.status(500).json({ message: 'Failed to fetch service' });
     }
   } else if (req.method === 'PUT') {
-    // Update a services by ID
+    // Update a service by ID
     const { title, description, image } = req.body;
     try {
-      const updatedServices = await Services.findByIdAndUpdate(
+      const updatedService = await Service.findByIdAndUpdate(
         id,
         { title, description, image },
         { new: true, runValidators: true }
       );
-      if (!updatedServices) {
-        return res.status(404).json({ message: 'Services not found' });
+      if (!updatedService) {
+        return res.status(404).json({ message: 'Service not found' });
       }
-      res.status(200).json(updatedServices);
+      res.status(200).json(updatedService);
     } catch (error) {
-      res.status(400).json({ message: 'Failed to update services', error });
+      res.status(400).json({ message: 'Failed to update service', error });
     }
   } else if (req.method === 'DELETE') {
-    // Delete a services by ID
+    // Delete a service by ID
     try {
-      const deletedServices = await Services.findByIdAndDelete(id);
-      if (!deletedServices) {
-        return res.status(404).json({ message: 'Services not found' });
+      const deletedService = await Service.findByIdAndDelete(id);
+      if (!deletedService) {
+        return res.status(404).json({ message: 'Service not found' });
       }
-      res.status(200).json({ message: 'Services deleted successfully' });
+      res.status(200).json({ message: 'Service deleted successfully' });
     } catch (error) {
-      res.status(500).json({ message: 'Failed to delete services', error });
+      res.status(500).json({ message: 'Failed to delete service', error });
     }
   } else {
     res.status(405).json({ message: 'Method Not Allowed' });

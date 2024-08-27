@@ -1,5 +1,5 @@
 import dbConnect from '../../../lib/dbConnect';
-import Certification from '../../../models/Certifications';
+import Certification from '../../../models/Certification';
 
 export default async function handler(req, res) {
   const { id } = req.query;

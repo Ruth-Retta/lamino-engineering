@@ -5,7 +5,7 @@ export default async function handler(req, res) {
   await dbConnect();
 
   if (req.method === 'GET') {
-    // Get all certifications
+    // Get all certification
     try {
       const certifications = await Certification.find();
       res.status(200).json(certifications);
