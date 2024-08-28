@@ -27,6 +27,6 @@ export default async (req, res) => {
       res.status(500).json({ error: 'Failed to send email' });
     }
   } else {
-    res.status(405).json({ error: 'Method not allowed' });
+    res.status(405).json({ error: 'Methodnot  allowed' });
   }
 };
