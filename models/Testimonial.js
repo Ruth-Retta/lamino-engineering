@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const TestimonialSchema = new mongoose.Schema({
     author: {
@@ -26,4 +26,4 @@ const TestimonialSchema = new mongoose.Schema({
     },
 });
 
-module.exports = mongoose.models.Testimonial || mongoose.model('Testimonial', TestimonialSchema);
+export default mongoose.models.Testimonial || mongoose.model('Testimonial', TestimonialSchema);
