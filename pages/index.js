@@ -1,12 +1,12 @@
 import React from 'react';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
-import HomeSection from '../components/sections/home';
+import HomeSection from '../components/sections/Home';
 import ServicesSection from '@/components/sections/services';
 import PortfolioSection from '@/components/sections/portfolio';
 import Testimonials from '@/components/sections/testimonial';
-import PartnersSection from '@/components/sections/partners';
-import CustomersSection from '@/components/sections/customers';
+import PartnersSection from '@/components/sections/Partners';
+import CustomersSection from '@/components/sections/Customers';
 import { useMediaQuery } from 'react-responsive';
 import ResponsiveComponent from '../components/ResponsiveComponent';
 
