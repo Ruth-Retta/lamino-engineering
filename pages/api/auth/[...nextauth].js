@@ -1,6 +1,9 @@
 import NextAuth from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 
+const credentialsEmail = process.env.credentialsEmail;
+const credentialsPassword = process.env.credentialsPassword;
+
 export default NextAuth({
   secret: process.env.JWT_SECRET,
   providers: [
@@ -12,8 +15,8 @@ export default NextAuth({
       },
       authorize: async (credentials) => {
         // Replace with your own logic
-        if (credentials.email === 'admin@example.com' && credentials.password === 'your_password') {
-          return { id: 1, name: 'Admin', email: 'admin@example.com', role: 'admin' };
+        if (credentials.email === credentialsEmail && credentials.password === credentialsPassword) {
+          return { id: 1, name: 'Admin', email: credentialsEmail, role: 'admin' };
         }
         return null;
       },
