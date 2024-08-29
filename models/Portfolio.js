@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const PortfolioSchema = new mongoose.Schema({
   title: {
@@ -20,4 +20,4 @@ const PortfolioSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.models.Portfolio || mongoose.model('Portfolio', PortfolioSchema);
+export default mongoose.models.Portfolio || mongoose.model('Portfolio', PortfolioSchema);
