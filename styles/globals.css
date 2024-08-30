@@ -28,6 +28,97 @@ padding: 30;
 margin: 10;
 }
 
+/* Container styling */
+.admin-login-container {
+  margin-top: 200px;
+  margin-bottom: 200px;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 400px;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  width: 100%; /* Ensures container doesn't exceed max-width */
+}
+
+/* Title styling */
+.admin-login-title {
+  text-align: center;
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Form styling */
+.admin-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+/* Label styling */
+.admin-login-label {
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  color: #555;
+}
+
+/* Input styling */
+.admin-login-input {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  width: 100%;
+}
+
+/* Password container styling */
+.admin-login-password-container {
+  position: relative;
+}
+
+/* Password toggle styling */
+.admin-login-password-toggle {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #555;
+}
+
+/* Button styling */
+.admin-login-button {
+  padding: 10px;
+  border: none;
+  border-radius: 4px;
+  background-color: #94D13A;
+  color: #fff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.admin-login-button:hover {
+  background-color: #70BA02;
+}
+
+.admin-login-button:disabled {
+  background-color: #aaa;
+  cursor: not-allowed;
+}
+
+/* Error message styling */
+.admin-login-error {
+  color: red;
+  font-size: 14px;
+  text-align: center;
+}
+
+
+
 .header {
   display: flex;
   background-color: #70BA02;
