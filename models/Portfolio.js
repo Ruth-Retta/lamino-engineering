@@ -20,4 +20,4 @@ const PortfolioSchema = new mongoose.Schema({
   },
 });
 
-export default mongoose.models.Portfolio || mongoose.model('Portfolio', PortfolioSchema);
+module.exports = mongoose.models.Portfolio || mongoose.model('Portfolio', PortfolioSchema);
