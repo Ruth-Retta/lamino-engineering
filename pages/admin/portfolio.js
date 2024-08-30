@@ -5,7 +5,7 @@ const ManagePortfolio = () => {
     const [projects, setProjects] = useState([]);
     const [newProject, setNewProject] = useState({
         title: '',
-        image: '',
+        imageUrl: '',
         description: '',
     });
 
@@ -53,7 +53,7 @@ const ManagePortfolio = () => {
                 <input
                     type="text"
                     placeholder="Image URL"
-                    onChange={(e) => setNewProject({ ...newProject, image: e.target.value })}
+                    onChange={(e) => setNewProject({ ...newProject, imageUrl: e.target.value })}
                 />
                 <textarea
                     placeholder="Description"
@@ -65,7 +65,7 @@ const ManagePortfolio = () => {
                 {projects.map(project => (
                     <li key={project._id}>
                         <h3>{project.title}</h3>
-                        <img src={project.image} alt={project.title} className="h-24 w-auto" />
+                        <img src={project.imageUrl} alt={project.title} className="h-24 w-auto" />
                         <p>{project.description}</p>
                         <button onClick={() => deleteProject(project._id)}>Delete</button>
                     </li>

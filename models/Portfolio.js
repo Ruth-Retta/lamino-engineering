@@ -1,4 +1,4 @@
-import mongoose from 'mongoose';
+import mongoose from "mongoose";
 
 const PortfolioSchema = new mongoose.Schema({
   title: {
@@ -14,10 +14,11 @@ const PortfolioSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  createdAt: {
-    type: Date,
-    default: Date.now,
-  },
 });
 
+<<<<<<< HEAD
 module.exports = mongoose.models.Portfolio || mongoose.model('Portfolio', PortfolioSchema);
+=======
+export default mongoose.models.Portfolio ||
+  mongoose.model("Portfolio", PortfolioSchema);
+>>>>>>> 0ca557c6be986e8a86bf90063081e312361e61c1
