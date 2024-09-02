@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import PortfolioCard from '../../components/Portfoliocard';
 
 const ManagePortfolio = () => {
     const [projects, setProjects] = useState([]);
@@ -8,6 +9,7 @@ const ManagePortfolio = () => {
         imageUrl: '',
         description: '',
     });
+    const [editingProjectId, setEditingProjectId] = useState(null);
 
     useEffect(() => {
         fetchProjects();
@@ -22,14 +24,38 @@ const ManagePortfolio = () => {
         }
     };
 
-    const addProject = async () => {
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewProject((prevProject) => ({
+            ...prevProject,
+            [name]: value,
+        }));
+    };
+
+    const addOrUpdateProject = async () => {
         try {
-            await axios.post('/api/portfolio', newProject);
+            if (editingProjectId) {
+                // Update existing project
+                await axios.put(`/api/portfolio/${editingProjectId}`, newProject);
+            } else {
+                // Add new project
+                await axios.post('/api/portfolio', newProject);
+            }
             fetchProjects();
-            setNewProject({ title: '', imageUrl: '', description: '' }); // Clear form after submission
+            setNewProject({ title: '', imageUrl: '', description: '' });
+            setEditingProjectId(null); // Reset editing state
         } catch (error) {
-            console.error('Error adding project:', error);
+            console.error('Error saving project:', error);
         }
+    };
+
+    const handleUpdateClick = (project) => {
+        setNewProject({
+            title: project.title,
+            imageUrl: project.imageUrl,
+            description: project.description,
+        });
+        setEditingProjectId(project._id); // Set the project ID for editing
     };
 
     const deleteProject = async (id) => {
@@ -45,54 +71,54 @@ const ManagePortfolio = () => {
         <div className="p-6 bg-gray-100 min-h-screen">
             <h1 className="text-3xl font-bold mb-6 text-[#70BA02]">Manage Portfolio</h1>
             <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
-                <h2 className="text-2xl font-semibold mb-4 text-black">Add New Project</h2>
+                <h2 className="text-2xl font-semibold mb-4 text-black">{editingProjectId ? 'Update Project' : 'Add New Project'}</h2>
                 <div className="mb-4">
                     <input
                         type="text"
+                        name="title"
                         placeholder="Project Title"
                         value={newProject.title}
-                        onChange={(e) => setNewProject({ ...newProject, title: e.target.value })}
+                        onChange={handleInputChange}
                         className="w-full p-2 border border-gray-300 rounded-lg mb-4"
                     />
                     <input
                         type="text"
+                        name="imageUrl"
                         placeholder="Image URL"
                         value={newProject.imageUrl}
-                        onChange={(e) => setNewProject({ ...newProject, imageUrl: e.target.value })}
+                        onChange={handleInputChange}
                         className="w-full p-2 border border-gray-300 rounded-lg mb-4"
                     />
                     <textarea
+                        name="description"
                         placeholder="Description"
                         value={newProject.description}
-                        onChange={(e) => setNewProject({ ...newProject, description: e.target.value })}
+                        onChange={handleInputChange}
                         className="w-full p-2 border border-gray-300 rounded-lg mb-4"
                         rows="4"
                     ></textarea>
                     <button
-                        onClick={addProject}
+                        onClick={addOrUpdateProject}
                         className="bg-[#94D13A] text-white py-2 px-4 rounded-lg hover:bg-[#70BA02] transition-colors"
                     >
-                        Add Project
+                        {editingProjectId ? 'Update Project' : 'Add Project'}
                     </button>
                 </div>
             </div>
             <div className="bg-white p-6 rounded-lg shadow-lg">
                 <h2 className="text-2xl font-semibold mb-4 text-black">Existing Projects</h2>
-                <ul className="space-y-4">
-                    {projects.map(project => (
-                        <li key={project._id} className="border border-gray-300 rounded-lg p-4 flex flex-col items-start">
-                            <h3 className="text-xl font-semibold text-[#70BA02]">{project.title}</h3>
-                            <img src={project.imageUrl} alt={project.title} className="w-full h-48 object-cover rounded-lg my-4" />
-                            <p className="text-gray-700 mb-4">{project.description}</p>
-                            <button
-                                onClick={() => deleteProject(project._id)}
-                                className="bg-red-600 text-white py-2 px-4 rounded-lg hover:bg-red-700 transition-colors"
-                            >
-                                Delete
-                            </button>
-                        </li>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {projects.map((project) => (
+                        <PortfolioCard
+                            key={project._id}
+                            title={project.title}
+                            imageUrl={project.imageUrl}
+                            description={project.description}
+                            onDelete={() => deleteProject(project._id)}
+                            onUpdate={() => handleUpdateClick(project)}
+                        />
                     ))}
-                </ul>
+                </div>
             </div>
         </div>
     );
