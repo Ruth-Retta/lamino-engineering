@@ -35,15 +35,13 @@ const ManagePortfolio = () => {
     const addOrUpdateProject = async () => {
         try {
             if (editingProjectId) {
-                // Update existing project
                 await axios.put(`/api/portfolio/${editingProjectId}`, newProject);
             } else {
-                // Add new project
                 await axios.post('/api/portfolio', newProject);
             }
             fetchProjects();
             setNewProject({ title: '', imageUrl: '', description: '' });
-            setEditingProjectId(null); // Reset editing state
+            setEditingProjectId(null);
         } catch (error) {
             console.error('Error saving project:', error);
         }
@@ -55,7 +53,7 @@ const ManagePortfolio = () => {
             imageUrl: project.imageUrl,
             description: project.description,
         });
-        setEditingProjectId(project._id); // Set the project ID for editing
+        setEditingProjectId(project._id); 
     };
 
     const deleteProject = async (id) => {

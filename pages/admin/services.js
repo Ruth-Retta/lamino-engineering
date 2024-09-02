@@ -10,6 +10,7 @@ const ManageServices = () => {
     image: '',
   });
   const [editingServiceId, setEditingServiceId] = useState(null);
+  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
     fetchServices();
@@ -24,18 +25,44 @@ const ManageServices = () => {
     }
   };
 
+  const uploadImage = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const response = await axios.post('/api/upload', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return response.data.file.path;
+    } catch (error) {
+      console.error('Error uploading image:', error);
+    }
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      try {
+        const imageUrl = await uploadImage(file);
+        setNewService((prevState) => ({ ...prevState, image: imageUrl }));
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    }
+  };
+
   const addOrUpdateService = async () => {
     try {
       if (editingServiceId) {
-        // Update existing service
         await axios.put(`/api/services/${editingServiceId}`, newService);
       } else {
-        // Add new service
         await axios.post('/api/services', newService);
       }
+
       fetchServices();
       setNewService({ title: '', description: '', image: '' });
       setEditingServiceId(null);
+      setImageFile(null);
     } catch (error) {
       console.error('Error saving service:', error);
     }
@@ -47,7 +74,7 @@ const ManageServices = () => {
       description: service.description,
       image: service.image,
     });
-    setEditingServiceId(service._id); // Set the service ID for editing
+    setEditingServiceId(service._id); 
   };
 
   const deleteService = async (id) => {
@@ -82,11 +109,9 @@ const ManageServices = () => {
             onChange={(e) => setNewService({ ...newService, description: e.target.value })}
           ></textarea>
           <input
-            type="text"
-            placeholder="Image URL"
-            value={newService.image}
+            type="file"
+            onChange={handleFileChange} 
             className="w-full p-2 border border-gray-300 rounded"
-            onChange={(e) => setNewService({ ...newService, image: e.target.value })}
           />
           <button onClick={addOrUpdateService} className="px-4 py-2 bg-blue-500 text-white rounded">
             {editingServiceId ? 'Update Service' : 'Add Service'}

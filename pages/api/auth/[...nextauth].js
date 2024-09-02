@@ -14,7 +14,7 @@ export default NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       authorize: async (credentials) => {
-        // Replace with your own logic
+        
         if (credentials.email === credentialsEmail && credentials.password === credentialsPassword) {
           return { id: 1, name: 'Admin', email: credentialsEmail, role: 'admin' };
         }
