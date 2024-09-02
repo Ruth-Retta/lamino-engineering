@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import PortfolioCard from '../../components/Portfoliocard';
 
 const ManagePortfolio = () => {
     const [projects, setProjects] = useState([]);
     const [newProject, setNewProject] = useState({
         title: '',
-        image: '',
+        imageUrl: '',
         description: '',
     });
+    const [editingProjectId, setEditingProjectId] = useState(null);
 
     useEffect(() => {
         fetchProjects();
@@ -22,13 +24,38 @@ const ManagePortfolio = () => {
         }
     };
 
-    const addProject = async () => {
+    const handleInputChange = (e) => {
+        const { name, value } = e.target;
+        setNewProject((prevProject) => ({
+            ...prevProject,
+            [name]: value,
+        }));
+    };
+
+    const addOrUpdateProject = async () => {
         try {
-            await axios.post('/api/portfolio', newProject);
+            if (editingProjectId) {
+                // Update existing project
+                await axios.put(`/api/portfolio/${editingProjectId}`, newProject);
+            } else {
+                // Add new project
+                await axios.post('/api/portfolio', newProject);
+            }
             fetchProjects();
+            setNewProject({ title: '', imageUrl: '', description: '' });
+            setEditingProjectId(null); // Reset editing state
         } catch (error) {
-            console.error('Error adding project:', error);
+            console.error('Error saving project:', error);
         }
+    };
+
+    const handleUpdateClick = (project) => {
+        setNewProject({
+            title: project.title,
+            imageUrl: project.imageUrl,
+            description: project.description,
+        });
+        setEditingProjectId(project._id); // Set the project ID for editing
     };
 
     const deleteProject = async (id) => {
@@ -41,36 +68,58 @@ const ManagePortfolio = () => {
     };
 
     return (
-        <div>
-            <h1>Manage Portfolio</h1>
-            <div>
-                <h2>Add New Project</h2>
-                <input
-                    type="text"
-                    placeholder="Project Title"
-                    onChange={(e) => setNewProject({ ...newProject, title: e.target.value })}
-                />
-                <input
-                    type="text"
-                    placeholder="Image URL"
-                    onChange={(e) => setNewProject({ ...newProject, image: e.target.value })}
-                />
-                <textarea
-                    placeholder="Description"
-                    onChange={(e) => setNewProject({ ...newProject, description: e.target.value })}
-                ></textarea>
-                <button onClick={addProject}>Add Project</button>
+        <div className="p-6 bg-gray-100 min-h-screen">
+            <h1 className="text-3xl font-bold mb-6 text-[#70BA02]">Manage Portfolio</h1>
+            <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
+                <h2 className="text-2xl font-semibold mb-4 text-black">{editingProjectId ? 'Update Project' : 'Add New Project'}</h2>
+                <div className="mb-4">
+                    <input
+                        type="text"
+                        name="title"
+                        placeholder="Project Title"
+                        value={newProject.title}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+                    />
+                    <input
+                        type="text"
+                        name="imageUrl"
+                        placeholder="Image URL"
+                        value={newProject.imageUrl}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+                    />
+                    <textarea
+                        name="description"
+                        placeholder="Description"
+                        value={newProject.description}
+                        onChange={handleInputChange}
+                        className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+                        rows="4"
+                    ></textarea>
+                    <button
+                        onClick={addOrUpdateProject}
+                        className="bg-[#94D13A] text-white py-2 px-4 rounded-lg hover:bg-[#70BA02] transition-colors"
+                    >
+                        {editingProjectId ? 'Update Project' : 'Add Project'}
+                    </button>
+                </div>
             </div>
-            <ul>
-                {projects.map(project => (
-                    <li key={project._id}>
-                        <h3>{project.title}</h3>
-                        <img src={project.image} alt={project.title} className="h-24 w-auto" />
-                        <p>{project.description}</p>
-                        <button onClick={() => deleteProject(project._id)}>Delete</button>
-                    </li>
-                ))}
-            </ul>
+            <div className="bg-white p-6 rounded-lg shadow-lg">
+                <h2 className="text-2xl font-semibold mb-4 text-black">Existing Projects</h2>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {projects.map((project) => (
+                        <PortfolioCard
+                            key={project._id}
+                            title={project.title}
+                            imageUrl={project.imageUrl}
+                            description={project.description}
+                            onDelete={() => deleteProject(project._id)}
+                            onUpdate={() => handleUpdateClick(project)}
+                        />
+                    ))}
+                </div>
+            </div>
         </div>
     );
 };

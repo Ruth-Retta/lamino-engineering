@@ -51,10 +51,10 @@ export default function AdminPage() {
     };
 
     return (
-      <div>
-        <h1>Admin Login</h1>
-        <form onSubmit={handleSubmit}>
-          <label>
+      <div className="admin-login-container">
+        <h1 className="admin-login-title">Admin Login</h1>
+        <form onSubmit={handleSubmit} className="admin-login-form">
+          <label className="admin-login-label">
             Email:
             <input 
               type="email" 
@@ -62,34 +62,30 @@ export default function AdminPage() {
               value={email} 
               onChange={(e) => setEmail(e.target.value)} 
               required 
+              className="admin-login-input"
             />
           </label>
-          <label>
+          <label className="admin-login-label">
             Password:
-            <div style={{ position: 'relative' }}>
+            <div className="admin-login-password-container">
               <input 
                 type={showPassword ? 'text' : 'password'} 
                 name="password" 
                 required 
+                className="admin-login-input"
               />
               <span 
-                style={{ 
-                  position: 'absolute', 
-                  right: '10px', 
-                  top: '50%', 
-                  transform: 'translateY(-50%)', 
-                  cursor: 'pointer' 
-                }}
+                className="admin-login-password-toggle"
                 onClick={toggleShowPassword}
               >
                 {showPassword ? <FaEyeSlash /> : <FaEye />}
               </span>
             </div>
           </label>
-          <button type="submit" disabled={loading}>
+          <button type="submit" disabled={loading} className="admin-login-button">
             {loading ? 'Loading...' : 'Login'}
           </button>
-          {error && <p style={{ color: 'red' }}>{error}</p>}
+          {error && <p className="admin-login-error">{error}</p>}
         </form>
       </div>
     );

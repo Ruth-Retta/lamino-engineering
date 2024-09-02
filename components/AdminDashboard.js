@@ -7,34 +7,77 @@ const AdminDashboard = () => {
   const router = useRouter();
 
   const handleLogout = () => {
-    // Assuming the email is stored in session or a similar place
     const email = localStorage.getItem('authEmail') || '';
-
-    // Remove the authentication token and any other relevant data
     signOut({ redirect: false });
-
-    // Redirect to the login page with the email as a query parameter
     router.push(`/admin?email=${email}`);
   };
 
   return (
-    <div className="admin-dashboard min-h-screen flex flex-col justify-between">
+    <div className="admin-dashboard min-h-screen flex flex-col justify-between p-8 bg-white">
       <div>
-        <h2 className="text-2xl font-bold mb-4">Admin Dashboard</h2>
-        <ul className="space-y-2">
-          <li><Link href="/admin/services">Manage Services</Link></li>
-          <li><Link href="/admin/news">Manage News</Link></li>
-          <li><Link href="/admin/portfolio">Manage Portfolio</Link></li>
-          <li><Link href="/admin/certifications">Manage Certifications</Link></li>
-          <li><Link href="/admin/customers">Manage Customers</Link></li>
-          <li><Link href="/admin/partners">Manage Partners</Link></li>
-          <li><Link href="/admin/testimonials">Manage Testimonials</Link></li>
-          <li><Link href="/admin/career">Manage Career</Link></li>
+        <h2 className="text-3xl font-bold mb-6 text-black">Admin Dashboard</h2>
+        <ul className="space-y-4">
+          <li>
+            <Link href="/admin/services">
+              <div className="bg-[#94D13A] text-white py-2 px-4 rounded shadow-md hover:bg-[#70BA02] transition-colors cursor-pointer">
+                Manage Services
+              </div>
+            </Link>
+          </li>
+          <li>
+            <Link href="/admin/news">
+              <div className="bg-[#94D13A] text-white py-2 px-4 rounded shadow-md hover:bg-[#70BA02] transition-colors cursor-pointer">
+                Manage News
+              </div>
+            </Link>
+          </li>
+          <li>
+            <Link href="/admin/portfolio">
+              <div className="bg-[#94D13A] text-white py-2 px-4 rounded shadow-md hover:bg-[#70BA02] transition-colors cursor-pointer">
+                Manage Portfolio
+              </div>
+            </Link>
+          </li>
+          <li>
+            <Link href="/admin/certifications">
+              <div className="bg-[#94D13A] text-white py-2 px-4 rounded shadow-md hover:bg-[#70BA02] transition-colors cursor-pointer">
+                Manage Certifications
+              </div>
+            </Link>
+          </li>
+          <li>
+            <Link href="/admin/customers">
+              <div className="bg-[#94D13A] text-white py-2 px-4 rounded shadow-md hover:bg-[#70BA02] transition-colors cursor-pointer">
+                Manage Customers
+              </div>
+            </Link>
+          </li>
+          <li>
+            <Link href="/admin/partners">
+              <div className="bg-[#94D13A] text-white py-2 px-4 rounded shadow-md hover:bg-[#70BA02] transition-colors cursor-pointer">
+                Manage Partners
+              </div>
+            </Link>
+          </li>
+          <li>
+            <Link href="/admin/testimonials">
+              <div className="bg-[#94D13A] text-white py-2 px-4 rounded shadow-md hover:bg-[#70BA02] transition-colors cursor-pointer">
+                Manage Testimonials
+              </div>
+            </Link>
+          </li>
+          <li>
+            <Link href="/admin/career">
+              <div className="bg-[#94D13A] text-white py-2 px-4 rounded shadow-md hover:bg-[#70BA02] transition-colors cursor-pointer">
+                Manage Career
+              </div>
+            </Link>
+          </li>
         </ul>
       </div>
       <div className="mt-8">
         <button 
-          className="bg-red-600 text-white py-2 px-4 rounded mt-4"
+          className="bg-black text-white py-2 px-4 rounded shadow-md hover:bg-[#70BA02] transition-colors"
           onClick={handleLogout}
         >
           Logout

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import PartnerCard from '../../components/PartnerCard';
 
 const ManagePartners = () => {
     const [partners, setPartners] = useState([]);
@@ -8,6 +9,7 @@ const ManagePartners = () => {
         logo: '',
         website: '',
     });
+    const [editingPartner, setEditingPartner] = useState(null);
 
     useEffect(() => {
         fetchPartners();
@@ -22,12 +24,20 @@ const ManagePartners = () => {
         }
     };
 
-    const addPartner = async () => {
+    const addOrUpdatePartner = async () => {
         try {
-            await axios.post('/api/partners', newPartner);
+            if (editingPartner) {
+                // Update the existing partner
+                await axios.put(`/api/partners/${editingPartner._id}`, newPartner);
+                setEditingPartner(null);
+            } else {
+                // Add a new partner
+                await axios.post('/api/partners', newPartner);
+            }
+            setNewPartner({ name: '', logo: '', website: '' });
             fetchPartners();
         } catch (error) {
-            console.error('Error adding partner:', error);
+            console.error('Error saving partner:', error);
         }
     };
 
@@ -40,38 +50,62 @@ const ManagePartners = () => {
         }
     };
 
+    const startEditing = (partner) => {
+        setNewPartner({ name: partner.name, logo: partner.logo, website: partner.website });
+        setEditingPartner(partner);
+    };
+
     return (
-        <div>
-            <h1>Manage Partners</h1>
-            <div>
-                <h2>Add New Partner</h2>
-                <input
-                    type="text"
-                    placeholder="Partner Name"
-                    onChange={(e) => setNewPartner({ ...newPartner, name: e.target.value })}
-                />
-                <input
-                    type="text"
-                    placeholder="Logo URL"
-                    onChange={(e) => setNewPartner({ ...newPartner, logo: e.target.value })}
-                />
-                <input
-                    type="text"
-                    placeholder="Website URL"
-                    onChange={(e) => setNewPartner({ ...newPartner, website: e.target.value })}
-                />
-                <button onClick={addPartner}>Add Partner</button>
+        <div className="p-6 bg-gray-100 min-h-screen">
+            <h1 className="text-3xl font-bold mb-6 text-[#70BA02]">Manage Partners</h1>
+            <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
+                <h2 className="text-2xl font-semibold mb-4 text-black">{editingPartner ? 'Update Partner' : 'Add New Partner'}</h2>
+                <div className="mb-4">
+                    <input
+                        type="text"
+                        placeholder="Partner Name"
+                        value={newPartner.name}
+                        onChange={(e) => setNewPartner({ ...newPartner, name: e.target.value })}
+                        className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+                    />
+                    <input
+                        type="text"
+                        placeholder="Logo URL"
+                        value={newPartner.logo}
+                        onChange={(e) => setNewPartner({ ...newPartner, logo: e.target.value })}
+                        className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+                    />
+                    <input
+                        type="text"
+                        placeholder="Website URL"
+                        value={newPartner.website}
+                        onChange={(e) => setNewPartner({ ...newPartner, website: e.target.value })}
+                        className="w-full p-2 border border-gray-300 rounded-lg mb-4"
+                    />
+                    <button
+                        onClick={addOrUpdatePartner}
+                        className="bg-[#94D13A] text-white py-2 px-4 rounded-lg hover:bg-[#70BA02] transition-colors"
+                    >
+                        {editingPartner ? 'Update Partner' : 'Add Partner'}
+                    </button>
+                    {editingPartner && (
+                        <button
+                            onClick={() => {
+                                setNewPartner({ name: '', logo: '', website: '' });
+                                setEditingPartner(null);
+                            }}
+                            className="bg-gray-500 text-white py-2 px-4 rounded-lg ml-4 hover:bg-gray-600 transition-colors"
+                        >
+                            Cancel
+                        </button>
+                    )}
+                </div>
             </div>
-            <ul>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {partners.map(partner => (
-                    <li key={partner._id}>
-                        <h3>{partner.name}</h3>
-                        <img src={partner.logo} alt={partner.name} className="h-24 w-auto" />
-                        <p><a href={partner.website} target="_blank" rel="noopener noreferrer">{partner.website}</a></p>
-                        <button onClick={() => deletePartner(partner._id)}>Delete</button>
-                    </li>
+                    <PartnerCard key={partner._id} partner={partner} onDelete={deletePartner} onEdit={startEditing} />
                 ))}
-            </ul>
+            </div>
         </div>
     );
 };
