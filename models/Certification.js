@@ -4,23 +4,23 @@ const CertificationSchema = new mongoose.Schema({
   title: {
     type: String,
     required: true,
-},
-imageUrl: {
+  },
+  description: {
     type: String,
     required: true,
-},
-description: {
+  },
+  certifyingOrganization: {
     type: String,
     required: true,
-},
-certifyingOrganization: {
-    type: String,
-    required: true,
-},
-date: {
+  },
+  date: {
     type: Date,
     required: true,
-}
+  },
+  image: {
+    data: Buffer,
+    contentType: String,
+  },
 });
 
 export default mongoose.models.Certification || mongoose.model('Certification', CertificationSchema);
