@@ -7,10 +7,9 @@ const ManageServices = () => {
   const [newService, setNewService] = useState({
     title: '',
     description: '',
-    image: '',
+    image: null,
   });
   const [editingServiceId, setEditingServiceId] = useState(null);
-  const [imageFile, setImageFile] = useState(null);
 
   useEffect(() => {
     fetchServices();
@@ -25,46 +24,34 @@ const ManageServices = () => {
     }
   };
 
-  const uploadImage = async (file) => {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-      const response = await axios.post('/api/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      return response.data.file.path;
-    } catch (error) {
-      console.error('Error uploading image:', error);
-    }
-  };
-
-  const handleFileChange = async (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      try {
-        const imageUrl = await uploadImage(file);
-        setNewService((prevState) => ({ ...prevState, image: imageUrl }));
-      } catch (error) {
-        console.error('Error uploading image:', error);
-      }
-    }
+  const handleFileChange = (e) => {
+    setNewService({ ...newService, image: e.target.files[0] });
   };
 
   const addOrUpdateService = async () => {
+    const formData = new FormData();
+    formData.append('title', newService.title);
+    formData.append('description', newService.description);
+    if (newService.image) {
+      formData.append('image', newService.image);
+    }
+
     try {
       if (editingServiceId) {
-        await axios.put(`/api/services/${editingServiceId}`, newService);
+        await axios.put(`/api/services/${editingServiceId}`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
       } else {
-        await axios.post('/api/services', newService);
+        await axios.post('/api/services', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
       }
 
       fetchServices();
-      setNewService({ title: '', description: '', image: '' });
+      setNewService({ title: '', description: '', image: null });
       setEditingServiceId(null);
-      setImageFile(null);
     } catch (error) {
-      console.error('Error saving service:', error);
+      console.error('Error saving service:', error.response ? error.response.data : error.message);
     }
   };
 
@@ -72,9 +59,9 @@ const ManageServices = () => {
     setNewService({
       title: service.title,
       description: service.description,
-      image: service.image,
+      image: null,
     });
-    setEditingServiceId(service._id); 
+    setEditingServiceId(service._id);
   };
 
   const deleteService = async (id) => {
@@ -110,7 +97,7 @@ const ManageServices = () => {
           ></textarea>
           <input
             type="file"
-            onChange={handleFileChange} 
+            onChange={handleFileChange}
             className="w-full p-2 border border-gray-300 rounded"
           />
           <button onClick={addOrUpdateService} className="px-4 py-2 bg-blue-500 text-white rounded">
@@ -124,7 +111,7 @@ const ManageServices = () => {
             <ServiceCard
               title={service.title}
               description={service.description}
-              image={service.image}
+              imageId={service.imageId}
               onDelete={() => deleteService(service._id)}
               onUpdate={() => handleUpdateClick(service)}
             />

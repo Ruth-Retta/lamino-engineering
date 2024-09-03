@@ -1,5 +1,13 @@
 import dbConnect from '../../../lib/dbConnect';
 import Service from '../../../models/Service';
+import { IncomingForm } from 'formidable';
+import fs from 'fs/promises';
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 export default async function handler(req, res) {
   const { id } = req.query;
@@ -7,34 +15,64 @@ export default async function handler(req, res) {
   await dbConnect();
 
   if (req.method === 'GET') {
-    // Get a single service by ID
     try {
-      const service = await Service.findById(id);
+      const service = await Service.findById(id, { 'image.data': 0 });
       if (!service) {
         return res.status(404).json({ message: 'Service not found' });
       }
-      res.status(200).json(service);
+      const serviceResponse = service.toObject();
+      serviceResponse.imageId = service.image ? service._id : null;
+      delete serviceResponse.image;
+      res.status(200).json(serviceResponse);
     } catch (error) {
-      res.status(500).json({ message: 'Failed to fetch service' });
+      console.error('Error fetching service:', error);
+      res.status(500).json({ message: 'Failed to fetch service', error: error.message });
     }
   } else if (req.method === 'PUT') {
-    // Update a service by ID
-    const { title, description, image } = req.body;
-    try {
-      const updatedService = await Service.findByIdAndUpdate(
-        id,
-        { title, description, image },
-        { new: true, runValidators: true }
-      );
-      if (!updatedService) {
-        return res.status(404).json({ message: 'Service not found' });
+    const form = new IncomingForm();
+
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        console.error('Error parsing form data:', err);
+        return res.status(500).json({ error: 'Error parsing form data', details: err.message });
       }
-      res.status(200).json(updatedService);
-    } catch (error) {
-      res.status(400).json({ message: 'Failed to update service', error });
-    }
+
+      const { title, description } = fields;
+      
+      let updateData = { 
+        title: Array.isArray(title) ? title[0] : title,
+        description: Array.isArray(description) ? description[0] : description
+      };
+
+      try {
+        if (files.image && files.image[0] && files.image[0].size > 0) {
+          const file = files.image[0];
+          updateData.image = {
+            data: await fs.readFile(file.filepath),
+            contentType: file.mimetype,
+          };
+        }
+
+        const updatedService = await Service.findByIdAndUpdate(
+          id,
+          updateData,
+          { new: true, runValidators: true }
+        );
+        if (!updatedService) {
+          return res.status(404).json({ message: 'Service not found' });
+        }
+        
+        const serviceResponse = updatedService.toObject();
+        serviceResponse.imageId = updatedService.image ? updatedService._id : null;
+        delete serviceResponse.image;
+        
+        res.status(200).json(serviceResponse);
+      } catch (error) {
+        console.error('Error updating service:', error);
+        res.status(400).json({ message: 'Failed to update service', error: error.message });
+      }
+    });
   } else if (req.method === 'DELETE') {
-    // Delete a service by ID
     try {
       const deletedService = await Service.findByIdAndDelete(id);
       if (!deletedService) {
@@ -42,7 +80,8 @@ export default async function handler(req, res) {
       }
       res.status(200).json({ message: 'Service deleted successfully' });
     } catch (error) {
-      res.status(500).json({ message: 'Failed to delete service', error });
+      console.error('Error deleting service:', error);
+      res.status(500).json({ message: 'Failed to delete service', error: error.message });
     }
   } else {
     res.status(405).json({ message: 'Method Not Allowed' });
