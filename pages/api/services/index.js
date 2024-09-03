@@ -15,6 +15,11 @@ export default async function handler(req, res) {
   } else if (req.method === 'POST') {
     // Create a new service
     const { title, description, image } = req.body;
+
+    if (!title || !description || !image) {
+      return res.status(400).json({ error: 'Missing required fields' });
+    }
+
     try {
       const newService = new Service({
         title, 

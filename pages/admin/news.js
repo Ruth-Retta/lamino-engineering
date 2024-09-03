@@ -72,15 +72,29 @@ const ManageNews = () => {
     setImageFile(e.target.files[0]);
   };
 
-  const handleEditClick = (article) => {
-    setNewArticle({
-      title: article.title,
-      content: article.content,
-      image: article.image,
-      date: article.date,
+  // const handleEditClick = (article) => {
+  //   setNewArticle({
+  //     title: article.title,
+  //     content: article.content,
+  //     image: article.image,
+  //     date: article.date,
+  //   });
+  //   setEditingArticleId(article._id);
+  // };
+
+  async function handleFileUpload(event) {
+    event.preventDefault();
+    const formData = new FormData();
+    formData.append('file', event.target.files[0]);
+  
+    const response = await fetch('/api/upload', {
+      method: 'POST',
+      body: formData,
     });
-    setEditingArticleId(article._id);
-  };
+  
+    const result = await response.json();
+    console.log(result);
+  }
 
   const resetForm = () => {
     setNewArticle({ title: '', content: '', image: '', date: new Date().toISOString().split('T')[0] });
@@ -110,11 +124,7 @@ const ManageNews = () => {
             className="w-full p-3 border border-gray-300 rounded"
             rows="6"
           ></textarea>
-          <input
-            type="file"
-            onChange={handleFileChange}
-            className="w-full p-3 border border-gray-300 rounded"
-          />
+          <input type="file" onChange={handleFileUpload} />
           <input
             type="date"
             value={newArticle.date}

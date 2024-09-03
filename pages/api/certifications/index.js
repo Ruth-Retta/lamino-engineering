@@ -14,14 +14,14 @@ export default async function handler(req, res) {
     }
   } else if (req.method === 'POST') {
     // Create a new certification
-    const { author, position, content, image, createdAt, } = req.body;
+    const { title, imageUrl, description, certifingOrganization, date } = req.body;
     try {
       const newCertification = new Certification({
-        author,
-        position,
-        content,
-        image,
-        createdAt,
+        title,
+        imageUrl,
+        description,
+        certifingOrganization,
+        date,
       });
       await newCertification.save();
       res.status(201).json(newCertification);

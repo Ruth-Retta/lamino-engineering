@@ -33,13 +33,12 @@ export default function Services() {
                 className="service-container p-6 mb-8 border border-gray-300 rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow duration-300"
               >
                 <div className="service-image mb-6">
-                  <Image 
-                    src={service.image} 
-                    alt={service.title} 
-                    width={500} // Replace with actual width
-                    height={300} // Replace with actual height
-                    className="w-full h-56 object-cover rounded-lg" 
-                  />
+                <img 
+  src={service.image} 
+  alt={service.title} 
+  className="w-full h-56 object-cover rounded-lg" 
+/>
+
                 </div>
                 <h3 className="text-2xl font-semibold mb-4 text-customgreen1">{service.title}</h3>
                 <p className="text-gray-700 text-base leading-relaxed">{service.description}</p>

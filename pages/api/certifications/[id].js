@@ -19,11 +19,11 @@ export default async function handler(req, res) {
     }
   } else if (req.method === 'PUT') {
     // Update a certification by ID
-    const { name, institution, issueDate, expiryDate, credentialID, credentialURL  } = req.body;
+    const { title, imageUrl, description, certifingOrganization, date  } = req.body;
     try {
       const updatedCertification = await Certification.findByIdAndUpdate(
         id,
-        { name, institution, issueDate, expiryDate, credentialID, credentialURL  },
+        { title, imageUrl, description, certifingOrganization, date  },
         { new: true, runValidators: true }
       );
       if (!updatedCertification) {
