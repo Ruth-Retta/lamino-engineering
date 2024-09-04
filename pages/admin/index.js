@@ -35,7 +35,7 @@ export default function AdminPage() {
       const email = e.target.email.value;
       const password = e.target.password.value;
 
-      // Optionally save the email in local storage or session
+      
       localStorage.setItem('authEmail', email);
 
       const result = await signIn('credentials', {

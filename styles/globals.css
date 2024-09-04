@@ -39,10 +39,12 @@ margin: 10;
   background-color: #ffffff;
   border-radius: 8px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  width: 100%; /* Ensures container doesn't exceed max-width */
+  width: 100%;
 }
 
-/* Title styling */
+
+/* log in screen */
+
 .admin-login-title {
   text-align: center;
   color: #333;
@@ -50,14 +52,12 @@ margin: 10;
   margin-bottom: 20px;
 }
 
-/* Form styling */
 .admin-login-form {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-/* Label styling */
 .admin-login-label {
   display: flex;
   flex-direction: column;
@@ -65,7 +65,6 @@ margin: 10;
   color: #555;
 }
 
-/* Input styling */
 .admin-login-input {
   padding: 10px;
   border: 1px solid #ddd;
@@ -74,12 +73,10 @@ margin: 10;
   width: 100%;
 }
 
-/* Password container styling */
 .admin-login-password-container {
   position: relative;
 }
 
-/* Password toggle styling */
 .admin-login-password-toggle {
   position: absolute;
   right: 10px;
@@ -89,7 +86,6 @@ margin: 10;
   color: #555;
 }
 
-/* Button styling */
 .admin-login-button {
   padding: 10px;
   border: none;
@@ -110,7 +106,6 @@ margin: 10;
   cursor: not-allowed;
 }
 
-/* Error message styling */
 .admin-login-error {
   color: red;
   font-size: 14px;
@@ -118,6 +113,7 @@ margin: 10;
 }
 
 
+/* header styling*/
 
 .header {
   display: flex;
@@ -403,6 +399,11 @@ textarea:focus {
   padding: 20px;
   text-align: center;
   font-family: Arial, sans-serif;
+  margin-top: auto;
+  width: 100%; /* Ensure the footer takes up the full width of the screen */
+  position:static;
+  bottom: 0;
+  position:relative;
 }
 
 .footer h2 {
@@ -462,4 +463,86 @@ textarea:focus {
   margin-top: 20px;
   font-size: 14px;
   opacity: 0.8;
+}
+
+
+
+/* styles/globals.css */
+
+
+
+.manage-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.manage-title {
+  color: #333;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.manage-formContainer {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  margin-bottom: 30px;
+}
+
+.manage-input, .manage-textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+.manage-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.manage-listItem {
+  background-color: #f7f7f7;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.manage-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.manage-button {
+  background-color: #70BA02;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  border-radius: 5px;
+}
+
+.manage-button:hover {
+  background-color: #5da001;
+}
+
+.manage-deleteButton {
+  background-color: #f44336; /* Red */
+}
+
+.manage-deleteButton:hover {
+  background-color: #d32f2f;
+}
+
+.manage-image {
+  max-height: 100px;
+  width: auto;
+  margin-bottom: 10px;
 }

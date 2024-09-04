@@ -7,7 +7,7 @@ const ManageServices = () => {
   const [newService, setNewService] = useState({
     title: '',
     description: '',
-    image: '',
+    image: null,
   });
   const [editingServiceId, setEditingServiceId] = useState(null);
 
@@ -24,20 +24,34 @@ const ManageServices = () => {
     }
   };
 
+  const handleFileChange = (e) => {
+    setNewService({ ...newService, image: e.target.files[0] });
+  };
+
   const addOrUpdateService = async () => {
+    const formData = new FormData();
+    formData.append('title', newService.title);
+    formData.append('description', newService.description);
+    if (newService.image) {
+      formData.append('image', newService.image);
+    }
+
     try {
       if (editingServiceId) {
-        // Update existing service
-        await axios.put(`/api/services/${editingServiceId}`, newService);
+        await axios.put(`/api/services/${editingServiceId}`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
       } else {
-        // Add new service
-        await axios.post('/api/services', newService);
+        await axios.post('/api/services', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
       }
+
       fetchServices();
-      setNewService({ title: '', description: '', image: '' });
+      setNewService({ title: '', description: '', image: null });
       setEditingServiceId(null);
     } catch (error) {
-      console.error('Error saving service:', error);
+      console.error('Error saving service:', error.response ? error.response.data : error.message);
     }
   };
 
@@ -45,9 +59,9 @@ const ManageServices = () => {
     setNewService({
       title: service.title,
       description: service.description,
-      image: service.image,
+      image: null,
     });
-    setEditingServiceId(service._id); // Set the service ID for editing
+    setEditingServiceId(service._id);
   };
 
   const deleteService = async (id) => {
@@ -82,11 +96,9 @@ const ManageServices = () => {
             onChange={(e) => setNewService({ ...newService, description: e.target.value })}
           ></textarea>
           <input
-            type="text"
-            placeholder="Image URL"
-            value={newService.image}
+            type="file"
+            onChange={handleFileChange}
             className="w-full p-2 border border-gray-300 rounded"
-            onChange={(e) => setNewService({ ...newService, image: e.target.value })}
           />
           <button onClick={addOrUpdateService} className="px-4 py-2 bg-blue-500 text-white rounded">
             {editingServiceId ? 'Update Service' : 'Add Service'}
@@ -99,7 +111,7 @@ const ManageServices = () => {
             <ServiceCard
               title={service.title}
               description={service.description}
-              image={service.image}
+              imageId={service.imageId}
               onDelete={() => deleteService(service._id)}
               onUpdate={() => handleUpdateClick(service)}
             />

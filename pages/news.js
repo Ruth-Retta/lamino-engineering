@@ -20,19 +20,22 @@ const News = () => {
   }, []);
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="container mx-auto py-10 px-4 md:px-20">
-        <h1 className="text-4xl font-bold mb-6">Latest News</h1>
+      <main className="flex-grow container mx-auto py-10 px-4 md:px-10 lg:px-20">
+        <h1 className="text-4xl font-extrabold mb-8 text-center text-customgreen1">Latest News</h1>
         <div className="space-y-8">
           {newsArticles.map((article) => (
-            <div key={article._id} className="news-item p-6 border border-gray-200 rounded-lg shadow-lg bg-white">
-              <h2 className="text-2xl font-bold mb-2">{article.title}</h2>
-              <p className="text-sm text-gray-500">{new Date(article.date).toLocaleDateString()}</p>
-              <p className="text-gray-700 mt-4">{article.content}</p>
+            <div
+              key={article._id}
+              className="news-item p-6 border border-gray-300 rounded-lg shadow-md bg-white hover:bg-gray-50 transition duration-300"
+            >
+              <h2 className="text-3xl font-semibold mb-2 text-customgreen1">{article.title}</h2>
+              <p className="text-sm text-gray-600 mb-4">{new Date(article.date).toLocaleDateString()}</p>
+              <p className="text-gray-800 mb-4 leading-relaxed">{article.content}</p>
               {article.image && (
-                <div className="mt-6">
-                  <img src={article.image} alt={article.title} className="rounded-lg w-full h-auto" />
+                <div className="mt-4">
+                  <img src={article.image} alt={article.title} className="rounded-lg w-full max-h-80 object-cover" />
                 </div>
               )}
             </div>

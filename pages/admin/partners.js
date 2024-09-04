@@ -27,11 +27,9 @@ const ManagePartners = () => {
     const addOrUpdatePartner = async () => {
         try {
             if (editingPartner) {
-                // Update the existing partner
                 await axios.put(`/api/partners/${editingPartner._id}`, newPartner);
                 setEditingPartner(null);
             } else {
-                // Add a new partner
                 await axios.post('/api/partners', newPartner);
             }
             setNewPartner({ name: '', logo: '', website: '' });
