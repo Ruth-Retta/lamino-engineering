@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 const ManageCertifications = () => {
@@ -11,6 +11,8 @@ const ManageCertifications = () => {
     date: "",
   });
   const [editCertification, setEditCertification] = useState(null);
+  const [errors, setErrors] = useState({}); // State for validation errors
+  const fileInputRef = useRef(null); // Reference for the file input
 
   useEffect(() => {
     fetchCertifications();
@@ -35,20 +37,45 @@ const ManageCertifications = () => {
   };
 
   const createFormData = (data) => {
-    const formData = {};
+    const formData = new FormData();
     for (const key in data) {
       if (data[key] !== null && data[key] !== undefined) {
-        formData[key] = data[key];
+        formData.append(key, data[key]);
       }
     }
     return formData;
   };
 
+  const validate = (certification, isEditMode = false) => {
+    const newErrors = {};
+    if (!certification.title) newErrors.title = "Title is required";
+    if (!isEditMode && !certification.image)
+      newErrors.image = "Image is required"; // Only require image in add mode
+    if (!certification.description)
+      newErrors.description = "Description is required";
+    if (!certification.certifyingOrganization)
+      newErrors.certifyingOrganization = "Certifying Organization is required";
+    if (!certification.date) newErrors.date = "Date is required";
+    return newErrors;
+  };
+
+  const clearFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ""; // Manually clear the file input field
+    }
+  };
+
   const addCertification = async () => {
     const formData = createFormData(newCertification);
+    const newErrors = validate(newCertification);
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors); // Set validation errors if any
+      return;
+    }
 
     try {
-      const response = await axios.post("/api/certifications", formData, {
+      await axios.post("/api/certifications", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       fetchCertifications();
@@ -59,6 +86,8 @@ const ManageCertifications = () => {
         certifyingOrganization: "",
         date: "",
       });
+      setErrors({});
+      clearFileInput(); // Clear file input after adding a certification
     } catch (error) {
       console.error(
         "Error adding certification:",
@@ -69,6 +98,12 @@ const ManageCertifications = () => {
 
   const updateCertification = async () => {
     const formData = createFormData(editCertification);
+    const newErrors = validate(editCertification, true); // Pass true for edit mode to skip image validation
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors); // Set validation errors if any
+      return;
+    }
 
     try {
       await axios.put(
@@ -79,7 +114,10 @@ const ManageCertifications = () => {
         }
       );
       fetchCertifications();
+      // Clear up form and errors after successful update
       setEditCertification(null);
+      setErrors({});
+      clearFileInput(); // Clear file input after updating a certification
     } catch (error) {
       console.error(
         "Error updating certification:",
@@ -123,11 +161,14 @@ const ManageCertifications = () => {
           }
           onChange={(e) => handleInputChange(e, !!editCertification)}
         />
+        {errors.title && <p className="error-text">{errors.title}</p>}
         <input
           type="file"
           onChange={handleFileChange}
           className="w-full p-2 border border-gray-300 rounded"
+          ref={fileInputRef} // Attach ref to the file input
         />
+        {errors.image && <p className="error-text">{errors.image}</p>}
         <textarea
           name="description"
           placeholder="Description"
@@ -139,6 +180,7 @@ const ManageCertifications = () => {
           }
           onChange={(e) => handleInputChange(e, !!editCertification)}
         ></textarea>
+        {errors.description && <p className="error-text">{errors.description}</p>}
         <input
           type="text"
           name="certifyingOrganization"
@@ -151,6 +193,9 @@ const ManageCertifications = () => {
           }
           onChange={(e) => handleInputChange(e, !!editCertification)}
         />
+        {errors.certifyingOrganization && (
+          <p className="error-text">{errors.certifyingOrganization}</p>
+        )}
         <input
           type="date"
           name="date"
@@ -160,6 +205,7 @@ const ManageCertifications = () => {
           }
           onChange={(e) => handleInputChange(e, !!editCertification)}
         />
+        {errors.date && <p className="error-text">{errors.date}</p>}
         <button
           className="manage-button"
           onClick={editCertification ? updateCertification : addCertification}
@@ -169,7 +215,11 @@ const ManageCertifications = () => {
         {editCertification && (
           <button
             className="manage-button"
-            onClick={() => setEditCertification(null)}
+            onClick={() => {
+              setEditCertification(null);
+              setErrors({});
+              clearFileInput(); // Clear file input if the user cancels editing
+            }}
           >
             Cancel Edit
           </button>
@@ -181,7 +231,9 @@ const ManageCertifications = () => {
             <h3>{certification.title}</h3>
             {certification.imageId && (
               <img
-                src={`/api/certifications/image/${certification.imageId}`}
+                src={`/api/certifications/image/${
+                  certification.imageId
+                }?t=${new Date().getTime()}`}
                 alt={certification.title}
                 className="mt-4 rounded-lg h-24 w-auto"
               />
@@ -192,7 +244,14 @@ const ManageCertifications = () => {
             <div className="manage-buttons">
               <button
                 className="manage-button"
-                onClick={() => setEditCertification(certification)}
+                onClick={() =>
+                  setEditCertification({
+                    ...certification,
+                    date: certification.date
+                      ? new Date(certification.date).toISOString().split("T")[0]
+                      : "",
+                  })
+                }
               >
                 Edit
               </button>
