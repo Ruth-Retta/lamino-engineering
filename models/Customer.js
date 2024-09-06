@@ -1,26 +1,22 @@
 import mongoose from 'mongoose';
 
 const CustomerSchema = new mongoose.Schema({
-  name: {
+name: {
     type: String,
-    required: [true, 'Please add a name'],
-  },
-  email: {
+    required: true,
+},
+image: {
+    data: Buffer,
+    contentType: String,
+},
+website: {
     type: String,
-    required: [true, 'Please add an email'],
-  },
-  phone: {
-    type: String,
-    required: false,
-  },
-  address: {
-    type: String,
-    required: false,
-  },
-  joinedDate: {
-    type: Date,
-    default: Date.now,
-  },
+    required: true,
+},
+date: {
+  type: Date,
+  required: true,
+},
 });
 
 export default mongoose.models.Customer || mongoose.model('Customer', CustomerSchema);

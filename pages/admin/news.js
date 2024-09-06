@@ -1,16 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
+import Image from "next/image";
 
 const ManageNews = () => {
-  const [newsArticles, setNewsArticles] = useState([]);
-  const [newArticle, setNewArticle] = useState({
+  const [news, setNews] = useState([]);
+  const [formData, setFormData] = useState({
     title: '',
     content: '',
-    image: '',
-    date: new Date().toISOString().split('T')[0],
+    image: null,
+    date: '',
   });
-  const [imageFile, setImageFile] = useState(null);
-  const [editingArticleId, setEditingArticleId] = useState(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [errors, setErrors] = useState({});
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     fetchNews();
@@ -19,43 +21,45 @@ const ManageNews = () => {
   const fetchNews = async () => {
     try {
       const response = await axios.get('/api/news');
-      setNewsArticles(response.data);
+      setNews(response.data);
     } catch (error) {
       console.error('Error fetching news:', error);
     }
   };
 
-  const uploadImage = async (file) => {
-    const formData = new FormData();
-    formData.append('file', file);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
 
+    const apiCall = isEditing ? updateNews : addNews;
+    await apiCall();
+  };
+
+  const addNews = async () => {
     try {
-      const response = await axios.post('/api/upload', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+      await axios.post("/api/news", createFormData(), {
+        headers: { "Content-Type": "multipart/form-data" },
       });
-      return response.data.url;
+      resetForm();
+      fetchNews();
     } catch (error) {
-      console.error('Error uploading image:', error);
+      handleApiError("adding", error);
     }
   };
 
-  const addOrUpdateNews = async () => {
+  const updateNews = async () => {
     try {
-      if (imageFile) {
-        const imageUrl = await uploadImage(imageFile);
-        setNewArticle((prevState) => ({ ...prevState, image: imageUrl }));
-      }
-
-      if (editingArticleId) {
-        await axios.put(`/api/news/${editingArticleId}`, newArticle);
-      } else {
-        await axios.post('/api/news', newArticle);
-      }
-
-      fetchNews();
+      await axios.put(`/api/news/${formData._id}`, createFormData(), {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
       resetForm();
+      fetchNews();
     } catch (error) {
-      console.error('Error saving news:', error);
+      handleApiError("updating", error);
     }
   };
 
@@ -68,114 +72,174 @@ const ManageNews = () => {
     }
   };
 
-  const handleFileChange = (e) => {
-    setImageFile(e.target.files[0]);
-  };
+ 
+ // Helper functions
+ const createFormData = () => {
+  const data = new FormData();
+  Object.keys(formData).forEach((key) => {
+    if (formData[key] !== null && formData[key] !== undefined) {
+      data.append(key, formData[key]);
+    }
+  });
+  return data;
+};
 
-  // const handleEditClick = (article) => {
-  //   setNewArticle({
-  //     title: article.title,
-  //     content: article.content,
-  //     image: article.image,
-  //     date: article.date,
-  //   });
-  //   setEditingArticleId(article._id);
-  // };
+const validateForm = () => {
+  const newErrors = {};
+  const requiredFields = [
+    "title",
+    "content",
+    "date",
+  ];
+  requiredFields.forEach((field) => {
+    if (!formData[field])
+      newErrors[field] = `${
+        field.charAt(0).toUpperCase() + field.slice(1)
+      } is required`;
+  });
+  if (!isEditing && !formData.image) newErrors.image = "Image is required";
+  return newErrors;
+};
 
-  async function handleFileUpload(event) {
-    event.preventDefault();
-    const formData = new FormData();
-    formData.append('file', event.target.files[0]);
-  
-    const response = await fetch('/api/upload', {
-      method: 'POST',
-      body: formData,
-    });
-  
-    const result = await response.json();
-    console.log(result);
-  }
+const resetForm = () => {
+  setFormData({
+    title: "",
+    image: null,
+    content: "",
+    date: "",
+  });
+  setIsEditing(false);
+  setErrors({});
+  if (fileInputRef.current) fileInputRef.current.value = "";
+};
 
-  const resetForm = () => {
-    setNewArticle({ title: '', content: '', image: '', date: new Date().toISOString().split('T')[0] });
-    setImageFile(null);
-    setEditingArticleId(null);
-  };
-
-  return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-4xl font-bold mb-8 text-center">Manage News</h1>
-      <div className="bg-white p-6 rounded shadow-md mb-8 max-w-4xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-4">
-          {editingArticleId ? 'Update Article' : 'Add New Article'}
-        </h2>
-        <div className="space-y-4">
-          <input
-            type="text"
-            placeholder="Title"
-            value={newArticle.title}
-            onChange={(e) => setNewArticle({ ...newArticle, title: e.target.value })}
-            className="w-full p-3 border border-gray-300 rounded"
-          />
-          <textarea
-            placeholder="Content"
-            value={newArticle.content}
-            onChange={(e) => setNewArticle({ ...newArticle, content: e.target.value })}
-            className="w-full p-3 border border-gray-300 rounded"
-            rows="6"
-          ></textarea>
-          <input type="file" onChange={handleFileUpload} />
-          <input
-            type="date"
-            value={newArticle.date}
-            onChange={(e) => setNewArticle({ ...newArticle, date: e.target.value })}
-            className="w-full p-3 border border-gray-300 rounded"
-          />
-          <button
-            onClick={addOrUpdateNews}
-            className="w-full py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            {editingArticleId ? 'Update Article' : 'Add Article'}
-          </button>
-          {editingArticleId && (
-            <button
-              onClick={resetForm}
-              className="w-full py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
-            >
-              Cancel
-            </button>
-          )}
-        </div>
-      </div>
-      <div className="max-w-4xl mx-auto">
-        <h2 className="text-2xl font-semibold mb-4">News Articles</h2>
-        <ul className="space-y-6">
-          {newsArticles.map((article) => (
-            <li key={article._id} className="bg-white p-4 rounded shadow-md">
-              <h3 className="text-xl font-bold mb-2">{article.title}</h3>
-              <p className="text-gray-600 mb-2">{new Date(article.date).toLocaleDateString()}</p>
-              <p className="mb-4">{article.content}</p>
-              {article.image && <img src={article.image} alt={article.title} className="w-full h-48 object-cover mb-4 rounded" />}
-              <div className="flex space-x-4">
-                <button
-                  onClick={() => handleEditClick(article)}
-                  className="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-yellow-600"
-                >
-                  Edit
-                </button>
-                <button
-                  onClick={() => deleteNews(article._id)}
-                  className="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700"
-                >
-                  Delete
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-      </div>
-    </div>
+const handleApiError = (action, error) => {
+  console.error(
+    `Error ${action} news:`,
+    error.response ? error.response.data : error.message
   );
+};
+
+// Event handlers
+const handleInputChange = (e) => {
+  const { name, value, files } = e.target;
+  setFormData((prev) => ({
+    ...prev,
+    [name]: files ? files[0] : value,
+  }));
+};
+
+const handleEdit = (news) => {
+  setFormData({
+    ...news,
+    date: new Date(news.date).toISOString().split("T")[0],
+  });
+  setIsEditing(true);
+};
+
+// UI Components
+const renderForm = () => (
+  <form onSubmit={handleSubmit} className="manage-formContainer">
+    <h2>{isEditing ? "Edit News" : "Add New News"}</h2>
+    {renderInput("title", "Title")}
+    {renderFileInput()}
+    {renderTextarea("content", "Content")}
+    {renderInput("date", "Date", "date")}
+    <button type="submit" className="manage-button">
+      {isEditing ? "Update News" : "Add News"}
+    </button>
+    {isEditing && (
+      <button type="button" className="manage-button" onClick={resetForm}>
+        Cancel Edit
+      </button>
+    )}
+  </form>
+);
+
+const renderInput = (name, placeholder, type = "text") => (
+  <>
+    <input
+      type={type}
+      name={name}
+      placeholder={placeholder}
+      value={formData[name]}
+      onChange={handleInputChange}
+      className="manage-input"
+    />
+    {errors[name] && <p className="error-text">{errors[name]}</p>}
+  </>
+);
+
+const renderFileInput = () => (
+  <>
+    <input
+      type="file"
+      name="image"
+      onChange={handleInputChange}
+      className="w-full p-2 border border-gray-300 rounded"
+      ref={fileInputRef}
+    />
+    {errors.image && <p className="error-text">{errors.image}</p>}
+  </>
+);
+
+const renderTextarea = (name, placeholder) => (
+  <>
+    <textarea
+      name={name}
+      placeholder={placeholder}
+      value={formData[name]}
+      onChange={handleInputChange}
+      className="manage-textarea"
+    ></textarea>
+    {errors[name] && <p className="error-text">{errors[name]}</p>}
+  </>
+);
+
+const renderNewsList = () => (
+  <ul className="manage-list">
+    {news.map((news) => (
+      <li key={news._id} className="manage-listItem">
+        <h3>{news.title}</h3>
+        {news.imageId && (
+          <Image
+            src={`/api/news/image/${
+              news.imageId
+            }?t=${new Date().getTime()}`}
+            alt={news.title}
+            width={200}
+            height={150}
+            className="mt-4 rounded-lg h-24 w-auto"
+          />
+        )}
+        <p>{news.content}</p>
+        <p>{new Date(news.date).toLocaleDateString()}</p>
+        <div className="manage-buttons">
+          <button
+            className="manage-button"
+            onClick={() => handleEdit(news)}
+          >
+            Edit
+          </button>
+          <button
+            className="manage-button manage-deleteButton"
+            onClick={() => deleteNews(news._id)}
+          >
+            Delete
+          </button>
+        </div>
+      </li>
+    ))}
+  </ul>
+);
+
+return (
+  <div className="manage-container">
+    <h1 className="manage-title">Manage News</h1>
+    {renderForm()}
+    {renderNewsList()}
+  </div>
+);
 };
 
 export default ManageNews;

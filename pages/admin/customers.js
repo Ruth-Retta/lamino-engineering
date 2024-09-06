@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
+import Image from "next/image";
 
 const ManageCustomers = () => {
     const [customers, setCustomers] = useState([]);
-    const [newCustomer, setNewCustomer] = useState({
+    const [formData, setFormData] = useState({
         name: '',
-        logo: '',
+        image: null,
         website: '',
+        date: '',
     });
+    const [isEditing, setIsEditing] = useState(false);
+    const [errors, setErrors] = useState({});
+     const fileInputRef = useRef(null);
 
     useEffect(() => {
         fetchCustomers();
@@ -22,14 +27,41 @@ const ManageCustomers = () => {
         }
     };
 
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const validationErrors = validateForm();
+        if (Object.keys(validationErrors).length > 0) {
+          setErrors(validationErrors);
+          return;
+        }
+    
+        const apiCall = isEditing ? updateCustomer : addCustomer;
+        await apiCall();
+      };
+
     const addCustomer = async () => {
         try {
-            await axios.post('/api/customers', newCustomer);
+            await axios.post('/api/customers', createFormData(), {
+                headers: { "Content-Type": "multipart/form-data" },
+              });
+              resetForm();
             fetchCustomers();
         } catch (error) {
             console.error('Error adding customer:', error);
         }
     };
+
+    const updateCustomer = async () => {
+        try {
+          await axios.put(`/api/customers/${formData._id}`, createFormData(), {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+          resetForm();
+          fetchCustomers();
+        } catch (error) {
+          handleApiError("updating", error);
+        }
+      };
 
     const deleteCustomer = async (id) => {
         try {
@@ -40,39 +72,173 @@ const ManageCustomers = () => {
         }
     };
 
+// Helper functions
+  const createFormData = () => {
+    const data = new FormData();
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] !== null && formData[key] !== undefined) {
+        data.append(key, formData[key]);
+      }
+    });
+    return data;
+  };
+
+  const validateForm = () => {
+    const newErrors = {};
+    const requiredFields = [
+      "name",
+      "website",
+      "date",
+    ];
+    requiredFields.forEach((field) => {
+      if (!formData[field])
+        newErrors[field] = `${
+          field.charAt(0).toUpperCase() + field.slice(1)
+        } is required`;
+    });
+    if (!isEditing && !formData.image) newErrors.image = "Image is required";
+    return newErrors;
+  };
+
+  const resetForm = () => {
+    setFormData({
+      title: "",
+      image: null,
+      website: "",
+      date:"",
+    });
+    setIsEditing(false);
+    setErrors({});
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const handleApiError = (action, error) => {
+    console.error(
+      `Error ${action} customer:`,
+      error.response ? error.response.data : error.message
+    );
+  };
+
+  // Event handlers
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: files ? files[0] : value,
+    }));
+  };
+
+  const handleEdit = (customer) => {
+    setFormData({
+      ...customer,
+      date: new Date(customer.date).toISOString().split("T")[0],
+    });
+    setIsEditing(true);
+  };
+
+  // UI Components
+  const renderForm = () => (
+    <form onSubmit={handleSubmit} className="manage-formContainer">
+      <h2>{isEditing ? "Edit Customer" : "Add New Customer"}</h2>
+      {renderInput("name", "Name")}
+      {renderFileInput()}
+      {renderTextarea("website", "Website")}
+      {renderInput("date", "Date", "date")}
+      <button type="submit" className="manage-button">
+        {isEditing ? "Update Customer" : "Add Customer"}
+      </button>
+      {isEditing && (
+        <button type="button" className="manage-button" onClick={resetForm}>
+          Cancel Edit
+        </button>
+      )}
+    </form>
+  );
+
+  const renderInput = (name, placeholder, type = "text") => (
+    <>
+      <input
+        type={type}
+        name={name}
+        placeholder={placeholder}
+        value={formData[name]}
+        onChange={handleInputChange}
+        className="manage-input"
+      />
+      {errors[name] && <p className="error-text">{errors[name]}</p>}
+    </>
+  );
+
+  const renderFileInput = () => (
+    <>
+      <input
+        type="file"
+        name="image"
+        onChange={handleInputChange}
+        className="w-full p-2 border border-gray-300 rounded"
+        ref={fileInputRef}
+      />
+      {errors.image && <p className="error-text">{errors.image}</p>}
+    </>
+  );
+
+  const renderTextarea = (name, placeholder) => (
+    <>
+      <textarea
+        name={name}
+        placeholder={placeholder}
+        value={formData[name]}
+        onChange={handleInputChange}
+        className="manage-textarea"
+      ></textarea>
+      {errors[name] && <p className="error-text">{errors[name]}</p>}
+    </>
+  );
+
+  const renderCustomersList = () => (
+    <ul className="manage-list">
+      {customers.map((customer) => (
+        <li key={customer._id} className="manage-listItem">
+          <h3>{customer.name}</h3>
+          {customer.imageId && (
+            <Image
+              src={`/api/customers/image/${
+                customer.imageId
+              }?t=${new Date().getTime()}`}
+              alt={customer.title}
+              width={200}
+              height={150}
+              className="mt-4 rounded-lg h-24 w-auto"
+            />
+          )}
+          <p>{customer.website}</p>
+          <p>{new Date(customer.date).toLocaleDateString()}</p>
+          <div className="manage-buttons">
+            <button
+              className="manage-button"
+              onClick={() => handleEdit(customer)}
+            >
+              Edit
+            </button>
+            <button
+              className="manage-button manage-deleteButton"
+              onClick={() => deleteCustomer(customer._id)}
+            >
+              Delete
+            </button>
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+
+
     return (
-        <div>
-            <h1>Manage Customers</h1>
-            <div>
-                <h2>Add New Customer</h2>
-                <input
-                    type="text"
-                    placeholder="Customer Name"
-                    onChange={(e) => setNewCustomer({ ...newCustomer, name: e.target.value })}
-                />
-                <input
-                    type="text"
-                    placeholder="Logo URL"
-                    onChange={(e) => setNewCustomer({ ...newCustomer, logo: e.target.value })}
-                />
-                <input
-                    type="text"
-                    placeholder="Website URL"
-                    onChange={(e) => setNewCustomer({ ...newCustomer, website: e.target.value })}
-                />
-                <button onClick={addCustomer}>Add Customer</button>
-            </div>
-            <ul>
-                {customers.map(customer => (
-                    <li key={customer._id}>
-                        <h3>{customer.name}</h3>
-                        <img src={customer.logo} alt={customer.name} className="h-24 w-auto" />
-                        <p><a href={customer.website} target="_blank" rel="noopener noreferrer">{customer.website}</a></p>
-                        <button onClick={() => deleteCustomer(customer._id)}>Delete</button>
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <div className="manage-container">
+      <h1 className="manage-title">Manage Customers</h1>
+      {renderForm()}
+      {renderCustomersList()}
+    </div>
     );
 };
 

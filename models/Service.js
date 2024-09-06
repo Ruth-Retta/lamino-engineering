@@ -13,6 +13,10 @@ const ServiceSchema = new mongoose.Schema({
     data: Buffer,
     contentType: String,
   },
+  date: {
+    type: Date,
+    required: true,
+  },
 });
 
 export default mongoose.models.Service || mongoose.model('Service', ServiceSchema);

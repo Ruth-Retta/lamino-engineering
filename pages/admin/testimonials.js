@@ -7,7 +7,6 @@ const ManageTestimonials = () => {
         author: '',
         position: '',
         content: '',
-        image: '',
     });
 
     useEffect(() => {
@@ -60,11 +59,6 @@ const ManageTestimonials = () => {
                     placeholder="Content"
                     onChange={(e) => setNewTestimonial({ ...newTestimonial, content: e.target.value })}
                 ></textarea>
-                <input
-                    type="text"
-                    placeholder="Image URL"
-                    onChange={(e) => setNewTestimonial({ ...newTestimonial, image: e.target.value })}
-                />
                 <button onClick={addTestimonial}>Add Testimonial</button>
             </div>
             <ul>
@@ -73,7 +67,6 @@ const ManageTestimonials = () => {
                         <h3>{testimonial.author}</h3>
                         <p>{testimonial.position}</p>
                         <p>{testimonial.content}</p>
-                        <img src={testimonial.image} alt={testimonial.author} className="h-24 w-auto" />
                         <button onClick={() => deleteTestimonial(testimonial._id)}>Delete</button>
                     </li>
                 ))}

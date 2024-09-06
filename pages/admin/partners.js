@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
-import PartnerCard from '../../components/PartnerCard';
+import Image from "next/image";
 
 const ManagePartners = () => {
     const [partners, setPartners] = useState([]);
-    const [newPartner, setNewPartner] = useState({
+    const [formData, setFormData] = useState({
         name: '',
-        logo: '',
+        image: null,
         website: '',
+        date: '',
     });
-    const [editingPartner, setEditingPartner] = useState(null);
+    const [isEditing, setIsEditing] = useState(false);
+    const [errors, setErrors] = useState({});
+    const fileInputRef = useRef(null);
 
     useEffect(() => {
         fetchPartners();
@@ -24,20 +27,41 @@ const ManagePartners = () => {
         }
     };
 
-    const addOrUpdatePartner = async () => {
-        try {
-            if (editingPartner) {
-                await axios.put(`/api/partners/${editingPartner._id}`, newPartner);
-                setEditingPartner(null);
-            } else {
-                await axios.post('/api/partners', newPartner);
-            }
-            setNewPartner({ name: '', logo: '', website: '' });
-            fetchPartners();
-        } catch (error) {
-            console.error('Error saving partner:', error);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const validationErrors = validateForm();
+        if (Object.keys(validationErrors).length > 0) {
+          setErrors(validationErrors);
+          return;
         }
-    };
+    
+        const apiCall = isEditing ? updatePartner : addPartner;
+        await apiCall();
+      };
+    
+      const addPartner = async () => {
+        try {
+          await axios.post("/api/partners", createFormData(), {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+          resetForm();
+          fetchPartners();
+        } catch (error) {
+          handleApiError("adding", error);
+        }
+      };
+    
+      const updatePartner = async () => {
+        try {
+          await axios.put(`/api/partners/${formData._id}`, createFormData(), {
+            headers: { "Content-Type": "multipart/form-data" },
+          });
+          resetForm();
+          fetchPartners();
+        } catch (error) {
+          handleApiError("updating", error);
+        }
+      };
 
     const deletePartner = async (id) => {
         try {
@@ -48,64 +72,173 @@ const ManagePartners = () => {
         }
     };
 
-    const startEditing = (partner) => {
-        setNewPartner({ name: partner.name, logo: partner.logo, website: partner.website });
-        setEditingPartner(partner);
-    };
+    // Helper functions
+  const createFormData = () => {
+    const data = new FormData();
+    Object.keys(formData).forEach((key) => {
+      if (formData[key] !== null && formData[key] !== undefined) {
+        data.append(key, formData[key]);
+      }
+    });
+    return data;
+  };
 
-    return (
-        <div className="p-6 bg-gray-100 min-h-screen">
-            <h1 className="text-3xl font-bold mb-6 text-[#70BA02]">Manage Partners</h1>
-            <div className="bg-white p-6 rounded-lg shadow-lg mb-6">
-                <h2 className="text-2xl font-semibold mb-4 text-black">{editingPartner ? 'Update Partner' : 'Add New Partner'}</h2>
-                <div className="mb-4">
-                    <input
-                        type="text"
-                        placeholder="Partner Name"
-                        value={newPartner.name}
-                        onChange={(e) => setNewPartner({ ...newPartner, name: e.target.value })}
-                        className="w-full p-2 border border-gray-300 rounded-lg mb-4"
-                    />
-                    <input
-                        type="text"
-                        placeholder="Logo URL"
-                        value={newPartner.logo}
-                        onChange={(e) => setNewPartner({ ...newPartner, logo: e.target.value })}
-                        className="w-full p-2 border border-gray-300 rounded-lg mb-4"
-                    />
-                    <input
-                        type="text"
-                        placeholder="Website URL"
-                        value={newPartner.website}
-                        onChange={(e) => setNewPartner({ ...newPartner, website: e.target.value })}
-                        className="w-full p-2 border border-gray-300 rounded-lg mb-4"
-                    />
-                    <button
-                        onClick={addOrUpdatePartner}
-                        className="bg-[#94D13A] text-white py-2 px-4 rounded-lg hover:bg-[#70BA02] transition-colors"
-                    >
-                        {editingPartner ? 'Update Partner' : 'Add Partner'}
-                    </button>
-                    {editingPartner && (
-                        <button
-                            onClick={() => {
-                                setNewPartner({ name: '', logo: '', website: '' });
-                                setEditingPartner(null);
-                            }}
-                            className="bg-gray-500 text-white py-2 px-4 rounded-lg ml-4 hover:bg-gray-600 transition-colors"
-                        >
-                            Cancel
-                        </button>
-                    )}
-                </div>
-            </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {partners.map(partner => (
-                    <PartnerCard key={partner._id} partner={partner} onDelete={deletePartner} onEdit={startEditing} />
-                ))}
-            </div>
-        </div>
+  const validateForm = () => {
+    const newErrors = {};
+    const requiredFields = [
+      "name",
+      "website",
+      "date",
+    ];
+    requiredFields.forEach((field) => {
+      if (!formData[field])
+        newErrors[field] = `${
+          field.charAt(0).toUpperCase() + field.slice(1)
+        } is required`;
+    });
+    if (!isEditing && !formData.image) newErrors.image = "Image is required";
+    return newErrors;
+  };
+
+  const resetForm = () => {
+    setFormData({
+      name: "",
+      image: null,
+      website: "",
+      date: "",
+    });
+    setIsEditing(false);
+    setErrors({});
+    if (fileInputRef.current) fileInputRef.current.value = "";
+  };
+
+  const handleApiError = (action, error) => {
+    console.error(
+      `Error ${action} partner:`,
+      error.response ? error.response.data : error.message
     );
+  };
+
+  // Event handlers
+  const handleInputChange = (e) => {
+    const { name, value, files } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: files ? files[0] : value,
+    }));
+  };
+
+  const handleEdit = (partner) => {
+    setFormData({
+      ...partner,
+      date: new Date(partner.date).toISOString().split("T")[0],
+    });
+    setIsEditing(true);
+  };
+
+  // UI Components
+  const renderForm = () => (
+    <form onSubmit={handleSubmit} className="manage-formContainer">
+      <h2>{isEditing ? "Edit Partner" : "Add New Partner"}</h2>
+      {renderInput("name", "Name")}
+      {renderFileInput()}
+      {renderTextarea("website", "Website")}
+      {renderInput("date", "Date", "date")}
+      <button type="submit" className="manage-button">
+        {isEditing ? "Update Partner" : "Add Partner"}
+      </button>
+      {isEditing && (
+        <button type="button" className="manage-button" onClick={resetForm}>
+          Cancel Edit
+        </button>
+      )}
+    </form>
+  );
+
+  const renderInput = (name, placeholder, type = "text") => (
+    <>
+      <input
+        type={type}
+        name={name}
+        placeholder={placeholder}
+        value={formData[name]}
+        onChange={handleInputChange}
+        className="manage-input"
+      />
+      {errors[name] && <p className="error-text">{errors[name]}</p>}
+    </>
+  );
+
+  const renderFileInput = () => (
+    <>
+      <input
+        type="file"
+        name="image"
+        onChange={handleInputChange}
+        className="w-full p-2 border border-gray-300 rounded"
+        ref={fileInputRef}
+      />
+      {errors.image && <p className="error-text">{errors.image}</p>}
+    </>
+  );
+
+  const renderTextarea = (name, placeholder) => (
+    <>
+      <textarea
+        name={name}
+        placeholder={placeholder}
+        value={formData[name]}
+        onChange={handleInputChange}
+        className="manage-textarea"
+      ></textarea>
+      {errors[name] && <p className="error-text">{errors[name]}</p>}
+    </>
+  );
+
+  const renderPartnersList = () => (
+    <ul className="manage-list">
+      {partners.map((partner) => (
+        <li key={partner._id} className="manage-listItem">
+          <h3>{partner.name}</h3>
+          {partner.imageId && (
+            <Image
+              src={`/api/partners/image/${
+                partner.imageId
+              }?t=${new Date().getTime()}`}
+              alt={partner.name}
+              width={200}
+              height={150}
+              className="mt-4 rounded-lg h-24 w-auto"
+            />
+          )}
+          <p>{partner.website}</p>
+          <p>{new Date(partner.date).toLocaleDateString()}</p>
+          <div className="manage-buttons">
+            <button
+              className="manage-button"
+              onClick={() => handleEdit(partner)}
+            >
+              Edit
+            </button>
+            <button
+              className="manage-button manage-deleteButton"
+              onClick={() => deletePartner(partner._id)}
+            >
+              Delete
+            </button>
+          </div>
+        </li>
+      ))}
+    </ul>
+  );
+
+  return (
+    <div className="manage-container">
+      <h1 className="manage-title">Manage Partners</h1>
+      {renderForm()}
+      {renderPartnersList()}
+    </div>
+  );
 };
 
 export default ManagePartners;

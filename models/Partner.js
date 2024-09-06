@@ -5,16 +5,18 @@ const PartnerSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    logo: {
-        type: String,
-        required: true,
+    image: {
+        data: Buffer,
+        contentType: String,
     },
     website: {
         type: String,
         required: true,
     },
-}, {
-    timestamps: true,
+    date: {
+        type: Date,
+        required: true,
+    },
 });
 
 export default mongoose.models.Partner || mongoose.model('Partner', PartnerSchema);

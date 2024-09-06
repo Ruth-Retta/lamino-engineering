@@ -10,8 +10,12 @@ const PortfolioSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  imageUrl: {
-    type: String,
+  image: {
+    data: Buffer,
+    contentType: String,
+  },
+  date: {
+    type: Date,
     required: true,
   },
 });
