@@ -30,7 +30,7 @@ export default function Contact() {
       };
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Header />
       <main className="mx-auto ml-20 mr-20 mt-40 mb-10">
       <div className="container mx-auto">

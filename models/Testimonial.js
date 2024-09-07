@@ -16,9 +16,13 @@ const TestimonialSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-    createdAt: {
+    date: {
         type: Date,
         default: Date.now,
+    },
+    image: {
+        data: Buffer,
+        contentType: String,
     },
 });
 

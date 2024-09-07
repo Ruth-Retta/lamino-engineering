@@ -1,5 +1,13 @@
 import dbConnect from '../../../lib/dbConnect';
 import Career from '../../../models/Career';
+import { IncomingForm } from 'formidable';
+import fs from 'fs/promises';
+
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
 
 export default async function handler(req, res) {
   const { id } = req.query;
@@ -7,34 +15,68 @@ export default async function handler(req, res) {
   await dbConnect();
 
   if (req.method === 'GET') {
-    // Get a single career by ID
     try {
-      const career = await Career.findById(id);
+      const career = await Career.findById(id, { 'image.data': 0 });
       if (!career) {
         return res.status(404).json({ message: 'Career not found' });
       }
-      res.status(200).json(career);
+      const careerResponse = career.toObject();
+      careerResponse.imageId = career.image ? career._id : null;
+      delete careerResponse.image;
+      res.status(200).json(careerResponse);
     } catch (error) {
-      res.status(500).json({ message: 'Failed to fetch career' });
+      console.error('Error fetching career:', error);
+      res.status(500).json({ message: 'Failed to fetch career', error: error.message });
     }
   } else if (req.method === 'PUT') {
-    // Update a career by ID
-    const { position, startDate, endDate, description, requirements } = req.body;
-    try {
-      const updatedCareer = await Career.findByIdAndUpdate(
-        id,
-        { position, startDate, endDate, description, requirements },
-        { new: true, runValidators: true }
-      );
-      if (!updatedCareer) {
-        return res.status(404).json({ message: 'Career not found' });
+    const form = new IncomingForm();
+
+    form.parse(req, async (err, fields, files) => {
+      if (err) {
+        console.error('Error parsing form data:', err);
+        return res.status(500).json({ error: 'Error parsing form data', details: err.message });
       }
-      res.status(200).json(updatedCareer);
-    } catch (error) {
-      res.status(400).json({ message: 'Failed to update career', error });
-    }
+
+      const { position, description, requirements, startDate, endDate, date } = fields;
+      
+      let updateData = { 
+        position: Array.isArray(position) ? position[0] : position,
+        description: Array.isArray(description) ? description[0] : description,
+        startDate: Array.isArray(startDate) ? startDate[0] : startDate,
+        endDate: Array.isArray(endDate) ? endDate[0] : endDate,
+        requirements: Array.isArray(requirements) ? requirements[0] : requirements,
+        date: Array.isArray(date) ? date[0] : date,
+      };
+
+      try {
+        if (files.image && files.image[0] && files.image[0].size > 0) {
+          const file = files.image[0];
+          updateData.image = {
+            data: await fs.readFile(file.filepath),
+            contentType: file.mimetype,
+          };
+        }
+
+        const updatedCareer = await Career.findByIdAndUpdate(
+          id,
+          updateData,
+          { new: true, runValidators: true }
+        );
+        if (!updatedCareer) {
+          return res.status(404).json({ message: 'Career not found' });
+        }
+        
+        const careerResponse = updatedCareer.toObject();
+        careerResponse.imageId = updatedCareer.image ? updatedCareer._id : null;
+        delete careerResponse.image;
+        
+        res.status(200).json(careerResponse);
+      } catch (error) {
+        console.error('Error updating career:', error);
+        res.status(400).json({ message: 'Failed to update career', error: error.message });
+      }
+    });
   } else if (req.method === 'DELETE') {
-    // Delete a career by ID
     try {
       const deletedCareer = await Career.findByIdAndDelete(id);
       if (!deletedCareer) {
@@ -42,62 +84,10 @@ export default async function handler(req, res) {
       }
       res.status(200).json({ message: 'Career deleted successfully' });
     } catch (error) {
-      res.status(500).json({ message: 'Failed to delete career', error });
+      console.error('Error deleting career:', error);
+      res.status(500).json({ message: 'Failed to delete career', error: error.message });
     }
   } else {
     res.status(405).json({ message: 'Method Not Allowed' });
   }
 }
-
-// import dbConnect from '../../../lib/dbConnect';
-// import Career from '../../../models/Career';
-
-// export default async function handler(req, res) {
-//     // await dbConnect();
-//     // const { id } = req.query;
-
-//     // switch (req.method) {
-//     //     case 'GET':
-//     //         try {
-//     //             const career = await Career.findById(id);
-//     //             if (!career) {
-//     //                 return res.status(404).json({ success: false, message: 'Career not found' });
-//     //             }
-//     //             res.status(200).json(career);
-//     //         } catch (error) {
-//     //             console.error(error);
-//     //             res.status(500).json({ success: false, message: 'Server error fetching career' });
-//     //         }
-//     //         break;
-//     //     case 'PUT':
-//     //         try {
-//     //             const career = await Career.findByIdAndUpdate(id, req.body, {
-//     //                 new: true,
-//     //                 runValidators: true,
-//     //             });
-//     //             if (!career) {
-//     //                 return res.status(404).json({ success: false, message: 'Career not found' });
-//     //             }
-//     //             res.status(200).json(career);
-//     //         } catch (error) {
-//     //             console.error(error);
-//     //             res.status(500).json({ success: false, message: 'Server error updating career' });
-//     //         }
-//     //         break;
-//     //     case 'DELETE':
-//     //         try {
-//     //             const deletedCareer = await Career.deleteOne({ _id: id });
-//     //             if (!deletedCareer) {
-//     //                 return res.status(404).json({ success: false, message: 'Career not found' });
-//     //             }
-//     //             res.status(200).json({ success: true, message: 'Career deleted successfully' });
-//     //         } catch (error) {
-//     //             console.error(error);
-//     //             res.status(500).json({ success: false, message: 'Server error deleting career' });
-//     //         }
-//     //         break;
-//     //     default:
-//     //         res.setHeader('Allow', ['GET', 'PUT', 'DELETE']);
-//     //         res.status(405).end(`Method ${req.method} Not Allowed`);
-//     // }
-// }

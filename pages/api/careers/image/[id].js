@@ -1,5 +1,5 @@
 import dbConnect from "../../../../lib/dbConnect";
-import Portfolio from "../../../../models/Portfolio";
+import Career from "../../../../models/Career";
 
 export default async function handler(req, res) {
   const { id } = req.query;
@@ -8,13 +8,13 @@ export default async function handler(req, res) {
 
   if (req.method === "GET") {
     try {
-      const portfolio = await Portfolio.findById(id);
-      if (!portfolio || !portfolio.image || !portfolio.image.data) {
+      const career = await Career.findById(id);
+      if (!career || !career.image || !career.image.data) {
         return res.status(404).json({ message: "Image not found" });
       }
 
-      res.setHeader("Content-Type", portfolio.image.contentType);
-      res.send(portfolio.image.data);
+      res.setHeader("Content-Type", career.image.contentType);
+      res.send(career.image.data);
     } catch (error) {
       console.error("Error fetching image:", error);
       res

@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import ServiceCard from '../../components/ServiceCard';
+import React, { useState, useEffect, useRef } from "react";
+import axios from "axios";
+import Image from "next/image";
 
 const ManageServices = () => {
   const [services, setServices] = useState([]);
@@ -8,6 +8,7 @@ const ManageServices = () => {
     title: '',
     description: '',
     image: null,
+    date: '',
   });
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState({});
@@ -87,7 +88,6 @@ const ManageServices = () => {
     const requiredFields = [
       "title",
       "description",
-      "certifyingOrganization",
       "date",
     ];
     requiredFields.forEach((field) => {
@@ -105,7 +105,6 @@ const ManageServices = () => {
       title: "",
       image: null,
       description: "",
-      certifyingOrganization: "",
       date: "",
     });
     setIsEditing(false);
@@ -144,7 +143,6 @@ const ManageServices = () => {
       {renderInput("title", "Title")}
       {renderFileInput()}
       {renderTextarea("description", "Description")}
-      {renderInput("certifyingOrganization", "Certifying Organization")}
       {renderInput("date", "Date", "date")}
       <button type="submit" className="manage-button">
         {isEditing ? "Update Service" : "Add Service"}
@@ -214,8 +212,7 @@ const ManageServices = () => {
             />
           )}
           <p>{service.description}</p>
-          <p>Certified by: {service.certifyingOrganization}</p>
-          <p>Date: {new Date(service.date).toLocaleDateString()}</p>
+          <p>{new Date(service.date).toLocaleDateString()}</p>
           <div className="manage-buttons">
             <button
               className="manage-button"

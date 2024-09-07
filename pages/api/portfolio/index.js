@@ -35,7 +35,7 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'Error parsing form data', details: err.message });
       }
 
-      const { title, description, certifyingOrganization, date } = fields;
+      const { title, description, date } = fields;
       
       if (!title || !description || !date) {
         return res.status(400).json({ error: 'Missing required fields' });

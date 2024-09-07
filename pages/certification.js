@@ -17,7 +17,7 @@ const Certifications = () => {
   }, []);
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Header />
       <main className="mx-auto pl-20 pr-20 mt-40">
         <h2 className="text-3xl font-bold mb-6">Our Certifications and Awards</h2>

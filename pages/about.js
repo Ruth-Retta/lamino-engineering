@@ -7,7 +7,7 @@ import CustomersSection from '@/components/sections/customers';
 
 export default function About() {
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Header />
       <main className=" mx-auto ml-20 mr-20 p-10 mt-40 mb-10 rounded-lg shadow-lg">
         <h1 className="text-4xl font-bold mb-6">About Lamino Engineering PLC</h1>

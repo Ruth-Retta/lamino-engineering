@@ -3,26 +3,32 @@ import mongoose from 'mongoose';
 const CareerSchema = new mongoose.Schema({
     position: {
         type: String,
-        required: [true, 'Position is required']
+        required: true,
     },
     startDate: {
         type: Date,
-        required: [true, 'Start date is required']
+        required: true,
     },
     endDate: {
         type: Date,
-        required: [true, 'End date is required']
+        required: true,
     },
     description: {
         type: String,
-        required: [true, 'Description is required']
+        required: true,
     },
     requirements: {
         type: [String],
-        required: [true, 'Requirements are required']
-    }
-}, {
-    timestamps: true
+        required: true,
+    },
+    date: {
+        type: Date,
+        required: true,
+    },
+    image: {
+        data: Buffer,
+        contentType: String,
+    },
 });
 
 export default mongoose.models.Career || mongoose.model('Career', CareerSchema);

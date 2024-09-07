@@ -201,7 +201,7 @@ const ManagePortfolio = () => {
           <h3>{portfolio.title}</h3>
           {portfolio.imageId && (
             <Image
-              src={`/api/portfolios/image/${
+              src={`/api/portfolio/image/${
                 portfolio.imageId
               }?t=${new Date().getTime()}`}
               alt={portfolio.title}

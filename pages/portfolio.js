@@ -21,7 +21,7 @@ const Portfolio = () => {
   }, []);
 
   return (
-    <div>
+    <div className="min-h-screen flex flex-col">
       <Header />
       <main className="mx-auto pl-20 pr-20 mt-40">
         <div className="container mx-auto">

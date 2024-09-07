@@ -219,8 +219,8 @@ const ManageCertifications = () => {
             />
           )}
           <p>{certification.description}</p>
-          <p>Certified by: {certification.certifyingOrganization}</p>
-          <p>Date: {new Date(certification.date).toLocaleDateString()}</p>
+          <p>{certification.certifyingOrganization}</p>
+          <p>{new Date(certification.date).toLocaleDateString()}</p>
           <div className="manage-buttons">
             <button
               className="manage-button"
