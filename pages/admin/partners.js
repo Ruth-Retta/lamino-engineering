@@ -141,9 +141,9 @@ const ManagePartners = () => {
     <form onSubmit={handleSubmit} className="manage-formContainer">
       <h2>{isEditing ? "Edit Partner" : "Add New Partner"}</h2>
       {renderInput("name", "Name")}
-      {renderFileInput()}
       {renderTextarea("website", "Website")}
       {renderInput("date", "Date", "date")}
+      {renderFileInput()}
       <button type="submit" className="manage-button">
         {isEditing ? "Update Partner" : "Add Partner"}
       </button>

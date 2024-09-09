@@ -142,9 +142,9 @@ const renderForm = () => (
   <form onSubmit={handleSubmit} className="manage-formContainer">
     <h2>{isEditing ? "Edit News" : "Add New News"}</h2>
     {renderInput("title", "Title")}
-    {renderFileInput()}
     {renderTextarea("content", "Content")}
     {renderInput("date", "Date", "date")}
+    {renderFileInput()}
     <button type="submit" className="manage-button">
       {isEditing ? "Update News" : "Add News"}
     </button>

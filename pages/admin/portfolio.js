@@ -140,9 +140,9 @@ const ManagePortfolio = () => {
     <form onSubmit={handleSubmit} className="manage-formContainer">
       <h2>{isEditing ? "Edit Portfolio" : "Add New Portfolio"}</h2>
       {renderInput("title", "Title")}
-      {renderFileInput()}
       {renderTextarea("description", "Description")}
       {renderInput("date", "Date", "date")}
+      {renderFileInput()}
       <button type="submit" className="manage-button">
         {isEditing ? "Update Portfolio" : "Add Portfolio"}
       </button>

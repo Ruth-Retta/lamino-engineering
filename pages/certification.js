@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Image from "next/image";
 
 const Certifications = () => {
   const [certifications, setCertifications] = useState([]);
@@ -19,16 +20,24 @@ const Certifications = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="mx-auto pl-20 pr-20 mt-40">
-        <h2 className="text-3xl font-bold mb-6">Our Certifications and Awards</h2>
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <main className="mx-auto mt-40">
+        <h2 className="text-3xl font-bold mb-6">Certifications and Awards</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
           {certifications.map(certification => (
             <div key={certification._id} className="text-center">
-              <img src={certification.imageUrl} alt={certification.title} className="mx-auto mb-2 h-48 w-auto" />
+              <p>{certification.imageId && (
+                <Image
+                  src={`/api/certifications/image/${certification.imageId}?t=${new Date().getTime()}`}
+                  alt={certification.title}
+                  width={200}
+                  height={200}
+                  className="mt-4 rounded-lg h-24 w-auto mx-auto"
+                />
+          )}</p>
               <p className="text-lg font-medium">{certification.title}</p>
               <p>{certification.description}</p>
-              <p className="text-sm text-gray-500">Certified by: {certification.certifyingOrganization}</p>
-              <p className="text-sm text-gray-500">Date: {new Date(certification.date).toLocaleDateString()}</p>
+              <p className="text-sm text-gray-500">{certification.certifyingOrganization}</p>
+              <p className="text-sm text-gray-500">{new Date(certification.date).toLocaleDateString()}</p>
             </div>
           ))}
         </div>

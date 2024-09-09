@@ -141,9 +141,9 @@ const ManageCustomers = () => {
     <form onSubmit={handleSubmit} className="manage-formContainer">
       <h2>{isEditing ? "Edit Customer" : "Add New Customer"}</h2>
       {renderInput("name", "Name")}
-      {renderFileInput()}
       {renderTextarea("website", "Website")}
       {renderInput("date", "Date", "date")}
+      {renderFileInput()}
       <button type="submit" className="manage-button">
         {isEditing ? "Update Customer" : "Add Customer"}
       </button>

@@ -147,10 +147,10 @@ const ManageCertifications = () => {
     <form onSubmit={handleSubmit} className="manage-formContainer">
       <h2>{isEditing ? "Edit Certification" : "Add New Certification"}</h2>
       {renderInput("title", "Title")}
-      {renderFileInput()}
       {renderTextarea("description", "Description")}
       {renderInput("certifyingOrganization", "Certifying Organization")}
       {renderInput("date", "Date", "date")}
+      {renderFileInput()}
       <button type="submit" className="manage-button">
         {isEditing ? "Update Certification" : "Add Certification"}
       </button>

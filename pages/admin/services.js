@@ -141,9 +141,9 @@ const ManageServices = () => {
     <form onSubmit={handleSubmit} className="manage-formContainer">
       <h2>{isEditing ? "Edit Service" : "Add New Service"}</h2>
       {renderInput("title", "Title")}
-      {renderFileInput()}
       {renderTextarea("description", "Description")}
       {renderInput("date", "Date", "date")}
+      {renderFileInput()}
       <button type="submit" className="manage-button">
         {isEditing ? "Update Service" : "Add Service"}
       </button>

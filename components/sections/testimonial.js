@@ -1,105 +1,71 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import SwiperCore, { Navigation, Pagination } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css'; 
-import 'swiper/css/navigation'; 
+import 'swiper/css';
+import 'swiper/css/navigation';
 import 'swiper/css/pagination';
+import Image from 'next/image';
 
 SwiperCore.use([Navigation, Pagination]);
 
+const TestimonialsSection = () => {
+  const [testimonials, setTestimonials] = useState([]);
 
-const testimonialsData = [
-  {
-    id: 1,
-    author: 'John Doe',
-    position: 'CEO, Example Company',
-    content:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
-    image: 'background.jpg', 
-  },
-  {
-    id: 2,
-    author: 'Jane Smith',
-    position: 'CTO, Another Company',
-    content:
-      'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    image: 'background.jpg', 
-  },
-  {
-    id: 3,
-    author: 'Abebe Kebede',
-    position: 'CTO, Another Company',
-    content:
-      'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    image: 'background.jpg', 
-  },
-  {
-    id: 4,
-    author: 'Kebede Abebe',
-    position: 'CTO, Another Company',
-    content:
-      'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    image: 'background.jpg', 
-  },
-  {
-    id: 5,
-    author: 'Kebede Abebe',
-    position: 'CTO, Another Company',
-    content:
-      'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    image: 'background.jpg', 
-  },
-  {
-    id: 6,
-    author: 'Kebede Abebe',
-    position: 'CTO, Another Company',
-    content:
-      'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    image: 'background.jpg', 
-  },
-  {
-    id: 7,
-    author: 'Kebede Abebe',
-    position: 'CTO, Another Company',
-    content:
-      'Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.',
-    image: 'background.jpg', 
-  },
-];
+  useEffect(() => {
+    fetch('/api/testimonials')
+      .then((res) => res.json())
+      .then((data) => setTestimonials(data))
+      .catch((err) => console.error(err));
+  }, []);
 
-const Testimonials = () => {
   return (
-    <section id="testimonials" className="py-5 bg-gray-0">
-      <div className="container mx-auto">
-        <h2 className="text-4xl font-bold">Testimonials</h2>
-        <Swiper
-          spaceBetween={5}
-          slidesPerView="auto"
-          pagination={{ clickable: true }}
-          className="mySwiper"
-        >
-          {testimonialsData.map((testimonial) => (
-            <SwiperSlide key={testimonial.id}>
-              <div className="testimonial-box bg-white rounded-lg shadow-md overflow-hidden">
-                <div className="testimonial-image relative h-50">
-                  <img
-                    src={testimonial.image}
-                    alt={testimonial.author}
-                    className="w-full h-full object-cover rounded-t-lg"
-                  />
-                </div>
-                <div className="p-6">
-                  <p className="text-lg mb-2 font-bold">{testimonial.author}</p>
-                  <p className="text-sm text-gray-600">{testimonial.position}</p>
-                  <p className="mt-4">{testimonial.content}</p>
+    <section className="testimonials-section">
+      <h2 className="text-4xl font-bold mb-6 text-center text-custom-green-2">Testimonials</h2>
+      <div className="container mx-auto my-auto p-10">
+      <Swiper
+        spaceBetween={10}
+        slidesPerView={testimonials.length < 4 ? testimonials.length : 3} 
+        centeredSlides={testimonials.length < 4} 
+        breakpoints={{
+          768: {
+            slidesPerView: 2,
+          },
+          1024: {
+            slidesPerView: testimonials.length < 4 ? testimonials.length : 3, 
+          },
+          1440: {
+            slidesPerView: 4,
+          }
+        }}
+        pagination={{ clickable: true }}
+      >
+        {testimonials.map((testimonial, index) => (
+          <SwiperSlide key={index}>
+            <div className="testimonial-card">
+              <div className="testimonial-header">
+                <Image
+                  src={`/api/testimonials/image/${testimonial.imageId}?t=${new Date().getTime()}`}
+                  alt={testimonial.author}
+                  width={100}
+                  height={100}
+                  className="testimonial-image"
+                />
+                <div className="testimonial-info">
+                  <h3 className="testimonial-author">{testimonial.author}</h3>
+                  <p className="testimonial-position">{testimonial.position}</p>
+                  <p className="testimonial-date">{new Date(testimonial.date).toLocaleDateString()}</p>
                 </div>
               </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+              <div className="testimonial-content">
+                <p>{testimonial.content}</p>
+              </div>
+            </div>
+          </SwiperSlide>
+        ))}
+      </Swiper>
       </div>
     </section>
   );
 };
 
-export default Testimonials;
+export default TestimonialsSection;
