@@ -202,9 +202,7 @@ const ManageServices = () => {
           <h3>{service.title}</h3>
           {service.imageId && (
             <Image
-              src={`/api/services/image/${
-                service.imageId
-              }?t=${new Date().getTime()}`}
+              src={`/api/services/image/${service.imageId}?t=${new Date().getTime()}`}
               alt={service.title}
               width={200}
               height={150}

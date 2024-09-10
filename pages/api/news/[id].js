@@ -43,8 +43,7 @@ export default async function handler(req, res) {
       
       let updateData = { 
         title: Array.isArray(title) ? title[0] : title,
-        description: Array.isArray(description) ? description[0] : description,
-        certifyingOrganization: Array.isArray(certifyingOrganization) ? certifyingOrganization[0] : certifyingOrganization,
+        content: Array.isArray(content) ? content[0] : content,
         date: Array.isArray(date) ? date[0] : date,
       };
 

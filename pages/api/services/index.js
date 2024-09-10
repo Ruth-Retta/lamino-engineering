@@ -38,9 +38,9 @@ export default async function handler(req, res) {
       console.log('Received fields:', fields);
       console.log('Received files:', files);
 
-      const { title, description } = fields;
+      const { title, description, date } = fields;
       
-      if (!title || !description) {
+      if (!title || !description || !date) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
@@ -48,6 +48,7 @@ export default async function handler(req, res) {
         const newService = new Service({
           title: Array.isArray(title) ? title[0] : title,
           description: Array.isArray(description) ? description[0] : description,
+          date: Array.isArray(date) ? date[0] : date,
         });
 
         if (files.image && files.image[0] && files.image[0].size > 0) {

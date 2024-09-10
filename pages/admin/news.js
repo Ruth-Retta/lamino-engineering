@@ -203,9 +203,7 @@ const renderNewsList = () => (
         <h3>{news.title}</h3>
         {news.imageId && (
           <Image
-            src={`/api/news/image/${
-              news.imageId
-            }?t=${new Date().getTime()}`}
+            src={`/api/news/image/${news.imageId}?t=${new Date().getTime()}`}
             alt={news.title}
             width={200}
             height={150}

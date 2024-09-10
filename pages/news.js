@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
+import Image from "next/image";
 
 const News = () => {
   const [newsArticles, setNewsArticles] = useState([]);
@@ -10,7 +11,8 @@ const News = () => {
     const fetchNews = async () => {
       try {
         const response = await axios.get('/api/news');
-        setNewsArticles(response.data);
+        const sortedNews = response.data.sort((a, b) => new Date(b.date) - new Date(a.date)); // Sort by date
+        setNewsArticles(sortedNews);
       } catch (error) {
         console.error('Error fetching news:', error);
       }
@@ -20,24 +22,36 @@ const News = () => {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
       <main className="flex-grow container mx-auto py-10 px-4 md:px-10 lg:px-20">
-        <h1 className="text-4xl font-extrabold mb-8 text-center text-customgreen1">Latest News</h1>
-        <div className="space-y-8">
+        <h1 className="text-4xl font-extrabold mb-12 text-center text-customgreen1">Latest News</h1>
+        <div className="space-y-12">
           {newsArticles.map((article) => (
             <div
               key={article._id}
-              className="news-item p-6 border border-gray-300 rounded-lg shadow-md bg-white hover:bg-gray-50 transition duration-300"
+              className="news-item flex flex-col"
             >
-              <h2 className="text-3xl font-semibold mb-2 text-customgreen1">{article.title}</h2>
-              <p className="text-sm text-gray-600 mb-4">{new Date(article.date).toLocaleDateString()}</p>
-              <p className="text-gray-800 mb-4 leading-relaxed">{article.content}</p>
-              {article.image && (
-                <div className="mt-4">
-                  <img src={article.image} alt={article.title} className="rounded-lg w-full max-h-80 object-cover" />
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-3xl font-bold text-gray-800">{article.title}</h2>
+                <p className="text-sm text-gray-500">{new Date(article.date).toLocaleDateString()}</p>
+              </div>
+
+              {article.imageId && (
+                <div className="relative w-full h-64 mb-6">
+                  <Image
+                    src={`/api/news/image/${article.imageId}?t=${new Date().getTime()}`}
+                    alt={article.title}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-lg"
+                  />
                 </div>
               )}
+
+              <p className="text-gray-700 mb-4 leading-relaxed">
+                {article.content}
+              </p>
             </div>
           ))}
         </div>

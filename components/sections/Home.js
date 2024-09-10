@@ -1,10 +1,28 @@
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/swiper-bundle.css';
 import SwiperCore, { Navigation, Pagination, Autoplay } from 'swiper';
+import React, { useState, useEffect } from 'react';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import Image from 'next/image';
 
 SwiperCore.use([Navigation, Pagination, Autoplay]);
 
 const HomeSection = () => {
+  const [news, setNews] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/news')
+      .then((res) => res.json())
+      .then((data) => {
+        const sortedNews = data.sort((a, b) => new Date(b.date) - new Date(a.date));
+        const recentNews = sortedNews.slice(0, 3);
+        setNews(recentNews);
+      })
+      .catch((err) => console.error(err));
+  }, []);
+  
   return (
     <section id="home" >
     <Swiper
@@ -14,24 +32,24 @@ const HomeSection = () => {
       pagination={{ clickable: true }}
       autoplay={{ delay: 3000, disableOnInteraction: false }}
     >
-      <SwiperSlide>
-        <div className="slide-content">
-          <img src="/background.jpg" alt="Slide 1" className="slide-image" />
-          <div className="slide-text">
-            <h1>Let’s Shape the Future Together</h1>
-            <p>Whether you’re looking to revolutionize your IT strategy, fortify your IT infrastructure, or embrace the latest fintech advancements, we’re here to help you chart the course. Join us on the journey to a brighter, technology-driven future. Let’s talk about how we can transform your business.</p>
-          </div>
-        </div>
-      </SwiperSlide>
-      <SwiperSlide>
-        <div className="slide-content">
-          <img src="/background.jpg" alt="Slide 2" className="slide-image" />
-          <div className="slide-text">
-            <h1>Redefining Technology for Tomorrow</h1>
-            <p>At Lamino Engineering, we’re more than a technology company; we’re a catalyst for transformation. With a relentless focus on innovation, we merge the worlds of IT, IT infrastructure, and fintech to pioneer the future of business technology.</p>
-          </div>
-        </div>
-      </SwiperSlide>
+
+        {news.map((news, index) => (
+          <SwiperSlide key={index}>
+            <div className="slide-content">
+                <Image
+                  src={`/api/news/image/${news.imageId}?t=${new Date().getTime()}`}
+                  alt={news.title}
+                  width={100}
+                  height={100}
+                  className="slide-image"
+                />
+                <div className="slide-text">
+                <h1>{news.title}</h1>
+                <p>{news.content}</p>
+                </div>
+            </div>
+          </SwiperSlide>
+        ))}
     </Swiper>
     </section>
   );

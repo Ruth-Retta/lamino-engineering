@@ -9,9 +9,7 @@ const PortfolioSection = () => {
     fetch('/api/portfolio')
       .then((res) => res.json())
       .then((data) => {
-        // Sort projects by date in descending order
         const sortedPortfolios = data.sort((a, b) => new Date(b.date) - new Date(a.date));
-        // Select the top 3 recent projects
         const recentPortfolios = sortedPortfolios.slice(0, 3);
         setPortfolios(recentPortfolios);
       })
@@ -23,7 +21,7 @@ const PortfolioSection = () => {
       <div className="container mx-auto">
         <h2 className="text-4xl font-bold mb-6 text-center text-custom-green-2">Portfolio</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {portfolios.map((portfolio, index) => (
+          {portfolios.map((portfolio) => (
             <div className="text-center mb-10">
               <Image
                   src={`/api/portfolio/image/${portfolio.imageId}?t=${new Date().getTime()}`}

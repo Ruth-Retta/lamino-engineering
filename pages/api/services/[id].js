@@ -37,11 +37,12 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'Error parsing form data', details: err.message });
       }
 
-      const { title, description } = fields;
+      const { title, description, date } = fields;
       
       let updateData = { 
         title: Array.isArray(title) ? title[0] : title,
-        description: Array.isArray(description) ? description[0] : description
+        description: Array.isArray(description) ? description[0] : description,
+        date: Array.isArray(date) ? date[0] : date,
       };
 
       try {

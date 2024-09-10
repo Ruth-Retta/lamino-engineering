@@ -21,7 +21,7 @@ const Certifications = () => {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className="mx-auto mt-40">
-        <h2 className="text-3xl font-bold mb-6">Certifications and Awards</h2>
+        {/* <h2 className="text-3xl font-bold mb-6">Certifications and Awards</h2> */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
           {certifications.map(certification => (
             <div key={certification._id} className="text-center">

@@ -22,25 +22,23 @@ export default function Services() {
   }, []);
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col mt-20">
       <Header />
       <main className="mx-auto px-4 md:px-10 lg:px-20 mt-20">
-        <h1 className="text-4xl font-extrabold mb-12 text-center text-customgreen1">Our Services</h1>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
           {services.length > 0 ? (
             services.map((service, index) => (
               <div
                 key={index}
-                className="p-6 border border-gray-300 rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow duration-300"
+                className="p-6 rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow duration-300 max-w-lg mx-auto" // Limiting width
               >
-                <div className="relative mb-6">
-                  <Image 
-                    src={service.image} 
-                    alt={service.title} 
-                    layout="responsive" 
-                    width={500} 
-                    height={300} 
-                    className="object-cover rounded-lg"
+                <div className="relative w-full h-48 mb-6"> {/* Defined height */}
+                  <Image
+                    src={`/api/services/image/${service.imageId}?t=${new Date().getTime()}`}
+                    alt={service.title}
+                    layout="fill"
+                    objectFit="cover"
+                    className="rounded-lg"
                   />
                 </div>
                 <h3 className="text-2xl font-semibold mb-2 text-customgreen1">{service.title}</h3>

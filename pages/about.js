@@ -10,7 +10,7 @@ export default function About() {
     <div className="min-h-screen flex flex-col">
       <Header />
       <main className=" mx-auto ml-20 mr-20 p-10 mt-40 mb-10 rounded-lg shadow-lg">
-        <h1 className="text-4xl font-bold mb-6">About Lamino Engineering PLC</h1>
+        {/* <h1 className="text-4xl font-bold mb-6">About Lamino Engineering PLC</h1> */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>
             <p className="text-lg mb-4">
