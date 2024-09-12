@@ -196,30 +196,32 @@ const ManageServices = () => {
   );
 
   const renderServicesList = () => (
-    <ul className="manage-list">
+    <ul className="space-y-6"> {/* Add space between list items */}
       {services.map((service) => (
-        <li key={service._id} className="manage-listItem">
-          <h3>{service.title}</h3>
+        <li key={service._id} className="bg-white shadow-lg rounded-lg p-6">
+          <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
           {service.imageId && (
-            <Image
-              src={`/api/services/image/${service.imageId}?t=${new Date().getTime()}`}
-              alt={service.title}
-              width={200}
-              height={150}
-              className="mt-4 rounded-lg h-24 w-auto"
-            />
+            <div className="mb-4">
+              <Image
+                src={`/api/services/image/${service.imageId}?t=${new Date().getTime()}`}
+                alt={service.title}
+                width={200}
+                height={150}
+                className="rounded-lg"
+              />
+            </div>
           )}
-          <p>{service.description}</p>
-          <p>{new Date(service.date).toLocaleDateString()}</p>
-          <div className="manage-buttons">
+          <p className="mb-2 text-gray-700">{service.description}</p>
+          <p className="text-gray-500">{new Date(service.date).toLocaleDateString()}</p>
+          <div className="mt-4 flex space-x-4">
             <button
-              className="manage-button"
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
               onClick={() => handleEdit(service)}
             >
               Edit
             </button>
             <button
-              className="manage-button manage-deleteButton"
+              className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
               onClick={() => deleteService(service._id)}
             >
               Delete

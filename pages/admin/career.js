@@ -150,8 +150,8 @@ const ManageCareers = () => {
         <form onSubmit={handleSubmit} className="manage-formContainer">
           <h2>{isEditing ? "Edit Career" : "Add New Career"}</h2>
           {renderInput("position", "Position")}
-          {renderInput("startDate", "Start Date")}
-          {renderInput("endDate", "End Date")}
+          {renderInput("startDate", "Start Date", "date")}
+          {renderInput("endDate", "End Date", "date")}
           {renderTextarea("description", "Description")}
           {renderInput("requirements", "Requirements")}
           {renderInput("date", "Date", "date")}
@@ -214,9 +214,7 @@ const ManageCareers = () => {
               <h3>{career.position}</h3>
               {career.imageId && (
                 <Image
-                  src={`/api/careers/image/${
-                    career.imageId
-                  }?t=${new Date().getTime()}`}
+                  src={`/api/careers/image/${career.imageId}?t=${new Date().getTime()}`}
                   alt={career.position}
                   width={100}
                   height={50}

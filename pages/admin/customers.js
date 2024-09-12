@@ -198,8 +198,8 @@ const ManageCustomers = () => {
   const renderCustomersList = () => (
     <ul className="manage-list">
       {customers.map((customer) => (
-        <li key={customer._id} className="manage-listItem">
-          <h3>{customer.name}</h3>
+        <li key={customer._id} className="manage-listItem bg-white shadow-lg rounded-lg p-6">
+          <h3 className="text-xl mb-2">{customer.name}</h3>
           {customer.imageId && (
             <Image
               src={`/api/customers/image/${
@@ -211,20 +211,20 @@ const ManageCustomers = () => {
               className="mt-4 rounded-lg h-24 w-auto"
             />
           )}
-          <p>{customer.website}</p>
-          <p>{new Date(customer.date).toLocaleDateString()}</p>
+          <p className="mb-2 text-gray-700">{customer.website}</p>
+          <p className="mb-2 text-gray-700">{new Date(customer.date).toLocaleDateString()}</p>
           <div className="manage-buttons">
             <button
-              className="manage-button"
-              onClick={() => handleEdit(customer)}
-            >
-              Edit
-            </button>
-            <button
-              className="manage-button manage-deleteButton"
-              onClick={() => deleteCustomer(customer._id)}
-            >
-              Delete
+                  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+                  onClick={() => handleEdit(customer)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
+                  onClick={() => deleteCustomer(customer._id)}
+                >
+                  Delete
             </button>
           </div>
         </li>

@@ -200,33 +200,33 @@ const ManageTestimonials = () => {
       );
     
       const renderTestimonialsList = () => (
-        <ul className="manage-list">
+        <ul className="space-y-6"> {/* Adds vertical spacing between list items */}
           {testimonials.map((testimonial) => (
-            <li key={testimonial._id} className="manage-listItem">
-              <h3>{testimonial.author}</h3>
+            <li key={testimonial._id} className="bg-white shadow-lg rounded-lg p-6">
+              <h3 className="text-xl font-semibold mb-2">{testimonial.author}</h3>
               {testimonial.imageId && (
-                <Image
-                  src={`/api/testimonials/image/${
-                    testimonial.imageId
-                  }?t=${new Date().getTime()}`}
-                  alt={testimonial.author}
-                  width={200}
-                  height={150}
-                  className="mt-4 rounded-lg h-24 w-auto"
-                />
+                <div className="mb-4">
+                  <Image
+                    src={`/api/testimonials/image/${testimonial.imageId}?t=${new Date().getTime()}`}
+                    alt={testimonial.author}
+                    width={200}
+                    height={150}
+                    className="rounded-lg"
+                  />
+                </div>
               )}
-              <p>{testimonial.position}</p>
-              <p>{testimonial.content}</p>
-              <p>{new Date(testimonial.date).toLocaleDateString()}</p>
-              <div className="manage-buttons">
+              <p className="mb-2 text-gray-700"><strong>Position:</strong> {testimonial.position}</p>
+              <p className="mb-2 text-gray-800">{testimonial.content}</p>
+              <p className="text-gray-500">{new Date(testimonial.date).toLocaleDateString()}</p>
+              <div className="mt-4 flex space-x-4">
                 <button
-                  className="manage-button"
+                  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
                   onClick={() => handleEdit(testimonial)}
                 >
                   Edit
                 </button>
                 <button
-                  className="manage-button manage-deleteButton"
+                  className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
                   onClick={() => deleteTestimonial(testimonial._id)}
                 >
                   Delete

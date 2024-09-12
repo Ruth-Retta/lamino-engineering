@@ -198,8 +198,8 @@ const ManagePartners = () => {
   const renderPartnersList = () => (
     <ul className="manage-list">
       {partners.map((partner) => (
-        <li key={partner._id} className="manage-listItem">
-          <h3>{partner.name}</h3>
+        <li key={partner._id} className="manage-listItem bg-white shadow-lg rounded-lg p-6">
+          <h3 className="text-xl mb-2">{partner.name}</h3>
           {partner.imageId && (
             <Image
               src={`/api/partners/image/${
@@ -211,20 +211,20 @@ const ManagePartners = () => {
               className="mt-4 rounded-lg h-24 w-auto"
             />
           )}
-          <p>{partner.website}</p>
-          <p>{new Date(partner.date).toLocaleDateString()}</p>
+          <p className="mb-2 text-gray-700">{partner.website}</p>
+          <p className="mb-2 text-gray-700">{new Date(partner.date).toLocaleDateString()}</p>
           <div className="manage-buttons">
             <button
-              className="manage-button"
-              onClick={() => handleEdit(partner)}
-            >
-              Edit
-            </button>
-            <button
-              className="manage-button manage-deleteButton"
-              onClick={() => deletePartner(partner._id)}
-            >
-              Delete
+                  className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+                  onClick={() => handleEdit(partner)}
+                >
+                  Edit
+                </button>
+                <button
+                  className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
+                  onClick={() => deletePartner(partner._id)}
+                >
+                  Delete
             </button>
           </div>
         </li>

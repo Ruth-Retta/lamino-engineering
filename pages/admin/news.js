@@ -197,31 +197,33 @@ const renderTextarea = (name, placeholder) => (
 );
 
 const renderNewsList = () => (
-  <ul className="manage-list">
-    {news.map((news) => (
-      <li key={news._id} className="manage-listItem">
-        <h3>{news.title}</h3>
-        {news.imageId && (
-          <Image
-            src={`/api/news/image/${news.imageId}?t=${new Date().getTime()}`}
-            alt={news.title}
-            width={200}
-            height={150}
-            className="mt-4 rounded-lg h-24 w-auto"
-          />
+  <ul className="space-y-6"> {/* Add space between list items */}
+    {news.map((newsItem) => (
+      <li key={newsItem._id} className="bg-white shadow-lg rounded-lg p-6">
+        <h3 className="text-xl font-semibold mb-2">{newsItem.title}</h3>
+        {newsItem.imageId && (
+          <div className="mb-4">
+            <Image
+              src={`/api/news/image/${newsItem.imageId}?t=${new Date().getTime()}`}
+              alt={newsItem.title}
+              width={200}
+              height={150}
+              className="rounded-lg"
+            />
+          </div>
         )}
-        <p>{news.content}</p>
-        <p>{new Date(news.date).toLocaleDateString()}</p>
-        <div className="manage-buttons">
+        <p className="mb-2 text-gray-700">{newsItem.content}</p>
+        <p className="text-gray-500">{new Date(newsItem.date).toLocaleDateString()}</p>
+        <div className="mt-4 flex space-x-4">
           <button
-            className="manage-button"
-            onClick={() => handleEdit(news)}
+            className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+            onClick={() => handleEdit(newsItem)}
           >
             Edit
           </button>
           <button
-            className="manage-button manage-deleteButton"
-            onClick={() => deleteNews(news._id)}
+            className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
+            onClick={() => deleteNews(newsItem._id)}
           >
             Delete
           </button>

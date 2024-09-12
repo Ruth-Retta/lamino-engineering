@@ -203,33 +203,33 @@ const ManageCertifications = () => {
   );
 
   const renderCertificationsList = () => (
-    <ul className="manage-list">
+    <ul className="space-y-6"> {/* Add vertical spacing between list items */}
       {certifications.map((certification) => (
-        <li key={certification._id} className="manage-listItem">
-          <h3>{certification.title}</h3>
+        <li key={certification._id} className="bg-white shadow-lg rounded-lg p-6">
+          <h3 className="text-xl font-semibold mb-2">{certification.title}</h3>
           {certification.imageId && (
-            <Image
-              src={`/api/certifications/image/${
-                certification.imageId
-              }?t=${new Date().getTime()}`}
-              alt={certification.title}
-              width={200}
-              height={150}
-              className="mt-4 rounded-lg h-24 w-auto"
-            />
+            <div className="mb-4">
+              <Image
+                src={`/api/certifications/image/${certification.imageId}?t=${new Date().getTime()}`}
+                alt={certification.title}
+                width={200}
+                height={150}
+                className="rounded-lg"
+              />
+            </div>
           )}
-          <p>{certification.description}</p>
-          <p>{certification.certifyingOrganization}</p>
-          <p>{new Date(certification.date).toLocaleDateString()}</p>
-          <div className="manage-buttons">
+          <p className="mb-2 text-gray-700">{certification.description}</p>
+          <p className="mb-2 text-gray-600"><strong>Certifying Organization:</strong> {certification.certifyingOrganization}</p>
+          <p className="text-gray-500">{new Date(certification.date).toLocaleDateString()}</p>
+          <div className="mt-4 flex space-x-4">
             <button
-              className="manage-button"
+              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
               onClick={() => handleEdit(certification)}
             >
               Edit
             </button>
             <button
-              className="manage-button manage-deleteButton"
+              className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
               onClick={() => deleteCertification(certification._id)}
             >
               Delete
