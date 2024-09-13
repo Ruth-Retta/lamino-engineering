@@ -35,9 +35,9 @@ export default async function handler(req, res) {
         return res.status(500).json({ error: 'Error parsing form data', details: err.message });
       }
 
-      const { position, description, requirement, startDate, endDate, date } = fields;
+      const { position, description, requirements, startDate, endDate, date } = fields;
       
-      if (!position || !description || !requirement || !startDate || !endDate || !date) {
+      if (!position || !description || !requirements || !startDate || !endDate || !date) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
@@ -47,7 +47,7 @@ export default async function handler(req, res) {
           description: Array.isArray(description) ? description[0] : description,
           startDate: Array.isArray(startDate) ? startDate[0] : startDate,
           endDate: Array.isArray(endDate) ? endDate[0] : endDate,
-          requirement: Array.isArray(requirement) ? requirement[0] : requirement,
+          requirements: Array.isArray(requirements) ? requirements[0] : requirements,
           date: Array.isArray(date) ? date[0] : date,
         });
 

@@ -208,37 +208,39 @@ const ManageCareers = () => {
       );
     
       const renderCareersList = () => (
-        <ul className="manage-list">
+        <ul className="space-y-6">
           {careers.map((career) => (
-            <li key={career._id} className="manage-listItem">
-              <h3>{career.position}</h3>
-              {career.imageId && (
-                <Image
-                  src={`/api/careers/image/${career.imageId}?t=${new Date().getTime()}`}
-                  alt={career.position}
-                  width={100}
-                  height={50}
-                  className="mt-4 rounded-lg h-24 w-auto"
-                />
-              )}
-              <p>{career.description}</p>
-              <p>{career.requirements}</p>
-              <p>{career.startDate} | {career.endDate}</p>
-              <p>{new Date(career.date).toLocaleDateString()}</p>
-              <div className="manage-buttons">
-                <button
-                  className="manage-button"
-                  onClick={() => handleEdit(career)}
-                >
-                  Edit
-                </button>
-                <button
-                  className="manage-button manage-deleteButton"
-                  onClick={() => deleteCareer(career._id)}
-                >
-                  Delete
-                </button>
-              </div>
+            <li key={career._id} className="bg-white shadow-lg rounded-lg p-6">
+                <h3 className="text-xl font-semibold mb-2">{career.position}</h3>
+                {career.imageId && (
+                <div className="mb-4">
+                  <Image
+                    src={`/api/careers/image/${career.imageId}?t=${new Date().getTime()}`}
+                    alt={career.position}
+                    width={100}
+                    height={50}
+                    className="mt-4 rounded-lg h-24 w-auto"
+                  />
+                </div>
+                )}
+                <p className="mb-2 text-gray-700">{career.description}</p>
+                <p className="mb-2 text-gray-700">{career.requirements}</p>
+                <p className="text-gray-500">{new Date(career.startDate).toLocaleDateString()} | {new Date(career.endDate).toLocaleDateString()}</p>
+                <p className="text-gray-500">{new Date(career.date).toLocaleDateString()}</p>
+                <div className="mt-4 flex space-x-4">
+                  <button
+                    className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+                    onClick={() => handleEdit(career)}
+                  >
+                    Edit
+                  </button>
+                  <button
+                    className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
+                    onClick={() => deleteCareer(career._id)}
+                  >
+                    Delete
+                  </button>
+                </div>
             </li>
           ))}
         </ul>

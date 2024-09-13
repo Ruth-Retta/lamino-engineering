@@ -20,24 +20,24 @@ const Certifications = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="mx-auto mt-40">
+      <main className="mx-auto mt-40 mb-30">
         {/* <h2 className="text-3xl font-bold mb-6">Certifications and Awards</h2> */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-10">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-20">
           {certifications.map(certification => (
             <div key={certification._id} className="text-center">
-              <p>{certification.imageId && (
+              <p className="mt-0">{certification.imageId && (
                 <Image
                   src={`/api/certifications/image/${certification.imageId}?t=${new Date().getTime()}`}
                   alt={certification.title}
-                  width={200}
-                  height={200}
-                  className="mt-4 rounded-lg h-24 w-auto mx-auto"
+                  width={400}
+                  height={400}
+                  className="mt-4 rounded-lg h-60 w-auto mx-auto"
                 />
           )}</p>
-              <p className="text-lg font-medium">{certification.title}</p>
-              <p>{certification.description}</p>
-              <p className="text-sm text-gray-500">{certification.certifyingOrganization}</p>
-              <p className="text-sm text-gray-500">{new Date(certification.date).toLocaleDateString()}</p>
+              <p className="text-lg font-medium m-0">{certification.title}</p>
+              <p className="m-0">{certification.description}</p>
+              <p className="text-sm text-gray-500 m-0">{certification.certifyingOrganization}</p>
+              <p className="text-sm text-gray-500 mb-10">{new Date(certification.date).toLocaleDateString()}</p>
             </div>
           ))}
         </div>

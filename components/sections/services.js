@@ -19,7 +19,7 @@ const ServicesSection = () => {
   return (
     <section id="services" className="py-10 bg-gray-0">
       <div className="container mx-auto">
-        <h2 className="text-4xl font-bold mb-6 text-center text-custom-green-2">Our Services</h2>
+        <h2 className="text-4xl font-bold mb-6 text-center text-custom-green-2">Services</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {services.map((service) => (
             <div className="text-center mb-10">

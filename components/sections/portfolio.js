@@ -32,7 +32,7 @@ const PortfolioSection = () => {
               />
               <div className="card-content">
               <h3 className="text-2xl font-bold mt-4">{portfolio.title}</h3>
-                <p className="card-description">{portfolio.description}</p>
+                <p className="card-description">{portfolio.description.split('.').slice(0, 2).join('.')}... </p>
               </div>
             </div>
           ))}

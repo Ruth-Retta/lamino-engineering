@@ -219,7 +219,7 @@ const ManageCertifications = () => {
             </div>
           )}
           <p className="mb-2 text-gray-700">{certification.description}</p>
-          <p className="mb-2 text-gray-600"><strong>Certifying Organization:</strong> {certification.certifyingOrganization}</p>
+          <p className="mb-2 text-gray-600">{certification.certifyingOrganization}</p>
           <p className="text-gray-500">{new Date(certification.date).toLocaleDateString()}</p>
           <div className="mt-4 flex space-x-4">
             <button
