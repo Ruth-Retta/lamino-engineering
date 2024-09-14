@@ -46,7 +46,7 @@ export default function Contact() {
     return (
         <div className="min-h-screen flex flex-col">
             <Header />
-            <main className="mx-auto ml-20 mr-20 mt-40 mb-10">
+            <main style={{ marginTop: '80px' }} className="mx-auto ml-20 mr-20 mt-40 mb-10">
                 <div className="container mx-auto">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-4xl font-bold">Contact Us</h2>

@@ -24,7 +24,7 @@ const HomeSection = () => {
   }, []);
   
   return (
-    <section id="home" >
+    <section class="home" >
     <Swiper
       spaceBetween={5}
       slidesPerView={1}

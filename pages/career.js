@@ -4,7 +4,7 @@ import Image from 'next/image';
 import React, { useEffect, useState, useRef } from 'react';
 import axios from 'axios';
 import ApplicationForm from '../components/ApplicationForm';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 
 
 
@@ -14,11 +14,12 @@ const Careers = () => {
     const [selectedCareer, setSelectedCareer] = useState(null);
     const modalRef = useRef(null);
 
-    const handleApply = (career) => {
-      setIsApplicationFormVisible(true);
-      setSelectedCareer(career);
-      ReactDOM.render(<ApplicationForm career={selectedCareer} onClose={() => setIsApplicationFormVisible(false)} />, modalRef.current);
-    };
+    // const handleApply = (career) => {
+    //   setIsApplicationFormVisible(true);
+    //   setSelectedCareer(career);
+    //   const root = createRoot(document.getElementById('root'));
+    //   root.render(<ApplicationForm />);
+    // };
 
     useEffect(() => {
         axios.get('/api/careers')
@@ -34,7 +35,7 @@ const Careers = () => {
       return (
         <div className="career-page min-h-screen flex flex-col bg-gray-100">
           <Header />
-          <main className="mx-auto px-4 mt-40">
+          <main style={{ marginTop: '80px' }} className="mx-auto px-4 mt-40">
             <h2 className="text-3xl font-bold text-center mb-12">We're Hiring!</h2>
             {careers.length > 0 ? (
               <ul className=" grid grid-cols-1 gap-8">
@@ -65,7 +66,7 @@ const Careers = () => {
                             <li key={index}>{requirement}</li>
                           ))}
                         </ul>
-                        <button className="btn btn-primary" onClick={() => handleApply(career)}>Apply</button>
+                        {/* <button className="btn btn-primary" onClick={() => handleApply(career)}>Apply</button> */}
                       </div>
                     </div>
                   </li>
@@ -78,9 +79,9 @@ const Careers = () => {
         <ApplicationForm career={selectedCareer} onClose={() => setIsApplicationFormVisible(false)} />
       )}
           </main>
-          <div ref={modalRef} className="modal-overlay" style={{ display: isApplicationFormVisible ? 'block' : 'none' }}>
+          {/* <div ref={modalRef} className="modal-overlay" style={{ display: isApplicationFormVisible ? 'block' : 'none' }}> */}
         {/* The application form will be rendered here */}
-      </div>
+      {/* </div> */}
           <Footer />
         </div>
       );

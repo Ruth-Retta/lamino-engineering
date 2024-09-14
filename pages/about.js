@@ -2,14 +2,14 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Image from 'next/image';
 import background from '../public/background.jpg';
-import PartnersSection from '@/components/sections/partners';
-import CustomersSection from '@/components/sections/customers';
+import PartnersSection from '@/components/sections/Partners';
+import CustomersSection from '@/components/sections/Customers';
 
 export default function About() {
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className=" mx-auto ml-20 mr-20 p-10 mt-40 mb-10 rounded-lg shadow-lg">
+      <main style={{ marginTop: '80px' }} className=" mx-auto ml-20 mr-20 p-10 mt-40 mb-10 rounded-lg shadow-lg">
         {/* <h1 className="text-4xl font-bold mb-6">About Lamino Engineering PLC</h1> */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           <div>

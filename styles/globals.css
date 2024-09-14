@@ -23,10 +23,11 @@ html,
   --transition-duration: 0.3s;
 }
 
-* {
+/* * {
 padding: 30;
 margin: 10;
-}
+} */
+
 
 /* Container styling */
 .admin-login-container {

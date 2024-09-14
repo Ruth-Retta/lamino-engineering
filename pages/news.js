@@ -24,8 +24,8 @@ const News = () => {
   return (
     <div className="min-h-screen flex flex-col bg-gray-50">
       <Header />
-      <main className="flex-grow container mx-auto py-10 px-4 md:px-10 lg:px-20">
-        <h1 className="text-4xl font-extrabold mb-12 text-center text-customgreen1">Latest News</h1>
+      <main style={{ marginTop: '80px' }} className="flex-grow container mx-auto py-10 px-4 md:px-10 lg:px-20">
+        {/* <h1 className="text-4xl font-extrabold mb-12 text-center text-customgreen1">Latest News</h1> */}
         <div className="space-y-12">
           {newsArticles.map((article) => (
             <div
