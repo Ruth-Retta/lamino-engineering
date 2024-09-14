@@ -32,9 +32,9 @@ const HomeSection = () => {
       pagination={{ clickable: true }}
       autoplay={{ delay: 3000, disableOnInteraction: false }}
     >
-
-        {news.map((news, index) => (
-          <SwiperSlide key={index}>
+        {news.length > 0 ? (
+            news.map((news) => (
+          <SwiperSlide key={news._id}>
             <div className="slide-content">
                 <Image
                   src={`/api/news/image/${news.imageId}?t=${new Date().getTime()}`}
@@ -49,7 +49,10 @@ const HomeSection = () => {
                 </div>
             </div>
           </SwiperSlide>
-        ))}
+        ))
+      ) : (
+        <p className="text-center text-lg">No recent news available</p>
+      )}
     </Swiper>
     </section>
   );

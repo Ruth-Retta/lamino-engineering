@@ -24,13 +24,13 @@ export default function Services() {
   return (
     <div className="min-h-screen flex flex-col mt-20">
       <Header />
-      <main style={{ marginTop: '80px' }} className="mx-auto px-4 md:px-10 lg:px-20 mt-20">
+      <main style={{ marginTop: '50px' }} className="mx-auto px-4 md:px-10 lg:px-20 mt-10">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
           {services.length > 0 ? (
             services.map((service, index) => (
               <div
                 key={index}
-                className="p-6 rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow duration-300 max-w-lg mx-auto" // Limiting width
+                className="p-6 rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow duration-300 max-w-lg mx-auto mb-10" // Limiting width
               >
                 <div className="relative w-full h-48 mb-6"> {/* Defined height */}
                   <Image
@@ -46,12 +46,6 @@ export default function Services() {
                 <p className="text-gray-500 text-sm mb-6">
                   Posted on {dayjs(service.date).format('MMMM D, YYYY')}
                 </p>
-                <button 
-                  className="bg-customgreen1 text-white py-2 px-4 rounded hover:bg-green-700 transition-colors duration-300"
-                  aria-label={`Learn more about ${service.title}`}
-                >
-                  Learn More
-                </button>
               </div>
             ))
           ) : (

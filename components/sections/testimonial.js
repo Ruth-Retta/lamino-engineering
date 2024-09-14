@@ -39,8 +39,9 @@ const TestimonialsSection = () => {
         }}
         pagination={{ clickable: true }}
       >
-        {testimonials.map((testimonial, index) => (
-          <SwiperSlide key={index}>
+        {testimonials.length > 0 ? (
+            testimonials.map((testimonial) => (
+          <SwiperSlide key={testimonial._id}>
             <div className="testimonial-card">
               <div className="testimonial-header">
                 <Image
@@ -61,7 +62,10 @@ const TestimonialsSection = () => {
               </div>
             </div>
           </SwiperSlide>
-        ))}
+        ))
+      ) : (
+        <p className="text-center text-lg">No recent testimonials available</p>
+      )}
       </Swiper>
       </div>
     </section>
