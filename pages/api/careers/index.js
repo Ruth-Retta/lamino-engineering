@@ -1,4 +1,5 @@
 import dbConnect from '../../../lib/dbConnect';
+import { withAdminAuth } from '../../../middleware/apiMiddleware';
 import Career from '../../../models/Career';
 import { IncomingForm } from 'formidable';
 import fs from 'fs/promises';
@@ -9,7 +10,7 @@ export const config = {
   },
 };
 
-export default async function handler(req, res) {
+async function handler(req, res) {
   await dbConnect();
 
   if (req.method === 'GET') {
@@ -75,3 +76,5 @@ export default async function handler(req, res) {
     res.status(405).json({ message: 'Method Not Allowed' });
   }
 }
+
+export default withAdminAuth(handler)
