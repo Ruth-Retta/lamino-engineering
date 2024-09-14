@@ -73,6 +73,13 @@ const AdminDashboard = () => {
               </div>
             </Link>
           </li>
+          <li>
+            <Link href="/admin/about">
+              <div className="bg-[#70BA02] text-white py-2 px-4 rounded shadow-md hover:bg-[#94D13A] transition-colors cursor-pointer">
+                Manage About
+              </div>
+            </Link>
+          </li>
         </ul>
       </div>
       <div className="mt-8">
