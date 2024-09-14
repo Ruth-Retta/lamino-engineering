@@ -18,7 +18,7 @@ const Index = () => {
     <div>
       <ResponsiveComponent />
       <Header />
-      <main style={{ marginTop: '80px' }}>
+      <main style={{ marginTop: '100px' }}>
         <HomeSection />
         <ServicesSection />
         <PortfolioSection />
