@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 const ManageNews = () => {
+  const { data: session } = useSession();
   const [news, setNews] = useState([]);
   const [formData, setFormData] = useState({
     title: '',
@@ -232,6 +234,10 @@ const renderNewsList = () => (
     ))}
   </ul>
 );
+
+if (!session || !session.user.role) {
+  return <p>Access Denied</p>;
+}
 
 return (
   <div className="manage-container">

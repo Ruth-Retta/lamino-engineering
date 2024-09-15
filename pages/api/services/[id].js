@@ -1,4 +1,5 @@
 import dbConnect from '../../../lib/dbConnect';
+import { getSession } from "next-auth/react";
 import Service from '../../../models/Service';
 import { IncomingForm } from 'formidable';
 import fs from 'fs/promises';
@@ -10,6 +11,10 @@ export const config = {
 };
 
 export default async function handler(req, res) {
+  const session = await getSession({ req });
+  if (!session || !session.user.role) {
+    return res.status(401).json({ error: "Not authenticated" });
+  }
   const { id } = req.query;
 
   await dbConnect();

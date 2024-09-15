@@ -7,13 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "add-admin": "node scripts/addAdminUser.mjs"
+    "createAdmin": "node scripts/createAdmin.js"
   },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.6.0",
     "@fortawesome/react-fontawesome": "^0.2.2",
     "aws4": "^1.13.1",
     "axios": "^1.7.2",
+    "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "cookie": "^0.6.0",
     "dayjs": "^1.11.13",

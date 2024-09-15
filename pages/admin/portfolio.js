@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 const ManagePortfolio = () => {
+  const { data: session } = useSession();
     const [portfolios, setPortfolios] = useState([]);
     const [formData, setFormData] = useState({
         title: '',
@@ -230,6 +232,10 @@ const ManagePortfolio = () => {
       ))}
     </ul>
   );
+
+  if (!session || !session.user.role) {
+    return <p>Access Denied</p>;
+  }
 
   return (
     <div className="manage-container">

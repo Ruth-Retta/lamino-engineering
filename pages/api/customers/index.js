@@ -1,6 +1,7 @@
 import dbConnect from '../../../lib/dbConnect';
 import Customer from '../../../models/Customer';
 import { IncomingForm } from 'formidable';
+import { getSession } from "next-auth/react";
 import fs from 'fs/promises';
 
 
@@ -12,6 +13,10 @@ export const config = {
 
 
 export default async function handler(req, res) {
+  const session = await getSession({ req });
+  if (!session || !session.user.role) {
+    return res.status(401).json({ error: "Not authenticated" });
+  }
   await dbConnect();
 
   if (req.method === 'GET') {

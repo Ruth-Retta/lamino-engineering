@@ -1,16 +1,20 @@
 import React from 'react';
 import Link from 'next/link';
+import { useSession, signOut } from 'next-auth/react';
 import { useRouter } from 'next/router';
-import { signOut } from 'next-auth/react';
 
 const AdminDashboard = () => {
+  const { data: session } = useSession();
   const router = useRouter();
 
-  const handleLogout = () => {
-    const email = localStorage.getItem('authEmail') || '';
-    signOut({ redirect: false });
-    router.push(`/admin?email=${email}`);
+  const handleLogout = async () => {
+    const result = await signOut({ redirect: false, callbackUrl: '/admin' });
+    router.push(result.url);
   };
+
+  if (!session || !session.user.role) {
+    return <p>Access Denied</p>;
+  }
 
   return (
     <div className="admin-dashboard min-h-screen flex flex-col justify-between p-8 bg-white">

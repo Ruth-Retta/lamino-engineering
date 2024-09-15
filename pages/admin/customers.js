@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 const ManageCustomers = () => {
+  const { data: session } = useSession();
     const [customers, setCustomers] = useState([]);
     const [formData, setFormData] = useState({
         name: '',
@@ -232,7 +234,9 @@ const ManageCustomers = () => {
     </ul>
   );
 
-
+  if (!session || !session.user.role) {
+    return <p>Access Denied</p>;
+  }
     return (
         <div className="manage-container">
       <h1 className="manage-title">Manage Customers</h1>
