@@ -138,7 +138,7 @@ export default function MakeRequest() {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">List of Materials (if any)</label>
+                            <label className="block text-sm font-medium text-gray-700">List of Materials</label>
                             <input
                                 type="text"
                                 name="materials"
@@ -148,7 +148,7 @@ export default function MakeRequest() {
                             />
                         </div>
                         <div>
-                            <label className="block text-sm font-medium text-gray-700">Attachments (if any)</label>
+                            <label className="block text-sm font-medium text-gray-700">Attachments</label>
                             <input
                                 type="file"
                                 name="attachments"
