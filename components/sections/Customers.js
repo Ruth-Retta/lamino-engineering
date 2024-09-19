@@ -17,7 +17,7 @@ const CustomersSection = () => {
         <div className="container mx-auto">
           <h2 className="text-4xl font-bold mb-6 text-center pb-5 text-custom-green-2">Customers</h2>
           <div className="flex flex-col items-center">
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-20">
+            <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-3 gap-20">
             {Array.isArray(customers) && customers.length > 0 ? (
               customers.map(customer => (
                 <div key={customer._id} className="text-center transform transition duration-500 hover:scale-110">

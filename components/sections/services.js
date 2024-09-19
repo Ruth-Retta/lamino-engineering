@@ -33,7 +33,7 @@ const ServicesSection = () => {
                 />
                 <div className="card-content mt-4">
                   <h3 className="text-2xl font-bold">{service.title}</h3>
-                  <p className="mt-2 card-description">{service.description}</p>
+                  <p className="mt-2 card-description">{service.description.split(' ').slice(0, 25).join(' ')}...</p>
                 </div>
               </div>
             ))
@@ -41,7 +41,7 @@ const ServicesSection = () => {
             <p className="text-center text-lg">No services available</p>
           )}
         </div>
-        <div className="text-center mt-8">
+        <div className="text-center">
           <Link className="bg-custom-green-1 text-white py-2 px-4 rounded transition hover:bg-custom-green-2" href="/services">
               Learn More
           </Link>

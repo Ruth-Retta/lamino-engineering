@@ -33,7 +33,7 @@ const PortfolioSection = () => {
                 />
                 <div className="card-content mt-4">
                   <h3 className="text-2xl font-bold">{portfolio.title}</h3>
-                  <p className="card-description mt-2">{portfolio.description.split('.').slice(0, 2).join('.')}... </p>
+                  <p className="card-description mt-2">{portfolio.description.split(' ').slice(0, 25).join(' ')}...</p>
                 </div>
               </div>
             ))
@@ -41,7 +41,7 @@ const PortfolioSection = () => {
             <p className="text-center text-lg">No portfolio items available</p>
           )}
         </div>
-        <div className="text-center mt-8">
+        <div className="text-center">
           <Link className="bg-custom-green-1 text-white py-2 px-4 rounded transition hover:bg-custom-green-2" href="/portfolio">
               Learn More
           </Link>
