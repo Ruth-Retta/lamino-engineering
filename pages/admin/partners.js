@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import AdminDashboard from "@/components/AdminDashboard";
 
 const ManagePartners = () => {
   const { data: session } = useSession();
@@ -247,4 +248,11 @@ const ManagePartners = () => {
   );
 };
 
-export default ManagePartners;
+const ManagePartnersPage = () => (
+  <AdminDashboard>
+    <ManagePartners />
+  </AdminDashboard>
+);
+
+export default ManagePartnersPage;
+

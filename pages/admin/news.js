@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import AdminDashboard from "@/components/AdminDashboard";
 
 const ManageNews = () => {
   const { data: session } = useSession();
@@ -248,5 +249,12 @@ return (
 );
 };
 
-export default ManageNews;
+const ManageNewsPage = () => (
+  <AdminDashboard>
+    <ManageNews />
+  </AdminDashboard>
+);
+
+export default ManageNewsPage;
+
 

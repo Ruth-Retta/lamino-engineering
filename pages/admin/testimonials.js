@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import AdminDashboard from "../../components/AdminDashboard";
 
 const ManageTestimonials = () => {
   const { data: session } = useSession();
@@ -252,4 +253,11 @@ const ManageTestimonials = () => {
       );
     };
 
-export default ManageTestimonials;
+    const ManageTestimonialsPage = () => (
+      <AdminDashboard>
+        <ManageTestimonials />
+      </AdminDashboard>
+    );
+    
+    export default ManageTestimonialsPage;
+    

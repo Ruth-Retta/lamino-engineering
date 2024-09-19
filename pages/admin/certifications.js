@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import AdminDashboard from "@/components/AdminDashboard";
 
 const ManageCertifications = () => {
   // State management
@@ -255,4 +256,11 @@ const ManageCertifications = () => {
   );
 };
 
-export default ManageCertifications;
+const ManageCertificationsPage = () => (
+  <AdminDashboard>
+    <ManageCertifications />
+  </AdminDashboard>
+);
+
+export default ManageCertificationsPage;
+

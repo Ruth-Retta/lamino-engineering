@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import AdminDashboard from "@/components/AdminDashboard";
 
 const ManageAbout = () => {
   // State management
@@ -244,4 +245,11 @@ const ManageAbout = () => {
   );
 };
 
-export default ManageAbout;
+const ManageAboutPage = () => (
+  <AdminDashboard>
+    <ManageAbout />
+  </AdminDashboard>
+);
+
+export default ManageAboutPage;
+

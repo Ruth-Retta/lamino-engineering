@@ -4,6 +4,7 @@ import Header from '../components/Header';
 import Footer from '../components/Footer';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEnvelope } from '@fortawesome/free-solid-svg-icons';
+import { useRouter } from 'next/router'; 
 
 export default function Contact() {
     const [formData, setFormData] = useState({
@@ -15,8 +16,8 @@ export default function Contact() {
     });
     
     const { name, email, phoneNumber, subject, message } = formData;
+    const router = useRouter();
     
-    // Define the onChange function
     const onChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
@@ -43,6 +44,11 @@ export default function Contact() {
         }
     };
 
+    
+    const handleMakeRequest = () => {
+        router.push('/makeRequest'); 
+    };
+
     return (
         <div className="min-h-screen flex flex-col">
             <Header />
@@ -50,9 +56,12 @@ export default function Contact() {
                 <div className="container mx-auto">
                     <div className="flex justify-between items-center mb-6">
                         <h2 className="text-4xl font-bold">Contact Us</h2>
-                        <button className="bg-custom-green-1 text-white py-2 px-4 rounded flex items-center">
+                        <button 
+                            className="bg-custom-green-1 text-white py-2 px-4 rounded flex items-center"
+                            onClick={handleMakeRequest} // Add click handler here
+                        >
                             <FontAwesomeIcon icon={faEnvelope} className="mr-2" />
-                            make a request
+                            Make a Request
                         </button>
                     </div>
                     <form onSubmit={onSubmit} className="space-y-4">

@@ -2,15 +2,16 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import AdminDashboard from "../../components/AdminDashboard"; 
 
 const ManageServices = () => {
   const { data: session } = useSession();
   const [services, setServices] = useState([]);
   const [formData, setFormData] = useState({
-    title: '',
-    description: '',
+    title: "",
+    description: "",
     image: null,
-    date: '',
+    date: "",
   });
   const [isEditing, setIsEditing] = useState(false);
   const [errors, setErrors] = useState({});
@@ -22,10 +23,10 @@ const ManageServices = () => {
 
   const fetchServices = async () => {
     try {
-      const response = await axios.get('/api/services');
+      const response = await axios.get("/api/services");
       setServices(response.data);
     } catch (error) {
-      console.error('Error fetching services:', error);
+      console.error("Error fetching services:", error);
     }
   };
 
@@ -70,7 +71,7 @@ const ManageServices = () => {
       await axios.delete(`/api/services/${id}`);
       fetchServices();
     } catch (error) {
-      console.error('Error deleting service:', error);
+      console.error("Error deleting service:", error);
     }
   };
 
@@ -87,16 +88,11 @@ const ManageServices = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    const requiredFields = [
-      "title",
-      "description",
-      "date",
-    ];
+    const requiredFields = ["title", "description", "date"];
     requiredFields.forEach((field) => {
       if (!formData[field])
-        newErrors[field] = `${
-          field.charAt(0).toUpperCase() + field.slice(1)
-        } is required`;
+        newErrors[field] =
+          field.charAt(0).toUpperCase() + field.slice(1) + " is required";
     });
     if (!isEditing && !formData.image) newErrors.image = "Image is required";
     return newErrors;
@@ -121,7 +117,6 @@ const ManageServices = () => {
     );
   };
 
-  // Event handlers
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prev) => ({
@@ -138,7 +133,6 @@ const ManageServices = () => {
     setIsEditing(true);
   };
 
-  // UI Components
   const renderForm = () => (
     <form onSubmit={handleSubmit} className="manage-formContainer">
       <h2>{isEditing ? "Edit Service" : "Add New Service"}</h2>
@@ -198,7 +192,7 @@ const ManageServices = () => {
   );
 
   const renderServicesList = () => (
-    <ul className="space-y-6"> {/* Add space between list items */}
+    <ul className="space-y-6">
       {services.map((service) => (
         <li key={service._id} className="bg-white shadow-lg rounded-lg p-6">
           <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
@@ -214,7 +208,9 @@ const ManageServices = () => {
             </div>
           )}
           <p className="mb-2 text-gray-700">{service.description}</p>
-          <p className="text-gray-500">{new Date(service.date).toLocaleDateString()}</p>
+          <p className="text-gray-500">
+            {new Date(service.date).toLocaleDateString()}
+          </p>
           <div className="mt-4 flex space-x-4">
             <button
               className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
@@ -247,4 +243,11 @@ const ManageServices = () => {
   );
 };
 
-export default ManageServices;
+// Wrapping ManageServices in AdminDashboard layout
+const ManageServicesPage = () => (
+  <AdminDashboard>
+    <ManageServices />
+  </AdminDashboard>
+);
+
+export default ManageServicesPage;

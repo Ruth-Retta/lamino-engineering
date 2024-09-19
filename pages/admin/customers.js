@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from 'axios';
 import Image from "next/image";
 import { useSession } from "next-auth/react";
+import AdminDashboard from "@/components/AdminDashboard";
 
 const ManageCustomers = () => {
   const { data: session } = useSession();
@@ -246,4 +247,11 @@ const ManageCustomers = () => {
     );
 };
 
-export default ManageCustomers;
+const ManageCustomersPage = () => (
+  <AdminDashboard>
+    <ManageCustomers />
+  </AdminDashboard>
+);
+
+export default ManageCustomersPage;
+
