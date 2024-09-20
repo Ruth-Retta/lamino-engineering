@@ -6,6 +6,8 @@ import CustomersSection from '@/components/sections/Customers';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 
+// 
+
 const About = () => {
   const [about, setAbout] = useState([]);
 
