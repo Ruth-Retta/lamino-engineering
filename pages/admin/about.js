@@ -193,6 +193,7 @@ const ManageAbout = () => {
                 src={`/api/about/image/${item.imageId}?t=${new Date().getTime()}`}
                 width={200}
                 height={150}
+                alt=""
                 className="rounded"
               />
             </div>
