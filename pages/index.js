@@ -9,8 +9,7 @@ import PartnersSection from '../components/sections/Partners';
 import CustomersSection from '../components/sections/Customers';
 import ResponsiveComponent from '../components/ResponsiveComponent';
 
-  
-
+//index page
 
 const Index = () => {
 
