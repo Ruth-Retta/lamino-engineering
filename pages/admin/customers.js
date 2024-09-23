@@ -197,6 +197,7 @@ const ManageCustomers = () => {
               width={200}
               height={150}
               className="rounded-lg"
+              unoptimized
             />
           )}
           <p className="mb-2 text-gray-700">{customer.website}</p>

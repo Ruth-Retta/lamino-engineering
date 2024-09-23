@@ -195,6 +195,7 @@ const ManageAbout = () => {
                 height={150}
                 alt=""
                 className="rounded"
+                unoptimized
               />
             </div>
           )}

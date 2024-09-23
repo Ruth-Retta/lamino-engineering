@@ -210,6 +210,7 @@ const ManageServices = () => {
                 width={200}
                 height={150}
                 className="rounded"
+                unoptimized
               />
             </div>
           )}

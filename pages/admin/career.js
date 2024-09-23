@@ -231,6 +231,7 @@ const ManageCareers = () => {
                 width={100}
                 height={50}
                 className="rounded-lg h-24 w-auto"
+                unoptimized
               />
             </div>
           )}

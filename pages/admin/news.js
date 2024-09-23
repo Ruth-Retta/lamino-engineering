@@ -213,6 +213,7 @@ const ManageNews = () => {
                 width={200}
                 height={150}
                 className="rounded-lg"
+                unoptimized
               />
             </div>
           )}
