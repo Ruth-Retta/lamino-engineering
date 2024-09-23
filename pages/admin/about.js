@@ -5,7 +5,6 @@ import { useSession } from "next-auth/react";
 import AdminDashboard from "@/components/AdminDashboard";
 
 const ManageAbout = () => {
-  // State management
   const { data: session } = useSession();
   const [about, setAbout] = useState([]);
   const [formData, setFormData] = useState({
@@ -17,12 +16,10 @@ const ManageAbout = () => {
   const [errors, setErrors] = useState({});
   const fileInputRef = useRef(null);
 
-  // Fetch About on component mount
   useEffect(() => {
     fetchAbout();
   }, []);
 
-  // API calls
   const fetchAbout = async () => {
     try {
       const response = await axios.get("/api/about");
@@ -73,11 +70,10 @@ const ManageAbout = () => {
       await axios.delete(`/api/about/${id}`);
       fetchAbout();
     } catch (error) {
-      handleApiError("deleting", error);
+      console.error("Error deleting about:", error);
     }
   };
 
-  // Helper functions
   const createFormData = () => {
     const data = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -90,15 +86,9 @@ const ManageAbout = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    const requiredFields = [
-      "aboutLamino",
-      "date",
-    ];
+    const requiredFields = ["aboutLamino", "date"];
     requiredFields.forEach((field) => {
-      if (!formData[field])
-        newErrors[field] = `${
-          field.charAt(0).toUpperCase() + field.slice(1)
-        } is required`;
+      if (!formData[field]) newErrors[field] = `${field} is required`;
     });
     if (!isEditing && !formData.image) newErrors.image = "Image is required";
     return newErrors;
@@ -122,7 +112,6 @@ const ManageAbout = () => {
     );
   };
 
-  // Event handlers
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prev) => ({
@@ -139,90 +128,87 @@ const ManageAbout = () => {
     setIsEditing(true);
   };
 
-  // UI Components
   const renderForm = () => (
-    <form onSubmit={handleSubmit} className="manage-formContainer">
-      <h2>{isEditing ? "Edit About" : "Add New About"}</h2>
+    <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow-sm">
+      <h2 className="text-lg font-semibold mb-4">
+        {isEditing ? "Edit About" : "Add New About"}
+      </h2>
       {renderInput("aboutLamino", "About Lamino")}
       {renderInput("date", "Date", "date")}
       {renderFileInput()}
-      <button type="submit" className="manage-button">
-        {isEditing ? "Update About" : "Add About"}
-      </button>
-      {isEditing && (
-        <button type="button" className="manage-button" onClick={resetForm}>
-          Cancel Edit
+      <div className="flex justify-between mt-4">
+        <button
+          type="submit"
+          className="bg-[#70BA02] text-white py-2 px-4 rounded focus:outline-none"
+        >
+          {isEditing ? "Update About" : "Add About"}
         </button>
-      )}
+        {isEditing && (
+          <button
+            type="button"
+            className="bg-gray-300 text-gray-600 py-2 px-4 rounded focus:outline-none"
+            onClick={resetForm}
+          >
+            Cancel Edit
+          </button>
+        )}
+      </div>
     </form>
   );
 
   const renderInput = (name, placeholder, type = "text") => (
-    <>
+    <div className="mb-3">
       <input
         type={type}
         name={name}
         placeholder={placeholder}
         value={formData[name]}
         onChange={handleInputChange}
-        className="manage-input"
+        className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-green-200"
       />
-      {errors[name] && <p className="error-text">{errors[name]}</p>}
-    </>
+      {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
+    </div>
   );
 
   const renderFileInput = () => (
-    <>
+    <div className="mb-3">
       <input
         type="file"
         name="image"
         onChange={handleInputChange}
-        className="w-full p-2 border border-gray-300 rounded"
+        className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-green-200"
         ref={fileInputRef}
       />
-      {errors.image && <p className="error-text">{errors.image}</p>}
-    </>
-  );
-
-  const renderTextarea = (name, placeholder) => (
-    <>
-      <textarea
-        name={name}
-        placeholder={placeholder}
-        value={formData[name]}
-        onChange={handleInputChange}
-        className="manage-textarea"
-      ></textarea>
-      {errors[name] && <p className="error-text">{errors[name]}</p>}
-    </>
+      {errors.image && <p className="text-red-500 text-sm">{errors.image}</p>}
+    </div>
   );
 
   const renderAboutList = () => (
-    <ul className="space-y-6"> {/* Add vertical spacing between list items */}
-      {about.map((about) => (
-        <li key={about._id} className="bg-white shadow-lg rounded-lg p-6">
-          {about.imageId && (
-            <div className="mb-4">
+    <ul className="space-y-4">
+      {about.map((item) => (
+        <li key={item._id} className="bg-white p-4 shadow-sm rounded-lg">
+          {item.imageId && (
+            <div className="my-2">
               <Image
-                src={`/api/about/image/${about.imageId}?t=${new Date().getTime()}`}
+                src={`/api/about/image/${item.imageId}?t=${new Date().getTime()}`}
                 width={200}
                 height={150}
-                className="rounded-lg"
+                className="rounded"
               />
             </div>
           )}
-          <p className="mb-2 text-gray-700">{about.aboutLamino}</p>
-          <p className="text-gray-500">{new Date(about.date).toLocaleDateString()}</p>
-          <div className="mt-4 flex space-x-4">
+          <p className="text-gray-700 mb-2">{item.aboutLamino}</p>
+          <p className="text-gray-500 text-sm">{new Date(item.date).toLocaleDateString()}</p>
+          <div className="mt-2 flex space-x-2">
             <button
-              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
-              onClick={() => handleEdit(about)}
+              className="bg-blue-500 text-white py-1 px-3 rounded focus:outline-none"
+              onClick={() => handleEdit(item)}
             >
               Edit
             </button>
             <button
-              className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
-              onClick={() => deleteAbout(about._id)}
+              className="bg-red-500 text-white py-1 px-3 rounded focus:outline-none"
+              onClick={() => deleteAbout(item._id)}
             >
               Delete
             </button>
@@ -237,10 +223,12 @@ const ManageAbout = () => {
   }
 
   return (
-    <div className="manage-container">
-      <h1 className="manage-title">Manage About</h1>
-      {renderForm()}
-      {renderAboutList()}
+    <div className="p-6 bg-gray-100">
+      <h1 className="text-2xl font-bold mb-4">Manage About</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {renderForm()}
+        {renderAboutList()}
+      </div>
     </div>
   );
 };
@@ -252,4 +240,3 @@ const ManageAboutPage = () => (
 );
 
 export default ManageAboutPage;
-

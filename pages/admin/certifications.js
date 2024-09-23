@@ -5,7 +5,6 @@ import { useSession } from "next-auth/react";
 import AdminDashboard from "@/components/AdminDashboard";
 
 const ManageCertifications = () => {
-  // State management
   const { data: session } = useSession();
   const [certifications, setCertifications] = useState([]);
   const [formData, setFormData] = useState({
@@ -19,12 +18,10 @@ const ManageCertifications = () => {
   const [errors, setErrors] = useState({});
   const fileInputRef = useRef(null);
 
-  // Fetch certifications on component mount
   useEffect(() => {
     fetchCertifications();
   }, []);
 
-  // API calls
   const fetchCertifications = async () => {
     try {
       const response = await axios.get("/api/certifications");
@@ -79,7 +76,6 @@ const ManageCertifications = () => {
     }
   };
 
-  // Helper functions
   const createFormData = () => {
     const data = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -128,7 +124,6 @@ const ManageCertifications = () => {
     );
   };
 
-  // Event handlers
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prev) => ({
@@ -145,68 +140,78 @@ const ManageCertifications = () => {
     setIsEditing(true);
   };
 
-  // UI Components
   const renderForm = () => (
-    <form onSubmit={handleSubmit} className="manage-formContainer">
-      <h2>{isEditing ? "Edit Certification" : "Add New Certification"}</h2>
+    <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow-sm">
+      <h2 className="text-lg font-semibold mb-4">
+        {isEditing ? "Edit Certification" : "Add New Certification"}
+      </h2>
       {renderInput("title", "Title")}
       {renderTextarea("description", "Description")}
       {renderInput("certifyingOrganization", "Certifying Organization")}
       {renderInput("date", "Date", "date")}
       {renderFileInput()}
-      <button type="submit" className="manage-button">
-        {isEditing ? "Update Certification" : "Add Certification"}
-      </button>
-      {isEditing && (
-        <button type="button" className="manage-button" onClick={resetForm}>
-          Cancel Edit
+      <div className="flex justify-between mt-4">
+        <button
+          type="submit"
+          className="bg-[#70BA02] text-white py-2 px-4 rounded focus:outline-none"
+        >
+          {isEditing ? "Update Certification" : "Add Certification"}
         </button>
-      )}
+        {isEditing && (
+          <button
+            type="button"
+            className="bg-gray-300 text-gray-600 py-2 px-4 rounded focus:outline-none"
+            onClick={resetForm}
+          >
+            Cancel Edit
+          </button>
+        )}
+      </div>
     </form>
   );
 
   const renderInput = (name, placeholder, type = "text") => (
-    <>
+    <div className="mb-3">
       <input
         type={type}
         name={name}
         placeholder={placeholder}
         value={formData[name]}
         onChange={handleInputChange}
-        className="manage-input"
+        className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-green-200"
       />
-      {errors[name] && <p className="error-text">{errors[name]}</p>}
-    </>
+      {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
+    </div>
   );
 
   const renderFileInput = () => (
-    <>
+    <div className="mb-3">
       <input
         type="file"
         name="image"
         onChange={handleInputChange}
-        className="w-full p-2 border border-gray-300 rounded"
+        className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-green-200"
         ref={fileInputRef}
       />
-      {errors.image && <p className="error-text">{errors.image}</p>}
-    </>
+      {errors.image && <p className="text-red-500 text-sm">{errors.image}</p>}
+    </div>
   );
 
   const renderTextarea = (name, placeholder) => (
-    <>
+    <div className="mb-3">
       <textarea
         name={name}
         placeholder={placeholder}
         value={formData[name]}
         onChange={handleInputChange}
-        className="manage-textarea"
+        className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-green-200"
       ></textarea>
-      {errors[name] && <p className="error-text">{errors[name]}</p>}
-    </>
+      {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
+    </div>
   );
 
   const renderCertificationsList = () => (
-    <ul className="space-y-6"> {/* Add vertical spacing between list items */}
+    <ul className="space-y-6">
       {certifications.map((certification) => (
         <li key={certification._id} className="bg-white shadow-lg rounded-lg p-6">
           <h3 className="text-xl font-semibold mb-2">{certification.title}</h3>
@@ -248,10 +253,12 @@ const ManageCertifications = () => {
   }
 
   return (
-    <div className="manage-container">
-      <h1 className="manage-title">Manage Certifications</h1>
-      {renderForm()}
-      {renderCertificationsList()}
+    <div className="p-6 bg-gray-100">
+      <h1 className="text-2xl font-bold mb-4">Manage Certifications</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {renderForm()}
+        {renderCertificationsList()}
+      </div>
     </div>
   );
 };
@@ -263,4 +270,3 @@ const ManageCertificationsPage = () => (
 );
 
 export default ManageCertificationsPage;
-

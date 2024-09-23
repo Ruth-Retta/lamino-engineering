@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import AdminDashboard from "../../components/AdminDashboard"; 
+import AdminDashboard from "../../components/AdminDashboard";
 
 const ManageServices = () => {
   const { data: session } = useSession();
@@ -75,7 +75,6 @@ const ManageServices = () => {
     }
   };
 
-  // Helper functions
   const createFormData = () => {
     const data = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -91,8 +90,7 @@ const ManageServices = () => {
     const requiredFields = ["title", "description", "date"];
     requiredFields.forEach((field) => {
       if (!formData[field])
-        newErrors[field] =
-          field.charAt(0).toUpperCase() + field.slice(1) + " is required";
+        newErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
     });
     if (!isEditing && !formData.image) newErrors.image = "Image is required";
     return newErrors;
@@ -111,10 +109,7 @@ const ManageServices = () => {
   };
 
   const handleApiError = (action, error) => {
-    console.error(
-      `Error ${action} service:`,
-      error.response ? error.response.data : error.message
-    );
+    console.error(`Error ${action} service:`, error.response ? error.response.data : error.message);
   };
 
   const handleInputChange = (e) => {
@@ -134,92 +129,103 @@ const ManageServices = () => {
   };
 
   const renderForm = () => (
-    <form onSubmit={handleSubmit} className="manage-formContainer">
-      <h2>{isEditing ? "Edit Service" : "Add New Service"}</h2>
-      {renderInput("title", "Title")}
-      {renderTextarea("description", "Description")}
-      {renderInput("date", "Date", "date")}
+    <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow-sm">
+      <h2 className="text-lg font-semibold mb-4">
+        {isEditing ? "Edit Service" : "Add New Service"}
+      </h2>
+      {renderInput("title", "Service Title")}
+      {renderTextarea("description", "Service Description")}
+      {renderInput("date", "Service Date", "date")}
       {renderFileInput()}
-      <button type="submit" className="manage-button">
-        {isEditing ? "Update Service" : "Add Service"}
-      </button>
-      {isEditing && (
-        <button type="button" className="manage-button" onClick={resetForm}>
-          Cancel Edit
+      <div className="flex justify-between mt-4">
+        <button
+          type="submit"
+          className="bg-[#70BA02] text-white py-2 px-4 rounded focus:outline-none"
+        >
+          {isEditing ? "Update Service" : "Add Service"}
         </button>
-      )}
+        {isEditing && (
+          <button
+            type="button"
+            className="bg-gray-300 text-gray-600 py-2 px-4 rounded focus:outline-none"
+            onClick={resetForm}
+          >
+            Cancel
+          </button>
+        )}
+      </div>
     </form>
   );
 
   const renderInput = (name, placeholder, type = "text") => (
-    <>
+    <div className="mb-3">
       <input
         type={type}
         name={name}
         placeholder={placeholder}
         value={formData[name]}
         onChange={handleInputChange}
-        className="manage-input"
+        className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-green-200"
       />
-      {errors[name] && <p className="error-text">{errors[name]}</p>}
-    </>
-  );
-
-  const renderFileInput = () => (
-    <>
-      <input
-        type="file"
-        name="image"
-        onChange={handleInputChange}
-        className="w-full p-2 border border-gray-300 rounded"
-        ref={fileInputRef}
-      />
-      {errors.image && <p className="error-text">{errors.image}</p>}
-    </>
+      {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
+    </div>
   );
 
   const renderTextarea = (name, placeholder) => (
-    <>
+    <div className="mb-3">
       <textarea
         name={name}
         placeholder={placeholder}
         value={formData[name]}
         onChange={handleInputChange}
-        className="manage-textarea"
+        className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-green-200 h-28"
       ></textarea>
-      {errors[name] && <p className="error-text">{errors[name]}</p>}
-    </>
+      {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
+    </div>
+  );
+
+  const renderFileInput = () => (
+    <div className="mb-3">
+      <input
+        type="file"
+        name="image"
+        onChange={handleInputChange}
+        className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-green-200"
+        ref={fileInputRef}
+      />
+      {errors.image && <p className="text-red-500 text-sm">{errors.image}</p>}
+    </div>
   );
 
   const renderServicesList = () => (
-    <ul className="space-y-6">
+    <ul className="space-y-4">
       {services.map((service) => (
-        <li key={service._id} className="bg-white shadow-lg rounded-lg p-6">
-          <h3 className="text-xl font-semibold mb-2">{service.title}</h3>
+        <li key={service._id} className="bg-white p-4 shadow-sm rounded-lg">
+          <h3 className="text-md font-semibold">{service.title}</h3>
           {service.imageId && (
-            <div className="mb-4">
+            <div className="my-2">
               <Image
                 src={`/api/services/image/${service.imageId}?t=${new Date().getTime()}`}
                 alt={service.title}
                 width={200}
                 height={150}
-                className="rounded-lg"
+                className="rounded"
               />
             </div>
           )}
-          <p className="mb-2 text-gray-700">{service.description}</p>
-          <p className="text-gray-500">
+          <p className="text-gray-600">{service.description}</p>
+          <p className="text-gray-500 text-sm">
             {new Date(service.date).toLocaleDateString()}
           </p>
-          <div className="mt-4 flex space-x-4">
+          <div className="mt-2 flex space-x-2">
             <button
-              className="bg-blue-500 text-white py-2 px-4 rounded hover:bg-blue-600 transition"
+              className="bg-blue-500 text-white py-1 px-3 rounded focus:outline-none"
               onClick={() => handleEdit(service)}
             >
               Edit
             </button>
             <button
-              className="bg-red-500 text-white py-2 px-4 rounded hover:bg-red-600 transition"
+              className="bg-red-500 text-white py-1 px-3 rounded focus:outline-none"
               onClick={() => deleteService(service._id)}
             >
               Delete
@@ -235,10 +241,12 @@ const ManageServices = () => {
   }
 
   return (
-    <div className="manage-container">
-      <h1 className="manage-title">Manage Services</h1>
-      {renderForm()}
-      {renderServicesList()}
+    <div className="p-6 bg-gray-100">
+      <h1 className="text-2xl font-bold mb-4">Manage Services</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {renderForm()}
+        {renderServicesList()}
+      </div>
     </div>
   );
 };

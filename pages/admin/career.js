@@ -20,8 +20,6 @@ const ManageCareers = () => {
   const [errors, setErrors] = useState({});
   const fileInputRef = useRef(null);
 
-  
-
   useEffect(() => {
     fetchCareers();
   }, []);
@@ -80,7 +78,6 @@ const ManageCareers = () => {
     }
   };
 
-  // Helper functions
   const createFormData = () => {
     const data = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -133,7 +130,6 @@ const ManageCareers = () => {
     );
   };
 
-  // Event handlers
   const handleInputChange = (e) => {
     const { name, value, files } = e.target;
     setFormData((prev) => ({
@@ -150,10 +146,11 @@ const ManageCareers = () => {
     setIsEditing(true);
   };
 
-  // UI Components
   const renderForm = () => (
-    <form onSubmit={handleSubmit} className="manage-formContainer">
-      <h2>{isEditing ? "Edit Career" : "Add New Career"}</h2>
+    <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow-sm">
+      <h2 className="text-lg font-semibold mb-4">
+        {isEditing ? "Edit Career" : "Add New Career"}
+      </h2>
       {renderInput("position", "Position")}
       {renderInput("startDate", "Start Date", "date")}
       {renderInput("endDate", "End Date", "date")}
@@ -161,55 +158,64 @@ const ManageCareers = () => {
       {renderInput("requirements", "Requirements")}
       {renderInput("date", "Date", "date")}
       {renderFileInput()}
-      <button type="submit" className="manage-button">
-        {isEditing ? "Update Career" : "Add Career"}
-      </button>
-      {isEditing && (
-        <button type="button" className="manage-button" onClick={resetForm}>
-          Cancel Edit
+      <div className="flex justify-between mt-4">
+        <button
+          type="submit"
+          className="bg-[#70BA02] text-white py-2 px-4 rounded focus:outline-none"
+        >
+          {isEditing ? "Update Career" : "Add Career"}
         </button>
-      )}
+        {isEditing && (
+          <button
+            type="button"
+            className="bg-gray-300 text-gray-600 py-2 px-4 rounded focus:outline-none"
+            onClick={resetForm}
+          >
+            Cancel Edit
+          </button>
+        )}
+      </div>
     </form>
   );
 
   const renderInput = (name, placeholder, type = "text") => (
-    <>
+    <div className="mb-3">
       <input
         type={type}
         name={name}
         placeholder={placeholder}
         value={formData[name]}
         onChange={handleInputChange}
-        className="manage-input"
+        className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-green-200"
       />
-      {errors[name] && <p className="error-text">{errors[name]}</p>}
-    </>
+      {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
+    </div>
   );
 
   const renderFileInput = () => (
-    <>
+    <div className="mb-3">
       <input
         type="file"
         name="image"
         onChange={handleInputChange}
-        className="w-full p-2 border border-gray-300 rounded"
+        className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-green-200"
         ref={fileInputRef}
       />
-      {errors.image && <p className="error-text">{errors.image}</p>}
-    </>
+      {errors.image && <p className="text-red-500 text-sm">{errors.image}</p>}
+    </div>
   );
 
   const renderTextarea = (name, placeholder) => (
-    <>
+    <div className="mb-3">
       <textarea
         name={name}
         placeholder={placeholder}
         value={formData[name]}
         onChange={handleInputChange}
-        className="manage-textarea"
+        className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-green-200"
       ></textarea>
-      {errors[name] && <p className="error-text">{errors[name]}</p>}
-    </>
+      {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
+    </div>
   );
 
   const renderCareersList = () => (
@@ -220,13 +226,11 @@ const ManageCareers = () => {
           {career.imageId && (
             <div className="mb-4">
               <Image
-                src={`/api/careers/image/${
-                  career.imageId
-                }?t=${new Date().getTime()}`}
+                src={`/api/careers/image/${career.imageId}?t=${new Date().getTime()}`}
                 alt={career.position}
                 width={100}
                 height={50}
-                className="mt-4 rounded-lg h-24 w-auto"
+                className="rounded-lg h-24 w-auto"
               />
             </div>
           )}
@@ -263,10 +267,12 @@ const ManageCareers = () => {
   }
 
   return (
-    <div className="manage-container">
-      <h1 className="manage-title">Manage Careers</h1>
-      {renderForm()}
-      {renderCareersList()}
+    <div className="p-6 bg-gray-100">
+      <h1 className="text-2xl font-bold mb-4">Manage Careers</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {renderForm()}
+        {renderCareersList()}
+      </div>
     </div>
   );
 };
@@ -278,4 +284,3 @@ const ManageCareersPage = () => (
 );
 
 export default ManageCareersPage;
-

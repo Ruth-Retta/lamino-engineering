@@ -1,80 +1,81 @@
 import React, { useState, useEffect, useRef } from "react";
-import axios from 'axios';
+import axios from "axios";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import AdminDashboard from "@/components/AdminDashboard";
 
 const ManagePortfolio = () => {
   const { data: session } = useSession();
-    const [portfolios, setPortfolios] = useState([]);
-    const [formData, setFormData] = useState({
-        title: '',
-        image: null,
-        description: '',
-    });
-    const [isEditing, setIsEditing] = useState(false);
-    const [errors, setErrors] = useState({});
-    const fileInputRef = useRef(null);
+  const [portfolios, setPortfolios] = useState([]);
+  const [formData, setFormData] = useState({
+    title: "",
+    image: null,
+    description: "",
+    date: "",
+  });
+  const [isEditing, setIsEditing] = useState(false);
+  const [errors, setErrors] = useState({});
+  const fileInputRef = useRef(null);
 
-    useEffect(() => {
-        fetchPortfolios();
-    }, []);
+  useEffect(() => {
+    fetchPortfolios();
+  }, []);
 
-    const fetchPortfolios = async () => {
-        try {
-            const response = await axios.get('/api/portfolio');
-            setPortfolios(response.data);
-        } catch (error) {
-            console.error('Error fetching portfolios:', error);
-        }
-    };
+  const fetchPortfolios = async () => {
+    try {
+      const response = await axios.get("/api/portfolio");
+      setPortfolios(response.data);
+    } catch (error) {
+      console.error("Error fetching portfolios:", error);
+    }
+  };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const validationErrors = validateForm();
-        if (Object.keys(validationErrors).length > 0) {
-          setErrors(validationErrors);
-          return;
-        }
-    
-        const apiCall = isEditing ? updatePortfolio : addPortfolio;
-        await apiCall();
-      };
-    
-      const addPortfolio = async () => {
-        try {
-          await axios.post("/api/portfolio", createFormData(), {
-            headers: { "Content-Type": "multipart/form-data" },
-          });
-          resetForm();
-          fetchPortfolios();
-        } catch (error) {
-          handleApiError("adding", error);
-        }
-      };
-    
-      const updatePortfolio = async () => {
-        try {
-          await axios.put(`/api/portfolio/${formData._id}`, createFormData(), {
-            headers: { "Content-Type": "multipart/form-data" },
-          });
-          resetForm();
-          fetchPortfolios();
-        } catch (error) {
-          handleApiError("updating", error);
-        }
-      };
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const validationErrors = validateForm();
+    if (Object.keys(validationErrors).length > 0) {
+      setErrors(validationErrors);
+      return;
+    }
 
-    const deletePortfolio = async (id) => {
-        try {
-            await axios.delete(`/api/portfolio/${id}`);
-            fetchPortfolios();
-        } catch (error) {
-            console.error('Error deleting portfolio:', error);
-        }
-    };
+    const apiCall = isEditing ? updatePortfolio : addPortfolio;
+    await apiCall();
+  };
 
-    // Helper functions
+  const addPortfolio = async () => {
+    try {
+      await axios.post("/api/portfolio", createFormData(), {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      resetForm();
+      fetchPortfolios();
+    } catch (error) {
+      handleApiError("adding", error);
+    }
+  };
+
+  const updatePortfolio = async () => {
+    try {
+      await axios.put(`/api/portfolio/${formData._id}`, createFormData(), {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+      resetForm();
+      fetchPortfolios();
+    } catch (error) {
+      handleApiError("updating", error);
+    }
+  };
+
+  const deletePortfolio = async (id) => {
+    try {
+      await axios.delete(`/api/portfolio/${id}`);
+      fetchPortfolios();
+    } catch (error) {
+      console.error("Error deleting portfolio:", error);
+    }
+  };
+
+  // Helper functions
   const createFormData = () => {
     const data = new FormData();
     Object.keys(formData).forEach((key) => {
@@ -87,16 +88,10 @@ const ManagePortfolio = () => {
 
   const validateForm = () => {
     const newErrors = {};
-    const requiredFields = [
-      "title",
-      "description",
-      "date",
-    ];
+    const requiredFields = ["title", "description", "date"];
     requiredFields.forEach((field) => {
       if (!formData[field])
-        newErrors[field] = `${
-          field.charAt(0).toUpperCase() + field.slice(1)
-        } is required`;
+        newErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
     });
     if (!isEditing && !formData.image) newErrors.image = "Image is required";
     return newErrors;
@@ -140,65 +135,74 @@ const ManagePortfolio = () => {
 
   // UI Components
   const renderForm = () => (
-    <form onSubmit={handleSubmit} className="manage-formContainer">
-      <h2>{isEditing ? "Edit Portfolio" : "Add New Portfolio"}</h2>
+    <form onSubmit={handleSubmit} className="bg-white p-4 rounded shadow-sm">
+      <h2 className="text-lg font-semibold mb-4">{isEditing ? "Edit Portfolio" : "Add New Portfolio"}</h2>
       {renderInput("title", "Title")}
       {renderTextarea("description", "Description")}
       {renderInput("date", "Date", "date")}
       {renderFileInput()}
-      <button type="submit" className="manage-button">
-        {isEditing ? "Update Portfolio" : "Add Portfolio"}
-      </button>
-      {isEditing && (
-        <button type="button" className="manage-button" onClick={resetForm}>
-          Cancel Edit
+      <div className="flex justify-between mt-4">
+        <button
+          type="submit"
+          className="bg-[#70BA02] text-white py-2 px-4 rounded focus:outline-none"
+        >
+          {isEditing ? "Update Portfolio" : "Add Portfolio"}
         </button>
-      )}
+        {isEditing && (
+          <button
+            type="button"
+            className="bg-gray-300 text-gray-600 py-2 px-4 rounded focus:outline-none"
+            onClick={resetForm}
+          >
+            Cancel Edit
+          </button>
+        )}
+      </div>
     </form>
   );
 
   const renderInput = (name, placeholder, type = "text") => (
-    <>
+    <div className="mb-3">
       <input
         type={type}
         name={name}
         placeholder={placeholder}
         value={formData[name]}
         onChange={handleInputChange}
-        className="manage-input"
+        className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-green-200"
       />
-      {errors[name] && <p className="error-text">{errors[name]}</p>}
-    </>
+      {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
+    </div>
   );
 
   const renderFileInput = () => (
-    <>
+    <div className="mb-3">
       <input
         type="file"
         name="image"
         onChange={handleInputChange}
-        className="w-full p-2 border border-gray-300 rounded"
+        className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-green-200"
         ref={fileInputRef}
       />
-      {errors.image && <p className="error-text">{errors.image}</p>}
-    </>
+      {errors.image && <p className="text-red-500 text-sm">{errors.image}</p>}
+    </div>
   );
 
   const renderTextarea = (name, placeholder) => (
-    <>
+    <div className="mb-3">
       <textarea
         name={name}
         placeholder={placeholder}
         value={formData[name]}
         onChange={handleInputChange}
-        className="manage-textarea"
+        className="w-full p-2 border border-gray-300 rounded focus:ring focus:ring-green-200"
       ></textarea>
-      {errors[name] && <p className="error-text">{errors[name]}</p>}
-    </>
+      {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
+    </div>
   );
 
   const renderPortfolioList = () => (
-    <ul className="space-y-6"> {/* Add vertical spacing between list items */}
+    <ul className="space-y-6">
       {portfolios.map((portfolio) => (
         <li key={portfolio._id} className="bg-white shadow-lg rounded-lg p-6">
           <h3 className="text-xl font-semibold mb-2">{portfolio.title}</h3>
@@ -239,10 +243,12 @@ const ManagePortfolio = () => {
   }
 
   return (
-    <div className="manage-container">
-      <h1 className="manage-title">Manage Portfolios</h1>
-      {renderForm()}
-      {renderPortfolioList()}
+    <div className="p-6 bg-gray-100">
+      <h1 className="text-2xl font-bold mb-4">Manage Portfolios</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {renderForm()}
+        {renderPortfolioList()}
+      </div>
     </div>
   );
 };
@@ -254,4 +260,3 @@ const ManagePortfolioPage = () => (
 );
 
 export default ManagePortfolioPage;
-
