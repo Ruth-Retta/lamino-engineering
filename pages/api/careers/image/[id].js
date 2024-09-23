@@ -3,10 +3,7 @@ import Career from "../../../../models/Career";
 import { getSession } from "next-auth/react";
 
 export default async function handler(req, res) {
-  const session = await getSession({ req });
-  if (!session || !session.user.role) {
-    return res.status(401).json({ error: "Not authenticated" });
-  }
+  
   const { id } = req.query;
 
   await dbConnect();

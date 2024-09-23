@@ -1,16 +1,12 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Image from 'next/image';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import ApplicationForm from '../components/ApplicationForm';
-import { createRoot } from 'react-dom/client';
+import Link from 'next/link'; // Import Link from Next.js
 
 const Careers = () => {
   const [careers, setCareers] = useState([]);
-  // const [isApplicationFormVisible, setIsApplicationFormVisible] = useState(false);
-  // const [selectedCareer, setSelectedCareer] = useState(null);
-  // const modalRef = useRef(null);
 
   useEffect(() => {
     axios.get('/api/careers')
@@ -22,11 +18,6 @@ const Careers = () => {
       });
   }, []);
 
-  // const handleApply = (career) => {
-  //   setIsApplicationFormVisible(true);
-  //   setSelectedCareer(career);
-  // };
-
   return (
     <div className="career-page min-h-screen">
       <Header />
@@ -35,8 +26,8 @@ const Careers = () => {
         {careers.length > 0 ? (
           <ul className="grid grid-cols-1 gap-4">
             {careers.map(career => (
-              <li key={career._id} className="career-item bg-white rounded-lg shadow-md px-6 py-8 flex items-center"> {/* Center content vertically with flex */}
-                <div className="career-image mr-4 md:mr-8"> 
+              <li key={career._id} className="career-item bg-white rounded-lg shadow-md px-6 py-8 relative flex items-center">
+                <div className="career-image mr-4 md:mr-8">
                   {career.imageId && (
                     <Image
                       src={`/api/careers/image/${career.imageId}?t=${new Date().getTime()}`}
@@ -47,7 +38,7 @@ const Careers = () => {
                     />
                   )}
                 </div>
-                <div className="career-details flex-grow"> {/* Allow text content to grow */}
+                <div className="career-details flex-grow">
                   <h3 className="text-xl font-medium mb-2">{career.position}</h3>
                   <p className="text-gray-600 mb-2">Posted: {new Date(career.date).toLocaleDateString()}</p>
                   <p className="text-gray-600 mb-2">Start Date: {new Date(career.startDate).toLocaleDateString()} | End Date: {new Date(career.endDate).toLocaleDateString()}</p>
@@ -58,7 +49,15 @@ const Careers = () => {
                       <li key={index}>{requirement}</li>
                     ))}
                   </ul>
-                  {/* <button className="btn btn-primary" onClick={() => handleApply(career)}>Apply</button> */}
+                </div>
+
+                {/* Apply button in the top right corner */}
+                <div className="absolute top-4 right-4">
+                  <Link href={`/application?position=${career.position}`} passHref>
+                    <button className="bg-custom-green-1 text-white py-2 px-4 rounded">
+                      Apply
+                    </button>
+                  </Link>
                 </div>
               </li>
             ))}
@@ -66,7 +65,6 @@ const Careers = () => {
         ) : (
           <p className="text-center text-gray-500">We are not currently hiring. Please check back later.</p>
         )}
-        {/* Application form handling (omitted for brevity) */}
       </main>
       <Footer />
     </div>

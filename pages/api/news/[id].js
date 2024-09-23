@@ -13,10 +13,7 @@ export const config = {
 
 
 export default async function handler(req, res) {
-  const session = await getSession({ req });
-  if (!session || !session.user.role) {
-    return res.status(401).json({ error: "Not authenticated" });
-  }
+  
   const { id } = req.query;
 
   await dbConnect();
@@ -35,7 +32,12 @@ export default async function handler(req, res) {
       console.error('Error fetching news:', error);
       res.status(500).json({ message: 'Failed to fetch news', error: error.message });
     }
-  } else if (req.method === 'PUT') {
+  } else 
+  {const session = await getSession({ req });
+  if (!session || !session.user.role) {
+    return res.status(401).json({ error: "Not authenticated" });
+  }
+  if (req.method === 'PUT') {
     const form = new IncomingForm();
 
     form.parse(req, async (err, fields, files) => {
@@ -93,5 +95,5 @@ export default async function handler(req, res) {
     }
   } else {
     res.status(405).json({ message: 'Method Not Allowed' });
-  }
+  }}
 }

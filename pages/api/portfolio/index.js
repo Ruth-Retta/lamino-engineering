@@ -11,10 +11,7 @@ export const config = {
 };
 
 export default async function handler(req, res) {
-  const session = await getSession({ req });
-  if (!session || !session.user.role) {
-    return res.status(401).json({ error: "Not authenticated" });
-  }
+  
   await dbConnect();
 
   if (req.method === 'GET') {
@@ -31,7 +28,12 @@ export default async function handler(req, res) {
       console.error('Error fetching portfolios:', error);
       res.status(500).json({ message: 'Failed to fetch portfolios', error: error.message });
     }
-  } else if (req.method === 'POST') {
+  } else 
+  {const session = await getSession({ req });
+  if (!session || !session.user.role) {
+    return res.status(401).json({ error: "Not authenticated" });
+  }
+  if (req.method === 'POST') {
     const form = new IncomingForm();
 
     form.parse(req, async (err, fields, files) => {
@@ -75,5 +77,5 @@ export default async function handler(req, res) {
     });
   } else {
     res.status(405).json({ message: 'Method Not Allowed' });
-  }
+  }}
 }
