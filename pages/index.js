@@ -4,7 +4,7 @@ import Footer from '../components/Footer';
 import HomeSection from '../components/sections/Home';
 import ServicesSection from '../components/sections/Services';
 import PortfolioSection from '../components/sections/Portfolio';
-import TestimonialSection from '../components/sections/Testimonial';
+import TestimonialsSection from '../components/sections/Testimonials';
 import PartnersSection from '../components/sections/Partners';
 import CustomersSection from '../components/sections/Customers';
 import ResponsiveComponent from '../components/ResponsiveComponent';
@@ -24,7 +24,7 @@ const Index = () => {
         <PortfolioSection />
         <PartnersSection />
         <CustomersSection />
-        <TestimonialSection />
+        <TestimonialsSection />
       </main>
       <Footer />
     </div>
