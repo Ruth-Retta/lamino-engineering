@@ -32,7 +32,7 @@ export default function Services() {
                 key={index}
                 className="p-6 rounded-lg shadow-md bg-white hover:shadow-lg transition-shadow duration-300 max-w-lg mx-auto mb-10" // Limiting width
               >
-                <div className="relative w-full h-48 mb-6"> {/* Defined height */}
+                <div className="relative w-full h-48 mb-6">
                   <Image
                     src={`/api/services/image/${service.imageId}?t=${new Date().getTime()}`}
                     alt={service.title}

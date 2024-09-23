@@ -58,7 +58,7 @@ export default function Contact() {
                         <h2 className="text-4xl font-bold">Contact Us</h2>
                         <button 
                             className="bg-custom-green-1 text-white py-2 px-4 rounded flex items-center"
-                            onClick={handleMakeRequest} // Add click handler here
+                            onClick={handleMakeRequest} 
                         >
                             <FontAwesomeIcon icon={faEnvelope} className="mr-2" />
                             Make a Request
@@ -71,7 +71,7 @@ export default function Contact() {
                                 type="text"
                                 name="name"
                                 value={name}
-                                onChange={onChange} // Make sure onChange is properly defined here
+                                onChange={onChange} 
                                 className="mt-1 block w-full p-2 border border-gray-300 rounded-md"
                             />
                         </div>

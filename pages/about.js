@@ -1,8 +1,8 @@
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 import Image from 'next/image';
-import PartnersSection from '@/components/sections/Partners';
-import CustomersSection from '@/components/sections/Customers';
+import PartnersSection from '../components/sections/Partners';
+import CustomersSection from '../components/sections/Customers';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 

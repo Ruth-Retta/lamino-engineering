@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import AdminDashboard from "@/components/AdminDashboard";
+import AdminDashboard from "../../components/AdminDashboard";
 
 const ManageAbout = () => {
   const { data: session } = useSession();

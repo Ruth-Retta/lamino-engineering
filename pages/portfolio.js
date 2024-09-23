@@ -10,7 +10,7 @@ const Portfolio = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const response = await axios.get('/api/portfolio'); // Adjust the API endpoint if necessary
+        const response = await axios.get('/api/portfolio'); 
         setProjects(response.data);
       } catch (error) {
         console.error('Error fetching portfolio items:', error);
@@ -25,7 +25,6 @@ const Portfolio = () => {
       <Header />
       <main style={{ marginTop: '80px' }} className="mx-auto pl-20 pr-20 mt-40 mb-30">
         <div className="flex-grow mx-auto ml-20 mr-20 py-10 px-4 md:px-10 lg:px-20">
-          {/* <h2 className="text-4xl font-bold mb-6">Our Portfolio</h2> */}
           <div className="space-y-12">
             {projects.map((project, index) => (
               <div key={index} className="portfolio-item p-6 mb-8 rounded-lg shadow-lg bg-white">

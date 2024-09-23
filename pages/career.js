@@ -3,7 +3,7 @@ import Footer from '../components/Footer';
 import Image from 'next/image';
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import Link from 'next/link'; // Import Link from Next.js
+import Link from 'next/link'; 
 
 const Careers = () => {
   const [careers, setCareers] = useState([]);
