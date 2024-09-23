@@ -38,6 +38,7 @@ const HomeSection = () => {
                   width={100}
                   height={100}
                   className="slide-image"
+                  unoptimized
                 />
                 <div className="slide-text">
                 <h1>{news.title}</h1>

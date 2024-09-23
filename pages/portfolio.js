@@ -37,6 +37,7 @@ const Portfolio = () => {
                     height={400}
                     objectFit="cover"
                     className="rounded-lg"
+                    unoptimized
                   />
                   </div>
                   <div className="portfolio-content md:w-2/3">

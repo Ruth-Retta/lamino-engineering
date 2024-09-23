@@ -28,6 +28,7 @@ const CustomersSection = () => {
                   width={200}
                   height={200}
                   className="mt-4 rounded-lg h-24 w-auto mx-auto"
+                  unoptimized
                 />
                   </a>
                 </div>

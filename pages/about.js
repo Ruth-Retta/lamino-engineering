@@ -37,6 +37,7 @@ const About = () => {
                   width={400}
                   height={400}
                   alt="About Image"
+                  unoptimized
                 />
               )}
             </div>

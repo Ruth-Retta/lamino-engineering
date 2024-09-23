@@ -39,6 +39,7 @@ export default function Services() {
                     layout="fill"
                     objectFit="cover"
                     className="rounded-lg"
+                    unoptimized
                   />
                 </div>
                 <h3 className="text-2xl font-semibold mb-2 text-customgreen1">{service.title}</h3>

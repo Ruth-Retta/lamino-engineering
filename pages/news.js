@@ -45,6 +45,7 @@ const News = () => {
                     layout="fill"
                     objectFit="cover"
                     className="rounded-lg"
+                    unoptimized
                   />
                 </div>
               )}

@@ -35,6 +35,7 @@ const Careers = () => {
                       width={200}
                       height={200}
                       className="rounded-lg h-auto w-auto object-cover"
+                      unoptimized
                     />
                   )}
                 </div>

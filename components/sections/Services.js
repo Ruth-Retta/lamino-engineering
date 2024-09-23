@@ -30,6 +30,7 @@ const ServicesSection = () => {
                   width={400}
                   height={400}
                   className="w-full h-48 object-cover rounded-md"
+                  unoptimized
                 />
                 <div className="card-content mt-4">
                   <h3 className="text-2xl font-bold">{service.title}</h3>

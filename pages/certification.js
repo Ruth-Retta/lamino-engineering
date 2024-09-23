@@ -31,6 +31,7 @@ const Certifications = () => {
                   width={400}
                   height={400}
                   className="rounded-lg h-60 w-auto"
+                  unoptimized
                 />
           )}</p>
               <p className="text-lg font-medium m-0">{certification.title}</p>

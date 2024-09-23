@@ -48,6 +48,7 @@ const TestimonialsSection = () => {
                   width={100}
                   height={100}
                   className="testimonial-image"
+                  unoptimized
                 />
                 <div className="testimonial-info">
                   <h3 className="testimonial-author">{testimonial.author}</h3>
